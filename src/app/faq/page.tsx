@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { faqs } from "@/data/faqs";
-import { CtaBanner, FaqList, SectionHeading } from "@/components/sections";
+import { Reveal } from "@/components/Reveal";
+import { CtaBanner, FaqList, PageHero } from "@/components/sections";
 
 export const metadata: Metadata = {
   title: "FAQ — Selling Your Car to Carbase",
@@ -25,19 +26,27 @@ export default function FaqPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
-      <section className="bg-linear-to-b from-brand-50 to-white py-16">
+      <PageHero
+        eyebrow="FAQ"
+        title={
+          <>
+            Questions? <span className="text-gradient">Answered.</span>
+          </>
+        }
+        lede="Everything sellers usually want to know. Can't find your answer? Just call — we're happy to talk it through."
+        compact
+      />
+      <section className="bg-white py-20">
         <div className="mx-auto max-w-3xl px-4 sm:px-6">
-          <SectionHeading
-            eyebrow="FAQ"
-            title="Frequently asked questions"
-            lede="Everything sellers usually want to know. Can't find your answer? Just call — we're happy to talk it through."
-          />
-          <div className="mt-10">
+          <Reveal>
             <FaqList />
-          </div>
+          </Reveal>
         </div>
       </section>
-      <CtaBanner title="Still thinking it over?" subtitle="A quote is free and doesn't commit you to anything — find out what your car is worth today." />
+      <CtaBanner
+        title="Still thinking it over?"
+        subtitle="A quote is free and doesn't commit you to anything — find out what your car is worth today."
+      />
     </>
   );
 }

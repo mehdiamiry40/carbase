@@ -151,21 +151,140 @@ export function ArrowRightIcon(props: IconProps) {
   );
 }
 
-/** The Carbase logo mark + wordmark */
-export function Logo({ dark = false }: { dark?: boolean }) {
+export function ArrowLeftIcon(props: IconProps) {
   return (
-    <span className="inline-flex items-center gap-2">
-      <span className="flex size-9 items-center justify-center rounded-xl bg-brand-600 text-white shadow-sm">
-        <CarIcon className="size-5" strokeWidth={2.2} />
+    <svg {...base(props)}>
+      <path d="M19 12H5M11 18l-6-6 6-6" />
+    </svg>
+  );
+}
+
+export function SparkleIcon(props: IconProps) {
+  return (
+    <svg {...base(props)}>
+      <path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8" />
+    </svg>
+  );
+}
+
+export function QuoteMarkIcon(props: IconProps) {
+  return (
+    <svg
+      {...base({ ...props, fill: "currentColor", stroke: "none" })}
+      strokeWidth={0}
+    >
+      <path d="M10 8c-3 0-5 2.2-5 5.2 0 2 1.4 3.6 3.3 3.6 1.7 0 3-1.3 3-3 0-1.6-1.1-2.8-2.7-2.8h-.4c.3-1.2 1.3-2 2.8-2.2V8zm9 0c-3 0-5 2.2-5 5.2 0 2 1.4 3.6 3.3 3.6 1.7 0 3-1.3 3-3 0-1.6-1.1-2.8-2.7-2.8h-.4c.3-1.2 1.3-2 2.8-2.2V8z" />
+    </svg>
+  );
+}
+
+/* ── Vehicle silhouettes (side profiles, 64×32) ─────────────────────── */
+
+function vehicleBase(props: IconProps): IconProps {
+  return {
+    xmlns: "http://www.w3.org/2000/svg",
+    viewBox: "0 0 64 32",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: 2.4,
+    strokeLinecap: "round",
+    strokeLinejoin: "round",
+    "aria-hidden": true,
+    ...props,
+  };
+}
+
+export function SedanIcon(props: IconProps) {
+  return (
+    <svg {...vehicleBase(props)}>
+      <path d="M5 23c-1.6 0-2.6-1.2-2.4-2.8l.5-3.2c.2-1.5 1.4-2.6 2.9-2.9l8-1.5 6.5-5.4c1-.8 2.2-1.2 3.5-1.2h8.6c1.5 0 3 .7 4 1.8l4.4 4.8 12.5 1.9c1.7.3 3 1.7 3 3.4v2.6c0 1.4-1.1 2.5-2.5 2.5h-2.5" />
+      <path d="M23 23h18M27 6.5 25 13h22" />
+      <circle cx="16.5" cy="23" r="4.5" />
+      <circle cx="47.5" cy="23" r="4.5" />
+    </svg>
+  );
+}
+
+export function SuvIcon(props: IconProps) {
+  return (
+    <svg {...vehicleBase(props)}>
+      <path d="M5.5 23c-1.7 0-3-1.3-3-3v-5.4c0-1.5 1-2.7 2.4-3l7.6-1.6 5-5.5c.9-1 2.2-1.5 3.5-1.5H41c1.4 0 2.7.6 3.6 1.7l4.6 5.3h8.3c2 0 3.5 1.6 3.5 3.5V20c0 1.7-1.3 3-3 3h-2" />
+      <path d="M23 23h18M25.5 4.5 22 12.5h27" />
+      <circle cx="16.5" cy="23" r="4.5" />
+      <circle cx="47.5" cy="23" r="4.5" />
+    </svg>
+  );
+}
+
+export function UteIcon(props: IconProps) {
+  return (
+    <svg {...vehicleBase(props)}>
+      <path d="M5.5 23c-1.7 0-3-1.3-3-3v-4.6c0-1.6 1.2-2.9 2.8-3l6.7-.6 5.5-6.3c.9-1 2.1-1.5 3.4-1.5h8.3c1.7 0 3 1.3 3 3v5h26c1.9 0 3.3 1.5 3.3 3.4V20c0 1.7-1.3 3-3 3h-2.3" />
+      <path d="M23 23h18M28 4.2 24.5 12H32" />
+      <circle cx="16.5" cy="23" r="4.5" />
+      <circle cx="47.5" cy="23" r="4.5" />
+    </svg>
+  );
+}
+
+export function VanIcon(props: IconProps) {
+  return (
+    <svg {...vehicleBase(props)}>
+      <path d="M5.5 23c-1.7 0-3-1.3-3-3V9.6C2.5 6.5 5 4 8.1 4h33.4c1.9 0 3.7.8 4.9 2.3l7.8 9.2 4 .9c1.6.3 2.8 1.8 2.8 3.4v.2c0 1.7-1.3 3-3 3h-2.5" />
+      <path d="M23 23h18M38 4v9h13M12 4v9" />
+      <circle cx="16.5" cy="23" r="4.5" />
+      <circle cx="47.5" cy="23" r="4.5" />
+    </svg>
+  );
+}
+
+export function FourWdIcon(props: IconProps) {
+  return (
+    <svg {...vehicleBase(props)}>
+      <path d="M6 22.5c-1.9 0-3.4-1.5-3.4-3.4v-6.5c0-1.7 1.2-3 2.9-3.3l6-1 4.5-4.1c1-.9 2.2-1.4 3.6-1.4h20.8c1.4 0 2.7.5 3.6 1.5l4.3 4.4 7.4 1.2c1.6.3 2.8 1.7 2.8 3.3v6.3c0 1.7-1.3 3-3 3h-1.9" />
+      <path d="M22.5 22.5h19M23.5 3.5 20 11.8h27M14 2.8h34" />
+      <circle cx="16" cy="22.5" r="5" />
+      <circle cx="48" cy="22.5" r="5" />
+    </svg>
+  );
+}
+
+export function LightTruckIcon(props: IconProps) {
+  return (
+    <svg {...vehicleBase(props)}>
+      <path d="M5.5 23c-1.7 0-3-1.3-3-3V8c0-1.7 1.3-3 3-3h14c1.7 0 3 1.3 3 3v3.5l4.5-5c.7-.8 1.7-1.2 2.8-1.2h6c1.6 0 2.9 1.3 2.9 2.9V20c0 1.7-1.3 3-3 3h-.5" />
+      <path d="M22.5 11.5h16M22 23h4M39 12V5.3M43 23h8.5c1.7 0 3-1.3 3-3v-7.5h-15" />
+      <circle cx="14" cy="23" r="4.5" />
+      <circle cx="34" cy="23" r="4.5" />
+    </svg>
+  );
+}
+
+/* ── Logo ────────────────────────────────────────────────────────────── */
+
+/** The Carbase logo mark + wordmark. Designed for dark surfaces. */
+export function Logo({ onLight = false }: { onLight?: boolean }) {
+  return (
+    <span className="inline-flex items-center gap-2.5">
+      <span className="relative flex size-10 items-center justify-center rounded-2xl bg-linear-to-br from-brand-500 to-brand-700 text-white shadow-glow-sm">
+        <CarIcon className="size-5.5" strokeWidth={2.2} />
+        <span
+          className="absolute -top-0.5 -right-0.5 size-2.5 rounded-full bg-accent-400 ring-2 ring-ink-900"
+          aria-hidden
+        />
       </span>
       <span className="leading-none">
         <span
-          className={`block text-xl font-extrabold tracking-tight ${dark ? "text-white" : "text-slate-900"}`}
+          className={`font-display block text-[22px] font-bold tracking-tight ${
+            onLight ? "text-slate-900" : "text-white"
+          }`}
         >
-          car<span className="text-brand-600">base</span>
+          car<span className="text-gradient">base</span>
         </span>
         <span
-          className={`block text-[10px] font-semibold tracking-[0.18em] uppercase ${dark ? "text-slate-400" : "text-slate-500"}`}
+          className={`mt-0.5 block text-[9.5px] font-semibold tracking-[0.22em] uppercase ${
+            onLight ? "text-slate-500" : "text-slate-400"
+          }`}
         >
           Cash for cars
         </span>

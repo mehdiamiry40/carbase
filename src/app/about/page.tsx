@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { site } from "@/config/site";
-import { CtaBanner, SectionHeading } from "@/components/sections";
+import { Reveal } from "@/components/Reveal";
+import { CtaBanner, PageHero, SectionHeading } from "@/components/sections";
 import { BanknoteIcon, MapPinIcon, ShieldIcon } from "@/components/icons";
 
 export const metadata: Metadata = {
@@ -29,56 +30,77 @@ const values = [
 export default function AboutPage() {
   return (
     <>
-      <section className="bg-linear-to-b from-brand-50 to-white py-16">
+      <PageHero
+        eyebrow="About us"
+        title={
+          <>
+            The easiest way to sell a car in{" "}
+            <span className="text-gradient">South East Queensland</span>
+          </>
+        }
+      />
+
+      <section className="bg-white py-24">
         <div className="mx-auto max-w-3xl px-4 sm:px-6">
-          <SectionHeading
-            eyebrow="About us"
-            title={`The easiest way to sell a car in South East Queensland`}
-          />
-          <div className="mt-8 space-y-5 text-lg leading-relaxed text-slate-600">
-            <p>
-              {site.name} started with a simple observation: selling a car
-              privately is painful. Weeks of listings and messages, strangers
-              test-driving your car, tyre-kickers haggling in your driveway —
-              and after all that, the sale still falls through half the time.
-            </p>
-            <p>
-              So we built the alternative. Tell us about your car once, get a
-              fair cash offer fast, and have the whole thing done — inspection,
-              paperwork, payment and pickup — often within a day. That's the
-              entire business: buying cars across Brisbane and the Gold Coast
-              and making it feel easy.
-            </p>
-            <p>
-              We buy everything from near-new SUVs to utes with a hard life
-              behind them and cars that no longer start. Whatever you're
-              selling, you'll get a straight answer and a real offer.
-            </p>
-          </div>
+          <Reveal>
+            <div className="space-y-6 text-lg leading-relaxed text-slate-600">
+              <p>
+                {site.name} started with a simple observation:{" "}
+                <span className="font-semibold text-slate-900">
+                  selling a car privately is painful.
+                </span>{" "}
+                Weeks of listings and messages, strangers test-driving your
+                car, tyre-kickers haggling in your driveway — and after all
+                that, the sale still falls through half the time.
+              </p>
+              <p>
+                So we built the alternative. Tell us about your car once, get a
+                fair cash offer fast, and have the whole thing done —
+                inspection, paperwork, payment and pickup — often within a day.
+                That&apos;s the entire business: buying cars across Brisbane and
+                the Gold Coast and making it feel easy.
+              </p>
+              <p>
+                We buy everything from near-new SUVs to utes with a hard life
+                behind them and cars that no longer start. Whatever you&apos;re
+                selling, you&apos;ll get a straight answer and a real offer.
+              </p>
+            </div>
+          </Reveal>
         </div>
       </section>
 
-      <section className="py-16">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <SectionHeading eyebrow="What we stand for" title="How we do business" />
-          <div className="mt-12 grid gap-6 md:grid-cols-3">
-            {values.map((v) => (
-              <div
-                key={v.title}
-                className="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm"
-              >
-                <span className="flex size-11 items-center justify-center rounded-xl bg-brand-50 text-brand-600">
-                  <v.Icon className="size-5" />
-                </span>
-                <h3 className="mt-4 text-lg font-bold text-slate-900">{v.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-slate-600">{v.text}</p>
-              </div>
+      <section className="bg-dots relative bg-slate-50 py-24">
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <Reveal>
+            <SectionHeading
+              eyebrow="What we stand for"
+              title="How we do business"
+            />
+          </Reveal>
+          <div className="mt-14 grid gap-6 md:grid-cols-3">
+            {values.map((v, i) => (
+              <Reveal key={v.title} delay={i * 110}>
+                <div className="group h-full rounded-3xl border border-slate-200/80 bg-white p-8 shadow-card transition duration-300 hover:-translate-y-1.5 hover:shadow-card-lg">
+                  <span className="flex size-12 items-center justify-center rounded-2xl bg-linear-to-br from-brand-600 to-brand-500 text-white shadow-glow-sm transition duration-300 group-hover:scale-105">
+                    <v.Icon className="size-5.5" />
+                  </span>
+                  <h3 className="font-display mt-5 text-xl font-bold text-slate-900">
+                    {v.title}
+                  </h3>
+                  <p className="mt-3 text-[15px] leading-relaxed text-slate-600">
+                    {v.text}
+                  </p>
+                </div>
+              </Reveal>
             ))}
           </div>
         </div>
       </section>
 
-      <CtaBanner title="Have a car to sell?" />
+      <div className="bg-white pt-24">
+        <CtaBanner title="Have a car to sell?" />
+      </div>
     </>
   );
 }

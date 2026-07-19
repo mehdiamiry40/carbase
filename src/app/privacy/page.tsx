@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { site } from "@/config/site";
+import { PageHero } from "@/components/sections";
 
 export const metadata: Metadata = {
   title: "Privacy Policy",
@@ -10,43 +11,42 @@ export const metadata: Metadata = {
 // NOTE: This is a general-purpose starter policy, not legal advice.
 // Have it reviewed before launch and adjust it to match your actual practices.
 
+const sections = [
+  {
+    title: "What we collect",
+    body: "When you request a quote we collect the details you provide: your name, phone number, email address, suburb, information about your vehicle and any photos you choose to attach.",
+  },
+  {
+    title: "How we use it",
+    body: "We use your details solely to prepare your quote, contact you about selling your vehicle and, if you accept an offer, to complete the purchase and transfer paperwork. We do not sell your personal information or share it with third parties for their marketing.",
+  },
+  {
+    title: "Storage and security",
+    body: "Quote requests are delivered to us by email and handled only by our team. We take reasonable steps to protect your information from misuse, loss and unauthorised access.",
+  },
+];
+
 export default function PrivacyPage() {
   return (
-    <section className="py-16">
-      <div className="prose-slate mx-auto max-w-3xl px-4 sm:px-6">
-        <h1 className="text-3xl font-extrabold tracking-tight text-slate-900">
-          Privacy policy
-        </h1>
-        <div className="mt-8 space-y-8 text-sm leading-relaxed text-slate-600 [&_h2]:text-lg [&_h2]:font-bold [&_h2]:text-slate-900">
+    <>
+      <PageHero eyebrow="Legal" title="Privacy policy" compact />
+      <section className="bg-white py-20">
+        <div className="mx-auto max-w-3xl space-y-10 px-4 sm:px-6">
+          {sections.map((s) => (
+            <div key={s.title}>
+              <h2 className="font-display text-xl font-bold text-slate-900">
+                {s.title}
+              </h2>
+              <p className="mt-3 text-[15px] leading-relaxed text-slate-600">
+                {s.body}
+              </p>
+            </div>
+          ))}
           <div>
-            <h2>What we collect</h2>
-            <p className="mt-2">
-              When you request a quote we collect the details you provide: your
-              name, phone number, email address, suburb, information about your
-              vehicle and any photos you choose to attach.
-            </p>
-          </div>
-          <div>
-            <h2>How we use it</h2>
-            <p className="mt-2">
-              We use your details solely to prepare your quote, contact you
-              about selling your vehicle and, if you accept an offer, to
-              complete the purchase and transfer paperwork. We do not sell your
-              personal information or share it with third parties for their
-              marketing.
-            </p>
-          </div>
-          <div>
-            <h2>Storage and security</h2>
-            <p className="mt-2">
-              Quote requests are delivered to us by email and handled only by
-              our team. We take reasonable steps to protect your information
-              from misuse, loss and unauthorised access.
-            </p>
-          </div>
-          <div>
-            <h2>Access and contact</h2>
-            <p className="mt-2">
+            <h2 className="font-display text-xl font-bold text-slate-900">
+              Access and contact
+            </h2>
+            <p className="mt-3 text-[15px] leading-relaxed text-slate-600">
               You can ask us at any time what information we hold about you, or
               ask us to correct or delete it, by emailing{" "}
               <a
@@ -60,7 +60,7 @@ export default function PrivacyPage() {
             </p>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }
