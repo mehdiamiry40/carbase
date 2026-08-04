@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { site } from "@/config/site";
+import { pageMetadata } from "@/lib/metadata";
 import { areas, getArea } from "@/data/areas";
 import { Reveal } from "@/components/Reveal";
 import {
@@ -22,10 +23,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const area = getArea(slug);
   if (!area) return {};
-  return {
+  return pageMetadata({
+    path: `/service-areas/${area.slug}`,
     title: `Cash for Cars ${area.short} — Sell Your Car Today`,
     description: `${site.name} buys cars across ${area.short} in any condition. Free quote, free pickup and instant payment. ${area.intro}`,
-  };
+  });
 }
 
 export default async function AreaPage({ params }: Props) {
@@ -36,6 +38,7 @@ export default async function AreaPage({ params }: Props) {
   const serviceJsonLd = {
     "@context": "https://schema.org",
     "@type": "Service",
+    "@id": `${site.url}/service-areas/${area.slug}#service`,
     name: `Cash for cars in ${area.short}`,
     serviceType: "Car buying service",
     areaServed: { "@type": "City", name: area.short },
@@ -45,6 +48,17 @@ export default async function AreaPage({ params }: Props) {
       telephone: site.phone,
       url: site.url,
     },
+    url: `${site.url}/service-areas/${area.slug}`,
+  };
+
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: site.url },
+      { "@type": "ListItem", position: 2, name: "Service areas", item: `${site.url}/service-areas` },
+      { "@type": "ListItem", position: 3, name: area.short, item: `${site.url}/service-areas/${area.slug}` },
+    ],
   };
 
   return (
@@ -52,6 +66,10 @@ export default async function AreaPage({ params }: Props) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
 
       <PageHero

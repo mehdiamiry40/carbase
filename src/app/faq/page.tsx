@@ -1,13 +1,13 @@
-import type { Metadata } from "next";
 import { faqs } from "@/data/faqs";
+import { pageMetadata } from "@/lib/metadata";
 import { Reveal } from "@/components/Reveal";
 import { CtaBanner, FaqList, PageHero } from "@/components/sections";
 
-export const metadata: Metadata = {
-  title: "FAQ — Selling Your Car to Carbase",
-  description:
-    "Answers to the questions we hear most: what cars we buy, how fast you're paid, what paperwork you need, cars under finance and more.",
-};
+export const metadata = pageMetadata({
+  path: "/faq",
+  title: "Cash for Cars FAQs — Quotes, Pickup & Payment",
+  description: "Answers about selling your car to Carbase, including eligible vehicles, quote timing, free pickup, payment, paperwork and cars under finance.",
+});
 
 export default function FaqPage() {
   const faqJsonLd = {

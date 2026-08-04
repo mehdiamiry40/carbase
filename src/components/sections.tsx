@@ -5,6 +5,7 @@ import { faqs, type Faq } from "@/data/faqs";
 import { testimonials } from "@/data/testimonials";
 import { Accordion } from "@/components/Accordion";
 import { Reveal } from "@/components/Reveal";
+import { Photo } from "@/components/Photo";
 import {
   ArrowRightIcon,
   BanknoteIcon,
@@ -33,19 +34,15 @@ export function SectionHeading({
 }) {
   return (
     <div
-      className={`max-w-2xl ${align === "center" ? "mx-auto text-center" : ""}`}
+      className={`max-w-3xl ${align === "center" ? "mx-auto text-center" : ""}`}
     >
       <p
-        className={`inline-flex items-center gap-2 rounded-full border px-3.5 py-1 text-[11px] font-bold tracking-[0.16em] uppercase ${
-          dark
-            ? "border-white/15 bg-white/5 text-accent-300"
-            : "border-brand-200 bg-brand-50 text-brand-700"
-        }`}
+        className={`t-index border-b pb-3 ${dark ? "border-white/50 text-white" : "border-brand-300 text-brand-700"}`}
       >
         {eyebrow}
       </p>
       <h2
-        className={`font-display mt-4 text-3xl font-bold tracking-tight text-balance sm:text-[2.6rem] sm:leading-[1.15] ${
+        className={`font-display mt-5 text-3xl font-semibold tracking-tight text-balance sm:text-[2.75rem] sm:leading-[1.1] ${
           dark ? "text-white" : "text-slate-900"
         }`}
       >
@@ -80,30 +77,21 @@ export function PageHero({
   compact?: boolean;
 }) {
   return (
-    <section className="relative overflow-hidden bg-ink-900">
-      <div className="bg-dots-dark absolute inset-0" aria-hidden />
+    <section className="relative overflow-hidden bg-ink-900 text-white">
+      <Photo name="road" alt="A car on the road in South East Queensland" className="object-[55%_center]" preload />
+      <span className="photo-scrim-page" aria-hidden />
       <div
-        className="absolute -top-40 left-1/2 h-[30rem] w-[50rem] -translate-x-1/2 rounded-full bg-brand-600/20 blur-3xl"
-        aria-hidden
-      />
-      <div
-        className="absolute -right-32 -bottom-48 size-96 rounded-full bg-accent-500/10 blur-3xl"
-        aria-hidden
-      />
-      <div
-        className={`relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 ${
-          compact ? "pt-32 pb-14" : "pt-36 pb-20"
-        }`}
+        className={`shell relative ${compact ? "py-16 lg:py-20" : "py-20 lg:py-28"}`}
       >
-        <div className="mx-auto max-w-3xl text-center">
-          <p className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-[11px] font-bold tracking-[0.16em] text-accent-300 uppercase backdrop-blur">
+        <div className="max-w-3xl">
+          <p className="t-index w-fit border-b border-white/70 pb-3">
             {eyebrow}
           </p>
-          <h1 className="font-display mt-5 text-4xl font-bold tracking-tight text-balance text-white sm:text-5xl sm:leading-[1.1]">
+          <h1 className="font-display mt-6 text-4xl font-semibold tracking-tight text-balance text-white sm:text-6xl sm:leading-[1.04]">
             {title}
           </h1>
           {lede && (
-            <p className="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-slate-300">
+            <p className="mt-6 max-w-2xl text-lg leading-relaxed text-white">
               {lede}
             </p>
           )}
@@ -131,17 +119,17 @@ export function BrandMarquee() {
       {BRANDS.map((brand) => (
         <li
           key={brand}
-          className="font-display flex items-center px-6 text-lg font-semibold whitespace-nowrap text-white/35 transition hover:text-white/70"
+          className="font-display flex items-center px-6 text-lg font-semibold whitespace-nowrap text-white/65 transition hover:text-white"
         >
-          <span className="mr-12 inline-block size-1 rounded-full bg-white/20" />
+          <span className="mr-12 inline-block h-px w-4 bg-white/40" />
           {brand}
         </li>
       ))}
     </ul>
   );
   return (
-    <div className="border-y border-white/8 bg-ink-950/60 py-5">
-      <p className="mb-3 text-center text-[11px] font-bold tracking-[0.22em] text-slate-500 uppercase">
+    <div className="border-y border-white/25 bg-ink-900 py-5">
+      <p className="mb-3 text-center text-[11px] font-bold tracking-[0.22em] text-brand-200 uppercase">
         We buy every make &amp; model
       </p>
       <div className="edge-fade-x overflow-hidden">
@@ -168,11 +156,11 @@ export function StatBand() {
     <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
       {STATS.map((stat, i) => (
         <Reveal key={stat.label} delay={i * 90}>
-          <div className="rounded-2xl border border-white/10 bg-white/5 px-5 py-4 backdrop-blur transition hover:border-white/20 hover:bg-white/8">
-            <p className="font-display text-2xl font-bold tracking-tight sm:text-3xl">
-              <span className="text-gradient">{stat.value}</span>
+          <div className="border border-white/35 bg-ink-900/45 px-5 py-4 backdrop-blur">
+            <p className="font-display text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+              <span>{stat.value}</span>
             </p>
-            <p className="mt-1 text-[13px] font-medium text-slate-400">
+            <p className="mt-1 text-[13px] font-medium text-brand-200">
               {stat.label}
             </p>
           </div>
@@ -215,21 +203,21 @@ export function StepsGrid({ detailed = false }: { detailed?: boolean }) {
   return (
     <ol className="relative grid gap-10 gap-y-12 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
       <div
-        className="absolute top-7 right-[12%] left-[12%] hidden h-px bg-linear-to-r from-brand-200 via-accent-300 to-brand-200 lg:block"
+        className="absolute top-7 right-[12%] left-[12%] hidden h-px bg-brand-300 lg:block"
         aria-hidden
       />
       {steps.map((step, i) => (
         <Reveal key={step.title} delay={i * 110}>
-          <li className="group relative h-full rounded-3xl border border-slate-200/80 bg-white p-7 shadow-card transition duration-300 hover:-translate-y-1.5 hover:shadow-card-lg">
+          <li className="group relative h-full border border-brand-200 bg-white p-7 transition duration-200 hover:border-brand-500">
             <div className="flex items-center justify-between">
-              <span className="relative flex size-14 items-center justify-center rounded-2xl bg-linear-to-br from-brand-600 to-brand-500 text-white shadow-glow-sm transition duration-300 group-hover:scale-105">
+              <span className="relative flex size-14 items-center justify-center bg-brand-600 text-white">
                 <step.Icon className="size-6" />
               </span>
-              <span className="font-display text-4xl font-bold text-slate-100 transition group-hover:text-brand-100">
+              <span className="font-mono text-xs font-semibold text-brand-600">
                 0{i + 1}
               </span>
             </div>
-            <h3 className="font-display mt-5 text-lg font-bold text-slate-900">
+            <h3 className="font-display mt-5 text-xl font-semibold text-ink-900">
               {step.title}
             </h3>
             <p
@@ -301,10 +289,10 @@ export function AreaCards({ dark = false }: { dark?: boolean }) {
         <Reveal key={area.slug} delay={(i % 3) * 100}>
           <Link
             href={`/service-areas/${area.slug}`}
-            className={`group flex h-full items-center justify-between gap-4 rounded-3xl border p-6 transition duration-300 hover:-translate-y-1 ${
+            className={`group flex h-full items-center justify-between gap-4 border p-6 transition duration-200 ${
               dark
-                ? "border-white/10 bg-white/5 backdrop-blur hover:border-brand-400/40 hover:bg-white/8 hover:shadow-glow-sm"
-                : "border-slate-200/80 bg-white shadow-card hover:border-brand-300 hover:shadow-card-lg"
+                ? "border-white/30 bg-white/5 backdrop-blur hover:border-white"
+                : "border-brand-200 bg-white hover:border-brand-600"
             }`}
           >
             <span>
@@ -313,7 +301,7 @@ export function AreaCards({ dark = false }: { dark?: boolean }) {
                   dark ? "text-white" : "text-slate-900"
                 }`}
               >
-                <span className="flex size-9 items-center justify-center rounded-xl bg-linear-to-br from-brand-600 to-brand-500 text-white">
+                <span className="flex size-9 items-center justify-center bg-brand-600 text-white">
                   <MapPinIcon className="size-4" />
                 </span>
                 {area.short}
@@ -350,19 +338,12 @@ export function CtaBanner({
   subtitle?: string;
 }) {
   return (
-    <section className="bg-white px-4 pb-24 sm:px-6 lg:px-8">
+    <section className="bg-white">
       <Reveal>
-        <div className="relative mx-auto max-w-6xl overflow-hidden rounded-[2.5rem] bg-ink-900 px-6 py-16 text-center sm:px-12 sm:py-20">
-          <div className="bg-dots-dark absolute inset-0" aria-hidden />
-          <div
-            className="absolute -top-24 left-1/2 h-64 w-[36rem] -translate-x-1/2 rounded-full bg-brand-500/25 blur-3xl"
-            aria-hidden
-          />
-          <div
-            className="absolute -bottom-32 -left-20 size-72 rounded-full bg-accent-500/15 blur-3xl"
-            aria-hidden
-          />
-          <div className="relative">
+        <div className="relative overflow-hidden bg-ink-900 px-6 py-16 text-center sm:px-12 sm:py-24">
+          <Photo name="pickup" alt="A car ready to be sold and collected" />
+          <span className="photo-scrim" aria-hidden />
+          <div className="relative mx-auto max-w-4xl">
             <h2 className="font-display mx-auto max-w-2xl text-3xl font-bold tracking-tight text-balance text-white sm:text-[2.75rem] sm:leading-[1.12]">
               {title}
             </h2>
@@ -379,7 +360,7 @@ export function CtaBanner({
                 {site.phone}
               </a>
             </div>
-            <p className="mt-6 text-[13px] font-medium text-slate-500">
+            <p className="mt-6 text-[13px] font-medium text-brand-200">
               Free quote · No obligation · {site.hours}
             </p>
           </div>

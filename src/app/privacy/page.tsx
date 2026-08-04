@@ -1,12 +1,13 @@
-import type { Metadata } from "next";
 import { site } from "@/config/site";
+import { pageMetadata } from "@/lib/metadata";
 import { PageHero } from "@/components/sections";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
+  path: "/privacy",
   title: "Privacy Policy",
   description: `How ${site.name} collects, uses and protects your personal information.`,
-  robots: { index: false },
-};
+  index: false,
+});
 
 // NOTE: This is a general-purpose starter policy, not legal advice.
 // Have it reviewed before launch and adjust it to match your actual practices.

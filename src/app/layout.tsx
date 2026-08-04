@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Space_Grotesk } from "next/font/google";
+import { Barlow, Open_Sans } from "next/font/google";
 import "./globals.css";
 import { site } from "@/config/site";
 import { areas } from "@/data/areas";
@@ -7,15 +7,16 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { MobileCtaBar } from "@/components/MobileCtaBar";
 
-const inter = Inter({
+const openSans = Open_Sans({
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-open-sans",
   display: "swap",
 });
 
-const grotesk = Space_Grotesk({
+const barlow = Barlow({
   subsets: ["latin"],
-  variable: "--font-grotesk",
+  variable: "--font-barlow",
+  weight: ["500", "600", "700"],
   display: "swap",
 });
 
@@ -26,6 +27,31 @@ export const metadata: Metadata = {
     template: `%s | ${site.name}`,
   },
   description: site.description,
+  alternates: { canonical: "/" },
+  applicationName: site.name,
+  category: "automotive",
+  keywords: [
+    "cash for cars Brisbane",
+    "cash for cars Gold Coast",
+    "sell my car Brisbane",
+    "car buyer Brisbane",
+    "free car removal Brisbane",
+    "sell damaged car Queensland",
+  ],
+  authors: [{ name: site.name, url: site.url }],
+  creator: site.name,
+  publisher: site.name,
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
   openGraph: {
     type: "website",
     siteName: site.name,
@@ -34,33 +60,68 @@ export const metadata: Metadata = {
     url: "/",
     locale: "en_AU",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: `Cash for Cars Brisbane & Gold Coast | ${site.name}`,
+    description: site.description,
+  },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0b1220",
+  themeColor: "#1d2747",
 };
 
 const businessJsonLd = {
   "@context": "https://schema.org",
-  "@type": "LocalBusiness",
+  "@type": ["LocalBusiness", "AutomotiveBusiness"],
+  "@id": `${site.url}/#business`,
   name: site.name,
   description: site.description,
   url: site.url,
   telephone: site.phone,
   email: site.email,
   areaServed: areas.map((a) => ({ "@type": "City", name: a.short })),
-  priceRange: "$$",
+  priceRange: "$",
+  contactPoint: {
+    "@type": "ContactPoint",
+    telephone: site.phone,
+    contactType: "sales",
+    areaServed: "AU-QLD",
+    availableLanguage: "English",
+  },
+  makesOffer: {
+    "@type": "Offer",
+    itemOffered: {
+      "@type": "Service",
+      name: "Cash for cars and free vehicle pickup",
+      areaServed: "South East Queensland",
+    },
+  },
+};
+
+const websiteJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": `${site.url}/#website`,
+  name: site.name,
+  url: site.url,
+  inLanguage: "en-AU",
+  publisher: { "@id": `${site.url}/#business` },
 };
 
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en-AU" className={`${inter.variable} ${grotesk.variable}`}>
-      <body className="bg-white font-sans text-slate-800 antialiased">
+    <html lang="en-AU" className={`${openSans.variable} ${barlow.variable}`}>
+      <body className="bg-white font-sans text-ink-900 antialiased">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(businessJsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
         />
         <SiteHeader />
         <main>{children}</main>

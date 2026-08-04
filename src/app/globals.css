@@ -1,192 +1,217 @@
 @import "tailwindcss";
 
+/* Carbase design system — adapted from Metalbase's architectural language. */
 @theme {
-  /* Ink — deep navy backgrounds */
-  --color-ink-950: #060b16;
-  --color-ink-900: #0b1220;
-  --color-ink-800: #101b33;
-  --color-ink-700: #182848;
-  --color-ink-600: #23355c;
+  --color-ink-950: #151d36;
+  --color-ink-900: #1d2747;
+  --color-ink-800: #29365d;
+  --color-ink-700: #36456f;
+  --color-ink-600: #4a587c;
 
-  /* Brand — electric blue */
-  --color-brand-50: #eef5ff;
-  --color-brand-100: #d9e8ff;
-  --color-brand-200: #bcd7ff;
-  --color-brand-300: #8ebcff;
-  --color-brand-400: #5b9bff;
-  --color-brand-500: #3b82f6;
-  --color-brand-600: #2563eb;
-  --color-brand-700: #1d4ed8;
-  --color-brand-800: #1e40af;
-  --color-brand-900: #1e3a8a;
-  --color-brand-950: #172554;
+  --color-brand-50: #f1f3f6;
+  --color-brand-100: #e6e9ef;
+  --color-brand-200: #d8dce4;
+  --color-brand-300: #b7bfce;
+  --color-brand-400: #7582a4;
+  --color-brand-500: #59678f;
+  --color-brand-600: #44527e;
+  --color-brand-700: #354269;
+  --color-brand-800: #293554;
+  --color-brand-900: #1d2747;
+  --color-brand-950: #151d36;
 
-  /* Accent — electric cyan */
-  --color-accent-200: #a5f3fc;
-  --color-accent-300: #67e8f9;
-  --color-accent-400: #22d3ee;
-  --color-accent-500: #06b6d4;
-  --color-accent-600: #0891b2;
+  --color-accent-200: #edf0f5;
+  --color-accent-300: #d8dce4;
+  --color-accent-400: #ffffff;
+  --color-accent-500: #7582a4;
+  --color-accent-600: #59678f;
 
-  --shadow-glow: 0 0 60px -12px rgb(59 130 246 / 0.55);
-  --shadow-glow-sm: 0 10px 30px -10px rgb(37 99 235 / 0.45);
-  --shadow-card: 0 8px 30px -12px rgb(2 6 23 / 0.12);
-  --shadow-card-lg: 0 24px 70px -24px rgb(2 6 23 / 0.25);
-
-  --animate-marquee: marquee 45s linear infinite;
-  --animate-float: float 8s ease-in-out infinite;
-  --animate-float-late: float 9s ease-in-out 1.4s infinite;
-
-  @keyframes marquee {
-    from {
-      transform: translateX(0);
-    }
-    to {
-      transform: translateX(-50%);
-    }
-  }
-  @keyframes float {
-    0%,
-    100% {
-      transform: translateY(0);
-    }
-    50% {
-      transform: translateY(-14px);
-    }
-  }
+  --shadow-glow: 0 18px 55px -28px rgb(29 39 71 / 0.5);
+  --shadow-glow-sm: 0 12px 28px -20px rgb(29 39 71 / 0.55);
+  --shadow-card: 0 12px 34px -28px rgb(29 39 71 / 0.42);
+  --shadow-card-lg: 0 28px 70px -38px rgb(29 39 71 / 0.48);
 }
 
 @theme inline {
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system,
-    "Segoe UI", sans-serif;
-  --font-display: var(--font-grotesk), var(--font-inter), ui-sans-serif,
-    system-ui, sans-serif;
+  --font-sans: var(--font-open-sans), "Open Sans", -apple-system,
+    BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-display: var(--font-barlow), "Barlow", "Helvetica Neue", Arial,
+    sans-serif;
 }
 
-html {
-  scroll-behavior: smooth;
-}
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 6rem;
+    -webkit-text-size-adjust: 100%;
+  }
 
-::selection {
-  background: #2563eb;
-  color: #fff;
+  body {
+    background: #fff;
+    color: #1d2747;
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 600;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background: #44527e;
+    color: #fff;
+  }
+
+  :focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
+  }
 }
 
 @layer components {
+  .shell {
+    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+
   .text-gradient {
-    @apply bg-linear-to-r from-brand-400 via-accent-300 to-brand-300 bg-clip-text text-transparent;
+    color: inherit;
   }
-  .bg-dots {
-    background-image: radial-gradient(rgb(100 116 139 / 0.22) 1px, transparent 1px);
-    background-size: 22px 22px;
+
+  .photo-scrim {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(90deg, rgb(21 29 54 / 0.91), rgb(29 39 71 / 0.72) 52%, rgb(29 39 71 / 0.48)),
+      linear-gradient(0deg, rgb(21 29 54 / 0.35), transparent 55%);
   }
-  .bg-dots-dark {
-    background-image: radial-gradient(rgb(148 163 184 / 0.13) 1px, transparent 1px);
-    background-size: 24px 24px;
+
+  .photo-scrim-soft {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(0deg, rgb(21 29 54 / 0.82), transparent 72%);
   }
-  .edge-fade-x {
-    mask-image: linear-gradient(
-      to right,
-      transparent,
-      black 12%,
-      black 88%,
-      transparent
-    );
+
+  .photo-scrim-page {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgb(21 29 54 / 0.88), rgb(29 39 71 / 0.58) 62%, rgb(29 39 71 / 0.28));
   }
+
+  .t-index {
+    @apply text-xs font-semibold tracking-[0.16em] uppercase;
+  }
+
+  .hair {
+    border-color: #d8dce4;
+  }
+
+  .section-rule {
+    @apply flex items-center justify-between gap-4 border-b border-brand-200 pb-4 text-xs font-semibold tracking-[0.16em] uppercase;
+  }
+
+  .section-rule span:last-child {
+    @apply border-l-2 border-brand-200 pl-3 font-mono tracking-normal text-ink-900;
+  }
+
   .input-base {
-    @apply w-full rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-3 text-[15px] text-slate-900 transition placeholder:text-slate-400 focus:border-brand-500 focus:bg-white focus:ring-4 focus:ring-brand-500/15 focus:outline-none;
+    @apply w-full border border-slate-300 bg-white px-4 py-3 text-[15px] text-slate-900 transition placeholder:text-slate-400 focus:border-brand-600 focus:ring-2 focus:ring-brand-600/15 focus:outline-none;
   }
+
   .label-base {
     @apply mb-1.5 block text-[13px] font-semibold text-slate-700;
   }
+
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-full bg-linear-to-r from-brand-600 to-brand-500 px-7 py-3.5 text-[15px] font-semibold text-white shadow-glow-sm transition duration-300 hover:brightness-110 hover:shadow-glow active:scale-[0.98];
+    @apply inline-flex min-h-12 items-center justify-center gap-2 bg-brand-600 px-7 py-3 text-[15px] font-semibold text-white transition duration-200 hover:bg-ink-900 active:translate-y-px;
   }
+
   .btn-ghost-dark {
-    @apply inline-flex items-center justify-center gap-2 rounded-full border border-white/15 bg-white/5 px-7 py-3.5 text-[15px] font-semibold text-white backdrop-blur transition hover:border-white/30 hover:bg-white/10 active:scale-[0.98];
+    @apply inline-flex min-h-12 items-center justify-center gap-2 border border-white bg-transparent px-7 py-3 text-[15px] font-semibold text-white transition duration-200 hover:bg-white hover:text-ink-900 active:translate-y-px;
   }
+
   .btn-ghost-light {
-    @apply inline-flex items-center justify-center gap-2 rounded-full border border-slate-300 bg-white px-7 py-3.5 text-[15px] font-semibold text-slate-800 transition hover:border-slate-400 hover:bg-slate-50 active:scale-[0.98];
+    @apply inline-flex min-h-12 items-center justify-center gap-2 border border-ink-900 bg-white px-7 py-3 text-[15px] font-semibold text-ink-900 transition duration-200 hover:bg-ink-900 hover:text-white active:translate-y-px;
   }
 }
 
-/* ── Scroll reveal ─────────────────────────────────────────────────── */
+/* Metalbase uses disciplined square geometry. Keep this invariant even
+   where legacy Carbase components still carry Tailwind radius utilities. */
+.rounded-full,
+.rounded-3xl,
+.rounded-2xl,
+.rounded-xl,
+.rounded-lg,
+.rounded-md,
+.rounded-\[2\.5rem\],
+.rounded-\[2rem\] {
+  border-radius: 0 !important;
+}
+
+.bg-dots,
+.bg-dots-dark {
+  background-image: none;
+}
+
+.edge-fade-x {
+  mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+}
+
 .reveal {
   opacity: 0;
-  transform: translateY(26px);
+  transform: translateY(18px);
   transition:
-    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    opacity 0.55s cubic-bezier(0.2, 0.8, 0.2, 1),
+    transform 0.55s cubic-bezier(0.2, 0.8, 0.2, 1);
   transition-delay: var(--reveal-delay, 0ms);
-  will-change: opacity, transform;
 }
+
 .reveal.is-visible {
   opacity: 1;
   transform: none;
 }
 
-/* ── Wizard step transitions ───────────────────────────────────────── */
 @keyframes step-in {
-  from {
-    opacity: 0;
-    transform: translateX(18px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
+  from { opacity: 0; transform: translateX(12px); }
+  to { opacity: 1; transform: none; }
 }
+
 .step-in {
-  animation: step-in 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  animation: step-in 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 @keyframes pop-in {
-  0% {
-    opacity: 0;
-    transform: scale(0.6);
-  }
-  70% {
-    transform: scale(1.06);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
 }
+
 .pop-in {
-  animation: pop-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: pop-in 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
 @keyframes draw-check {
-  from {
-    stroke-dashoffset: 48;
-  }
-  to {
-    stroke-dashoffset: 0;
-  }
+  from { stroke-dashoffset: 48; }
+  to { stroke-dashoffset: 0; }
 }
+
 .draw-check {
   stroke-dasharray: 48;
-  animation: draw-check 0.55s 0.2s ease-out both;
+  animation: draw-check 0.5s 0.15s ease-out both;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-  .reveal {
-    opacity: 1;
-    transform: none;
-    transition: none;
-  }
-  .step-in,
-  .pop-in,
-  .draw-check {
-    animation: none;
-  }
-  .animate-marquee,
-  .animate-float,
-  .animate-float-late {
-    animation: none !important;
-  }
+  html { scroll-behavior: auto; }
+  .reveal { opacity: 1; transform: none; transition: none; }
+  .step-in, .pop-in, .draw-check { animation: none; }
+  .animate-marquee, .animate-float, .animate-float-late { animation: none !important; }
 }

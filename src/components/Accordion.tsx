@@ -15,7 +15,7 @@ export function Accordion({
   const [open, setOpen] = useState<number | null>(defaultOpen);
 
   return (
-    <div className="divide-y divide-slate-200/80 rounded-3xl border border-slate-200/80 bg-white shadow-card">
+    <div className="divide-y divide-brand-200 border-y border-brand-200 bg-transparent">
       {items.map((faq, i) => {
         const isOpen = open === i;
         return (
@@ -24,13 +24,13 @@ export function Accordion({
               type="button"
               onClick={() => setOpen(isOpen ? null : i)}
               aria-expanded={isOpen}
-              className="flex w-full items-center justify-between gap-4 px-6 py-5 text-left sm:px-8"
+              className="flex w-full items-center justify-between gap-4 py-5 text-left"
             >
-              <span className="font-display text-[15px] font-semibold text-slate-900 sm:text-base">
+              <span className="font-display text-lg font-semibold text-ink-900">
                 {faq.question}
               </span>
               <span
-                className={`flex size-8 shrink-0 items-center justify-center rounded-full border transition-all duration-300 ${
+                className={`flex size-8 shrink-0 items-center justify-center border transition-all duration-200 ${
                   isOpen
                     ? "rotate-180 border-brand-200 bg-brand-50 text-brand-600"
                     : "border-slate-200 text-slate-400"
@@ -45,7 +45,7 @@ export function Accordion({
               }`}
             >
               <div className="overflow-hidden">
-                <p className="px-6 pb-6 text-[15px] leading-relaxed text-slate-600 sm:px-8">
+                <p className="max-w-3xl pb-6 pr-12 text-[15px] leading-relaxed text-slate-600">
                   {faq.answer}
                 </p>
               </div>

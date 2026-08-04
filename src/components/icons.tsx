@@ -262,31 +262,21 @@ export function LightTruckIcon(props: IconProps) {
 
 /* ── Logo ────────────────────────────────────────────────────────────── */
 
-/** The Carbase logo mark + wordmark. Designed for dark surfaces. */
+/** Architectural Carbase wordmark, designed to work on light and dark bands. */
 export function Logo({ onLight = false }: { onLight?: boolean }) {
   return (
-    <span className="inline-flex items-center gap-2.5">
-      <span className="relative flex size-10 items-center justify-center rounded-2xl bg-linear-to-br from-brand-500 to-brand-700 text-white shadow-glow-sm">
-        <CarIcon className="size-5.5" strokeWidth={2.2} />
-        <span
-          className="absolute -top-0.5 -right-0.5 size-2.5 rounded-full bg-accent-400 ring-2 ring-ink-900"
-          aria-hidden
-        />
+    <span
+      className={`inline-flex items-center gap-3 ${onLight ? "text-ink-900" : "text-white"}`}
+    >
+      <span className="flex size-11 items-center justify-center border-2 border-current">
+        <CarIcon className="size-6" strokeWidth={1.75} />
       </span>
       <span className="leading-none">
-        <span
-          className={`font-display block text-[22px] font-bold tracking-tight ${
-            onLight ? "text-slate-900" : "text-white"
-          }`}
-        >
-          car<span className="text-gradient">base</span>
+        <span className="font-display block text-xl font-semibold tracking-[0.025em] uppercase">
+          CarBase
         </span>
-        <span
-          className={`mt-0.5 block text-[9.5px] font-semibold tracking-[0.22em] uppercase ${
-            onLight ? "text-slate-500" : "text-slate-400"
-          }`}
-        >
-          Cash for cars
+        <span className={`mt-1 block text-[9px] font-semibold tracking-[0.2em] uppercase ${onLight ? "text-slate-500" : "text-brand-200"}`}>
+          Cash for cars · SEQ
         </span>
       </span>
     </span>
