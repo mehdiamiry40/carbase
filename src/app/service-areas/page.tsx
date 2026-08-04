@@ -5,7 +5,7 @@ import { AreaCards, CtaBanner, PageHero } from "@/components/sections";
 export const metadata = pageMetadata({
   path: "/service-areas",
   title: "Cash for Cars Service Areas in South East Queensland",
-  description: "Carbase buys cars across Brisbane, Gold Coast, Logan, Ipswich, Redlands and Moreton Bay, with free vehicle pickup throughout our service area.",
+  description: "Carbase buys old, damaged and junk cars across Brisbane, Gold Coast, Logan, Ipswich, Redlands and Moreton Bay, with free vehicle pickup.",
 });
 
 export default function ServiceAreasPage() {

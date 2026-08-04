@@ -35,8 +35,8 @@ export default function AboutPage() {
         eyebrow="About us"
         title={
           <>
-            The easiest way to sell a car in{" "}
-            <span className="text-gradient">South East Queensland</span>
+            A straightforward buyer for{" "}
+            <span className="text-gradient">old and unwanted cars</span>
           </>
         }
       />
@@ -62,9 +62,10 @@ export default function AboutPage() {
                 the Gold Coast and making it feel easy.
               </p>
               <p>
-                We buy everything from near-new SUVs to utes with a hard life
-                behind them and cars that no longer start. Whatever you&apos;re
-                selling, you&apos;ll get a straight answer and a real offer.
+                We specialise in ageing cars, accident-damaged vehicles, utes
+                with a hard life behind them and cars that no longer start.
+                Whatever condition it is in, you&apos;ll get a straight answer and
+                a clear offer.
               </p>
             </div>
           </Reveal>

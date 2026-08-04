@@ -78,7 +78,7 @@ export function PageHero({
 }) {
   return (
     <section className="relative overflow-hidden bg-ink-900 text-white">
-      <Photo name="road" alt="A car on the road in South East Queensland" className="object-[55%_center]" preload />
+      <Photo name="abandoned" alt="Old abandoned cars ready to be sold for removal" className="object-[55%_center]" preload />
       <span className="photo-scrim-page" aria-hidden />
       <div
         className={`shell relative ${compact ? "py-16 lg:py-20" : "py-20 lg:py-28"}`}
@@ -331,8 +331,8 @@ export function AreaCards({ dark = false }: { dark?: boolean }) {
 /* ── Bottom call-to-action banner ────────────────────────────────────── */
 
 export function CtaBanner({
-  title = "Ready to sell your car?",
-  subtitle = "Get a free, no-obligation quote today — free pickup and payment on the spot anywhere in Brisbane and on the Gold Coast.",
+  title = "Ready to clear out that old car?",
+  subtitle = "Get a free, no-obligation quote for an old, damaged or unwanted car — with free pickup across Brisbane and the Gold Coast.",
 }: {
   title?: string;
   subtitle?: string;
@@ -341,7 +341,7 @@ export function CtaBanner({
     <section className="bg-white">
       <Reveal>
         <div className="relative overflow-hidden bg-ink-900 px-6 py-16 text-center sm:px-12 sm:py-24">
-          <Photo name="pickup" alt="A car ready to be sold and collected" />
+          <Photo name="pickup" alt="An old broken-down car ready to be sold and collected" />
           <span className="photo-scrim" aria-hidden />
           <div className="relative mx-auto max-w-4xl">
             <h2 className="font-display mx-auto max-w-2xl text-3xl font-bold tracking-tight text-balance text-white sm:text-[2.75rem] sm:leading-[1.12]">

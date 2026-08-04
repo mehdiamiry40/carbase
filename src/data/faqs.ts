@@ -7,7 +7,7 @@ export const faqs: Faq[] = [
   {
     question: "What kinds of cars do you buy?",
     answer:
-      "Just about everything — sedans, SUVs, utes, vans, 4x4s and light trucks of any make and model. Old or new, high kilometres, damaged, unregistered or not running at all. If you're not sure, send the details through anyway; quotes are free and there's no obligation.",
+      "We specialise in old, unwanted and end-of-life vehicles — including high-kilometre cars, accident-damaged cars, write-offs, unregistered vehicles and cars that no longer run. Sedans, SUVs, utes, vans, 4x4s and light trucks are all welcome. If you're not sure, send the details through anyway; quotes are free and there's no obligation.",
   },
   {
     question: "How quickly will I get a quote?",

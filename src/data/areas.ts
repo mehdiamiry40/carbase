@@ -13,7 +13,7 @@ export const areas: Area[] = [
     name: "Brisbane",
     short: "Brisbane",
     intro:
-      "From the CBD out to the bayside, our team covers every corner of Brisbane. Tell us about your car in the morning and in most cases we can inspect, pay and collect it the same day.",
+      "From the CBD out to the bayside, we buy old, damaged and unwanted cars across Brisbane. Tell us about your car in the morning and in most cases we can inspect, pay and collect it the same day.",
     suburbs: [
       "Brisbane CBD",
       "Fortitude Valley",
@@ -34,7 +34,7 @@ export const areas: Area[] = [
     name: "the Gold Coast",
     short: "Gold Coast",
     intro:
-      "We buy cars right along the coast, from Coomera down to Coolangatta. Wherever you are on the Gold Coast, we come to you — home, work or anywhere that suits.",
+      "We buy old, damaged and junk cars right along the coast, from Coomera down to Coolangatta. Wherever you are on the Gold Coast, we come to you — home, work or anywhere that suits.",
     suburbs: [
       "Southport",
       "Surfers Paradise",
@@ -72,7 +72,7 @@ export const areas: Area[] = [
     name: "Ipswich",
     short: "Ipswich",
     intro:
-      "We buy cars across Ipswich and the western corridor, including the fast-growing Springfield area. Free pickup applies, same as everywhere we operate.",
+      "We buy old, damaged and unwanted cars across Ipswich and the western corridor, including the fast-growing Springfield area. Free pickup applies, same as everywhere we operate.",
     suburbs: [
       "Ipswich Central",
       "Springfield",
@@ -89,7 +89,7 @@ export const areas: Area[] = [
     name: "the Redlands",
     short: "Redlands",
     intro:
-      "From Capalaba to Cleveland and down to Redland Bay, we cover the whole Redlands coast. Selling a car here is as easy as anywhere in Brisbane.",
+      "From Capalaba to Cleveland and down to Redland Bay, we collect old, damaged and unwanted cars across the whole Redlands coast. Selling your car here is as easy as anywhere in Brisbane.",
     suburbs: [
       "Capalaba",
       "Cleveland",

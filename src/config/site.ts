@@ -8,9 +8,9 @@
 export const site = {
   name: "Carbase",
   legalName: "Carbase", // shown in the footer, e.g. "Carbase Pty Ltd"
-  tagline: "Cash for cars across Brisbane & the Gold Coast",
+  tagline: "Cash for old, damaged and junk cars across South East Queensland",
   description:
-    "Carbase buys cars of every make, model and condition across Brisbane and the Gold Coast. Free quote, free pickup and payment on the spot.",
+    "Carbase buys old, damaged, unwanted and junk cars across Brisbane and the Gold Coast. Free quote, free pickup and payment before collection.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://carbase.com.au",
 
   phone: "0400 000 000", // PLACEHOLDER — your real mobile/landline
