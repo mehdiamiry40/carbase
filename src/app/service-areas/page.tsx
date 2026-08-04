@@ -1,12 +1,12 @@
-import type { Metadata } from "next";
 import { Reveal } from "@/components/Reveal";
+import { pageMetadata } from "@/lib/metadata";
 import { AreaCards, CtaBanner, PageHero } from "@/components/sections";
 
-export const metadata: Metadata = {
-  title: "Areas We Cover — Brisbane, Gold Coast & Surrounds",
-  description:
-    "Carbase buys cars across Brisbane, the Gold Coast, Logan, Ipswich, the Redlands and Moreton Bay — with free pickup everywhere we operate.",
-};
+export const metadata = pageMetadata({
+  path: "/service-areas",
+  title: "Cash for Cars Service Areas in South East Queensland",
+  description: "Carbase buys cars across Brisbane, Gold Coast, Logan, Ipswich, Redlands and Moreton Bay, with free vehicle pickup throughout our service area.",
+});
 
 export default function ServiceAreasPage() {
   return (

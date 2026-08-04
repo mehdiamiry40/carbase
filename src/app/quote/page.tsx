@@ -1,13 +1,14 @@
-import type { Metadata } from "next";
 import { site, telHref } from "@/config/site";
+import { pageMetadata } from "@/lib/metadata";
 import { QuoteForm } from "@/components/QuoteForm";
 import { Reveal } from "@/components/Reveal";
 import { CheckIcon, PhoneIcon } from "@/components/icons";
 
-export const metadata: Metadata = {
-  title: "Get a Free Quote — Sell Your Car Today",
-  description: `Tell us about your car and get a free, no-obligation cash quote from ${site.name}. Free pickup across Brisbane and the Gold Coast, payment on the spot.`,
-};
+export const metadata = pageMetadata({
+  path: "/quote",
+  title: "Get a Free Cash for Cars Quote",
+  description: `Request a free, no-obligation car quote from ${site.name}. Any make or condition, free pickup across Brisbane and the Gold Coast, and payment before collection.`,
+});
 
 const reassurance = [
   "Free quote with no obligation to sell",

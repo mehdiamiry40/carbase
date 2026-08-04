@@ -1,13 +1,14 @@
-import type { Metadata } from "next";
 import { site } from "@/config/site";
+import { pageMetadata } from "@/lib/metadata";
 import { Reveal } from "@/components/Reveal";
 import { CtaBanner, PageHero, SectionHeading } from "@/components/sections";
 import { BanknoteIcon, MapPinIcon, ShieldIcon } from "@/components/icons";
 
-export const metadata: Metadata = {
-  title: "About Us — A Local Brisbane & Gold Coast Car Buyer",
-  description: `${site.name} is a local South East Queensland car buying service. Learn who we are, how we work and why sellers across Brisbane and the Gold Coast choose us.`,
-};
+export const metadata = pageMetadata({
+  path: "/about",
+  title: "About Carbase — A Local Brisbane & Gold Coast Car Buyer",
+  description: `${site.name} is a South East Queensland car buying service. Learn how our quotes, free pickup, paperwork and payment process work.`,
+});
 
 const values = [
   {

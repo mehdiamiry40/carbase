@@ -1,13 +1,14 @@
-import type { Metadata } from "next";
 import { site } from "@/config/site";
+import { pageMetadata } from "@/lib/metadata";
 import { Reveal } from "@/components/Reveal";
 import { CtaBanner, PageHero, StepsGrid } from "@/components/sections";
 import { CheckIcon } from "@/components/icons";
 
-export const metadata: Metadata = {
-  title: "How It Works — Sell Your Car in 4 Easy Steps",
-  description: `Selling your car to ${site.name} takes four simple steps: get a quote, accept your offer, free pickup, instant payment. Here's exactly what to expect.`,
-};
+export const metadata = pageMetadata({
+  path: "/how-it-works",
+  title: "How to Sell Your Car in 4 Steps",
+  description: `Sell your car to ${site.name} in four clear steps: request a quote, review your offer, arrange free pickup and receive payment before collection.`,
+});
 
 const checklist = [
   "Photo ID (driver licence or passport)",

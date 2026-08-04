@@ -13,34 +13,56 @@ export default function OpenGraphImage() {
           height: "100%",
           display: "flex",
           flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          background: "linear-gradient(135deg, #1e3a8a 0%, #2563eb 60%, #3b82f6 100%)",
+          alignItems: "flex-start",
+          justifyContent: "space-between",
+          background: "#1d2747",
           color: "white",
           fontFamily: "sans-serif",
+          padding: "72px 82px",
         }}
       >
-        <div style={{ display: "flex", fontSize: 96, fontWeight: 800, letterSpacing: -2 }}>
-          car
-          <span style={{ color: "#93c5fd" }}>base</span>
+        <div style={{ display: "flex", alignItems: "center", gap: 24 }}>
+          <div
+            style={{
+              display: "flex",
+              width: 72,
+              height: 72,
+              border: "4px solid white",
+              alignItems: "center",
+              justifyContent: "center",
+              fontSize: 32,
+              fontWeight: 700,
+            }}
+          >
+            C
+          </div>
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            <div style={{ display: "flex", fontSize: 46, fontWeight: 700, letterSpacing: 2 }}>
+              CARBASE
+            </div>
+            <div style={{ display: "flex", marginTop: 8, fontSize: 16, letterSpacing: 5, color: "#d8dce4" }}>
+              CASH FOR CARS · SEQ
+            </div>
+          </div>
         </div>
-        <div style={{ display: "flex", fontSize: 36, marginTop: 16, color: "#dbeafe" }}>
-          Cash for cars · Brisbane &amp; Gold Coast
+
+        <div style={{ display: "flex", maxWidth: 900, fontSize: 68, lineHeight: 1.05, fontWeight: 700, letterSpacing: -2 }}>
+          Sell your car without the runaround.
         </div>
+
         <div
           style={{
             display: "flex",
-            gap: 24,
-            marginTop: 48,
-            fontSize: 24,
-            color: "#bfdbfe",
+            width: "100%",
+            justifyContent: "space-between",
+            borderTop: "2px solid #7582a4",
+            paddingTop: 24,
+            fontSize: 22,
+            color: "#d8dce4",
           }}
         >
-          <span>Free pickup</span>
-          <span>·</span>
-          <span>Paid on the spot</span>
-          <span>·</span>
-          <span>Any condition</span>
+          <span>Brisbane · Gold Coast · South East Queensland</span>
+          <span>Free quote · Free pickup</span>
         </div>
       </div>
     ),

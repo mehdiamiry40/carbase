@@ -1,127 +1,80 @@
 import Link from "next/link";
 import { site, telHref } from "@/config/site";
 import { areas } from "@/data/areas";
-import { ClockIcon, Logo, MapPinIcon, PhoneIcon } from "@/components/icons";
+import { Logo } from "@/components/icons";
+
+const columns = [
+  {
+    title: "Sell your car",
+    links: [
+      { href: "/quote", label: "Get a free quote" },
+      { href: "/how-it-works", label: "How it works" },
+      { href: "/faq", label: "Seller FAQs" },
+    ],
+  },
+  {
+    title: "Carbase",
+    links: [
+      { href: "/about", label: "About us" },
+      { href: "/service-areas", label: "Service areas" },
+      { href: "/privacy", label: "Privacy" },
+    ],
+  },
+];
 
 export function SiteFooter() {
   return (
-    <footer className="relative overflow-hidden bg-ink-950 text-slate-400">
-      <div
-        className="pointer-events-none absolute -top-40 left-1/2 h-80 w-[42rem] -translate-x-1/2 rounded-full bg-brand-600/10 blur-3xl"
-        aria-hidden
-      />
-      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid gap-12 py-16 md:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr]">
-          <div>
+    <footer className="border-t border-white/20 bg-ink-900 text-white">
+      <div className="shell py-16 lg:py-20">
+        <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-[1.25fr_0.75fr_0.75fr_1.1fr] lg:gap-10">
+          <div className="max-w-sm">
             <Logo />
-            <p className="mt-5 max-w-xs text-sm leading-relaxed">
-              {site.description}
+            <p className="mt-7 text-sm leading-relaxed text-brand-200">
+              A direct, local way to sell cars of any make, model or condition across South East Queensland.
             </p>
-            <Link href="/quote" className="btn-primary mt-7 !px-6 !py-3 text-sm">
-              Get my free quote
-            </Link>
+            <a href={telHref} className="mt-6 inline-flex min-h-11 items-center text-xl font-semibold underline underline-offset-4">
+              {site.phone}
+            </a>
           </div>
 
-          <div>
-            <h3 className="font-display text-sm font-semibold tracking-wider text-white uppercase">
-              Explore
-            </h3>
-            <ul className="mt-5 space-y-3 text-sm">
-              {[
-                { href: "/quote", label: "Get a free quote" },
-                { href: "/how-it-works", label: "How it works" },
-                { href: "/about", label: "About us" },
-                { href: "/faq", label: "FAQ" },
-                { href: "/privacy", label: "Privacy policy" },
-              ].map((l) => (
-                <li key={l.href}>
-                  <Link href={l.href} className="transition hover:text-white">
-                    {l.label}
+          {columns.map((column) => (
+            <nav key={column.title} aria-label={`${column.title}, footer`}>
+              <p className="border-b border-white/25 pb-3 font-display text-xl font-semibold">
+                {column.title}
+              </p>
+              <ul className="mt-4">
+                {column.links.map((link) => (
+                  <li key={link.href}>
+                    <Link href={link.href} className="inline-flex min-h-11 items-center text-sm text-brand-200 transition hover:text-white">
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          ))}
+
+          <nav aria-label="Popular service areas, footer">
+            <p className="border-b border-white/25 pb-3 font-display text-xl font-semibold">
+              Service areas
+            </p>
+            <ul className="mt-4 grid grid-cols-2 gap-x-5 lg:grid-cols-1">
+              {areas.map((area) => (
+                <li key={area.slug}>
+                  <Link href={`/service-areas/${area.slug}`} className="inline-flex min-h-11 items-center text-sm text-brand-200 transition hover:text-white">
+                    Cash for cars {area.short}
                   </Link>
                 </li>
               ))}
             </ul>
-          </div>
-
-          <div>
-            <h3 className="font-display text-sm font-semibold tracking-wider text-white uppercase">
-              Areas
-            </h3>
-            <ul className="mt-5 space-y-3 text-sm">
-              {areas.map((a) => (
-                <li key={a.slug}>
-                  <Link
-                    href={`/service-areas/${a.slug}`}
-                    className="transition hover:text-white"
-                  >
-                    Cash for cars {a.short}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="font-display text-sm font-semibold tracking-wider text-white uppercase">
-              Contact
-            </h3>
-            <ul className="mt-5 space-y-3.5 text-sm">
-              <li>
-                <a
-                  href={telHref}
-                  className="inline-flex items-center gap-2.5 text-base font-semibold text-white transition hover:text-brand-300"
-                >
-                  <PhoneIcon className="size-4 text-accent-400" />
-                  {site.phone}
-                </a>
-              </li>
-              <li>
-                <a
-                  href={`mailto:${site.email}`}
-                  className="inline-flex items-center gap-2.5 transition hover:text-white"
-                >
-                  <MailGlyph />
-                  {site.email}
-                </a>
-              </li>
-              <li className="inline-flex items-center gap-2.5">
-                <ClockIcon className="size-4 text-accent-400" />
-                {site.hours}
-              </li>
-              <li className="inline-flex items-start gap-2.5">
-                <MapPinIcon className="mt-0.5 size-4 shrink-0 text-accent-400" />
-                {site.serviceRegion}
-              </li>
-            </ul>
-          </div>
+          </nav>
         </div>
 
-        <div className="flex flex-col items-center justify-between gap-2 border-t border-white/8 py-7 text-xs text-slate-500 md:flex-row">
-          <p>
-            © {new Date().getFullYear()} {site.legalName}. All rights reserved.
-          </p>
-          <p>{site.abn}</p>
+        <div className="mt-14 flex flex-col gap-5 border-t border-white/25 pt-7 text-xs text-brand-200 sm:flex-row sm:items-start sm:justify-between">
+          <p>© {new Date().getFullYear()} {site.legalName}. All rights reserved.</p>
+          <p className="max-w-xl sm:text-right">Serving Brisbane, the Gold Coast, Logan, Ipswich, Redlands and Moreton Bay.</p>
         </div>
       </div>
     </footer>
-  );
-}
-
-function MailGlyph() {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={2}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className="size-4 text-accent-400"
-      aria-hidden
-    >
-      <rect x="2" y="4" width="20" height="16" rx="2" />
-      <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-    </svg>
   );
 }
