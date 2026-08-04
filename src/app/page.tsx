@@ -35,7 +35,7 @@ const vehicleTypes = [
 const offerFactors = [
   ["Vehicle details", "Make, model, year, kilometres and transmission."],
   ["Condition", "Mechanical, body, interior and registration condition."],
-  ["Current market", "Comparable demand and value in South East Queensland."],
+  ["Recoverable value", "Usable parts, salvage demand and current scrap value."],
   ["Collection", "Your suburb, access and whether the vehicle drives."],
 ];
 
@@ -67,8 +67,8 @@ export default function HomePage() {
         <Photo
           name="hero"
           preload
-          alt="A modern car on the road, representing Carbase cash for cars"
-          className="object-[58%_center]"
+          alt="Old and wrecked cars in an automotive recycling yard"
+          className="object-center"
         />
         <span className="photo-scrim" aria-hidden />
 
@@ -76,13 +76,13 @@ export default function HomePage() {
           <div className="grid items-center gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
             <div>
               <p className="t-index w-fit border-b border-white/70 pb-3">
-                Cash for cars · South East Queensland
+                Old, damaged &amp; junk cars · South East Queensland
               </p>
               <h1 className="mt-7 max-w-[12ch] font-display text-5xl font-semibold leading-[1.02] tracking-tight text-balance sm:text-6xl lg:text-7xl">
-                Sell your car without the runaround.
+                We buy old, damaged and junk cars.
               </h1>
               <p className="mt-7 max-w-[58ch] text-lg leading-relaxed text-white">
-                Request a clear offer for any make, model or condition. Carbase arranges free pickup across Brisbane and the Gold Coast, completes the paperwork and pays before the car moves.
+                Turn the unwanted car taking up space into cash. Carbase buys non-running, accident-damaged, unregistered and end-of-life vehicles across Brisbane and the Gold Coast, with free pickup included.
               </p>
               <div className="mt-9 flex flex-col gap-3 sm:flex-row">
                 <Link href="/quote" className="btn-primary bg-white text-ink-900 hover:bg-brand-200">
@@ -134,7 +134,7 @@ export default function HomePage() {
 
           <Reveal delay={100}>
             <div className="relative min-h-[520px] overflow-hidden bg-brand-100">
-              <Photo name="inspection" alt="A car prepared for a straightforward Carbase offer" sizes="(max-width: 1024px) 100vw, 50vw" />
+              <Photo name="damaged" alt="An old damaged car that Carbase can quote and collect" sizes="(max-width: 1024px) 100vw, 50vw" />
               <span className="photo-scrim-soft" aria-hidden />
               <p className="absolute right-5 bottom-5 left-5 z-10 border-t border-white/60 pt-4 text-sm font-semibold text-white">
                 One enquiry. One clear next step.
@@ -158,15 +158,15 @@ export default function HomePage() {
       </section>
 
       <section className="relative flex min-h-[520px] items-center overflow-hidden bg-ink-900 text-white">
-        <Photo name="suv" alt="A four-wheel drive representing the range of cars Carbase buys" />
+        <Photo name="junkyard" alt="Damaged and unwanted cars stored for recycling" />
         <span className="photo-scrim" aria-hidden />
         <div className="shell relative z-10 py-20 text-center">
-          <p className="t-index mx-auto w-fit border-b border-white/70 pb-3">Any make · Any condition</p>
+          <p className="t-index mx-auto w-fit border-b border-white/70 pb-3">Old · Damaged · Not running</p>
           <h2 className="mx-auto mt-6 max-w-[15ch] font-display text-4xl font-semibold leading-[1.08] sm:text-5xl">
-            Running, damaged, unregistered or simply ready to sell.
+            If the car is past its best, we still want it.
           </h2>
           <p className="mx-auto mt-6 max-w-2xl text-lg text-white">
-            You do not need to repair, detail or advertise the vehicle before requesting a quote.
+            Rust, accident damage, mechanical failure and missing registration are all okay. You do not need to repair, detail or advertise it first.
           </p>
           <Link href="/quote" className="btn-primary mt-8 bg-white text-ink-900 hover:bg-brand-200">
             Request an offer
@@ -196,7 +196,7 @@ export default function HomePage() {
             ))}
           </ul>
           <p className="mt-5 text-sm text-slate-600">
-            Including high-kilometre, damaged, non-running, end-of-lease and unregistered vehicles.
+            Including old, high-kilometre, damaged, non-running, written-off and unregistered vehicles.
           </p>
         </div>
       </section>

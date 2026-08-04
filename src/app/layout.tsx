@@ -23,7 +23,7 @@ const barlow = Barlow({
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: `Cash for Cars Brisbane & Gold Coast | ${site.name}`,
+    default: `Cash for Old & Junk Cars Brisbane & Gold Coast | ${site.name}`,
     template: `%s | ${site.name}`,
   },
   description: site.description,
@@ -33,6 +33,9 @@ export const metadata: Metadata = {
   keywords: [
     "cash for cars Brisbane",
     "cash for cars Gold Coast",
+    "cash for junk cars Brisbane",
+    "old car removal Brisbane",
+    "damaged car buyers Gold Coast",
     "sell my car Brisbane",
     "car buyer Brisbane",
     "free car removal Brisbane",
@@ -55,14 +58,14 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     siteName: site.name,
-    title: `Cash for Cars Brisbane & Gold Coast | ${site.name}`,
+    title: `Cash for Old & Junk Cars Brisbane & Gold Coast | ${site.name}`,
     description: site.description,
     url: "/",
     locale: "en_AU",
   },
   twitter: {
     card: "summary_large_image",
-    title: `Cash for Cars Brisbane & Gold Coast | ${site.name}`,
+    title: `Cash for Old & Junk Cars Brisbane & Gold Coast | ${site.name}`,
     description: site.description,
   },
 };
@@ -93,7 +96,7 @@ const businessJsonLd = {
     "@type": "Offer",
     itemOffered: {
       "@type": "Service",
-      name: "Cash for cars and free vehicle pickup",
+      name: "Cash for old, damaged and junk cars with free vehicle pickup",
       areaServed: "South East Queensland",
     },
   },

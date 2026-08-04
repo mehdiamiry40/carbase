@@ -1,23 +1,23 @@
 export const photos = {
   hero: {
-    uid: "1494976388531-d1058494cdd8",
-    alt: "A modern car travelling on an open road",
+    uid: "1770068512276-cf8c2275f766",
+    alt: "Old and wrecked cars in an automotive recycling yard",
   },
-  inspection: {
-    uid: "1503736334956-4c8f8e92946d",
-    alt: "A vehicle ready for inspection and sale",
+  damaged: {
+    uid: "1764241650507-85ebbf3f539d",
+    alt: "An old rusty car with a broken windscreen",
   },
   pickup: {
-    uid: "1549317661-bd32c8ce0db2",
-    alt: "A car parked and ready for collection",
+    uid: "1712103059174-6d830d2cb0a4",
+    alt: "An old broken-down car ready for removal",
   },
-  suv: {
-    uid: "1519641471654-76ce0107ad1b",
-    alt: "A four-wheel drive vehicle on the road",
+  junkyard: {
+    uid: "1770068511812-f61fae05c0f7",
+    alt: "Damaged and unwanted cars stored in a junkyard",
   },
-  road: {
-    uid: "1533473359331-0135ef1b58bf",
-    alt: "A car driving through South East Queensland",
+  abandoned: {
+    uid: "1768665675579-d77e7902fe08",
+    alt: "Old abandoned cars overgrown with grass",
   },
 } as const;
 

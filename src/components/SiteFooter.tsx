@@ -30,7 +30,7 @@ export function SiteFooter() {
           <div className="max-w-sm">
             <Logo />
             <p className="mt-7 text-sm leading-relaxed text-brand-200">
-              A direct, local way to sell cars of any make, model or condition across South East Queensland.
+              A direct, local way to sell old, damaged, non-running and unwanted cars across South East Queensland.
             </p>
             <a href={telHref} className="mt-6 inline-flex min-h-11 items-center text-xl font-semibold underline underline-offset-4">
               {site.phone}

@@ -262,22 +262,16 @@ export function LightTruckIcon(props: IconProps) {
 
 /* ── Logo ────────────────────────────────────────────────────────────── */
 
-/** Architectural Carbase wordmark, designed to work on light and dark bands. */
+/** Simple Carbase wordmark, designed to work on light and dark bands. */
 export function Logo({ onLight = false }: { onLight?: boolean }) {
   return (
     <span
-      className={`inline-flex items-center gap-3 ${onLight ? "text-ink-900" : "text-white"}`}
+      className="inline-flex items-center"
     >
-      <span className="flex size-11 items-center justify-center border-2 border-current">
-        <CarIcon className="size-6" strokeWidth={1.75} />
-      </span>
-      <span className="leading-none">
-        <span className="font-display block text-xl font-semibold tracking-[0.025em] uppercase">
-          CarBase
-        </span>
-        <span className={`mt-1 block text-[9px] font-semibold tracking-[0.2em] uppercase ${onLight ? "text-slate-500" : "text-brand-200"}`}>
-          Cash for cars · SEQ
-        </span>
+      <span
+        className={`font-display text-[1.65rem] font-semibold leading-none tracking-[0.06em] ${onLight ? "text-ink-900" : "text-white"}`}
+      >
+        CAR<span className={onLight ? "text-brand-700" : "text-brand-300"}>BASE</span>
       </span>
     </span>
   );

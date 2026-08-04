@@ -6,13 +6,13 @@ import { CheckIcon, PhoneIcon } from "@/components/icons";
 
 export const metadata = pageMetadata({
   path: "/quote",
-  title: "Get a Free Cash for Cars Quote",
-  description: `Request a free, no-obligation car quote from ${site.name}. Any make or condition, free pickup across Brisbane and the Gold Coast, and payment before collection.`,
+  title: "Get a Free Old or Junk Car Quote",
+  description: `Request a free, no-obligation quote for an old, damaged or junk car from ${site.name}. Free pickup across Brisbane and the Gold Coast, with payment before collection.`,
 });
 
 const reassurance = [
   "Free quote with no obligation to sell",
-  "Any make, model or condition — running or not",
+  "Old, damaged, unregistered or not running — no problem",
   "Free pickup across Brisbane & the Gold Coast",
   "Instant bank transfer before we take the car",
 ];
@@ -33,8 +33,8 @@ export default function QuotePage() {
                 Free quote
               </p>
               <h1 className="font-display mt-5 text-4xl font-bold tracking-tight text-balance text-white sm:text-5xl sm:leading-[1.1]">
-                Tell us about your car.{" "}
-                <span className="text-gradient">We'll do the rest.</span>
+                Tell us about your old car.{" "}
+                <span className="text-gradient">We&apos;ll do the rest.</span>
               </h1>
               <p className="mt-5 max-w-xl text-lg leading-relaxed text-slate-300">
                 Three quick steps and we&apos;ll come back with a firm cash
