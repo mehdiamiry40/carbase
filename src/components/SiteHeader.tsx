@@ -4,7 +4,13 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { site, telHref } from "@/config/site";
-import { ArrowRightIcon, Logo, MenuIcon, XIcon } from "@/components/icons";
+import {
+  ArrowRightIcon,
+  Logo,
+  MenuIcon,
+  PhoneIcon,
+  XIcon,
+} from "@/components/icons";
 
 const navLinks = [
   { href: "/how-it-works", label: "How it works" },
@@ -38,22 +44,51 @@ export function SiteHeader() {
   }, [open]);
 
   return (
-    <header className="sticky top-0 z-50 bg-white text-ink-900">
-      <div className={scrolled || open ? "border-b hair" : "border-b border-transparent"}>
-        <div className="shell flex h-[72px] items-center justify-between gap-4 lg:h-24">
-          <Link href="/" aria-label="Carbase home" onClick={() => setOpen(false)}>
+    <header
+      className={`sticky top-0 z-50 bg-white text-ink-900 transition-shadow ${scrolled || open ? "shadow-md shadow-ink-950/10" : ""}`}
+    >
+      <div className="hidden bg-ink-900 text-white lg:block">
+        <div className="shell flex min-h-9 items-center justify-end gap-8 text-xs font-semibold">
+          <span>{site.serviceRegion}</span>
+          <span className="text-white/35">|</span>
+          <Link href="/about" className="transition hover:text-brand-200">
+            About
+          </Link>
+          <Link href="/faq" className="transition hover:text-brand-200">
+            Seller FAQs
+          </Link>
+          <a
+            href={telHref}
+            className="inline-flex items-center gap-2 transition hover:text-brand-200"
+          >
+            <PhoneIcon className="size-3.5" /> {site.phone}
+          </a>
+        </div>
+      </div>
+
+      <div className="border-b border-slate-200">
+        <div className="shell flex h-[76px] items-center justify-between gap-5 lg:h-[88px]">
+          <Link
+            href="/"
+            aria-label="Carbase home"
+            onClick={() => setOpen(false)}
+          >
             <Logo onLight />
           </Link>
 
-          <nav className="hidden items-center gap-8 lg:flex" aria-label="Main navigation">
+          <nav
+            className="hidden h-full items-stretch lg:flex"
+            aria-label="Main navigation"
+          >
             {navLinks.map((link) => {
-              const active = pathname === link.href || pathname.startsWith(`${link.href}/`);
+              const active =
+                pathname === link.href || pathname.startsWith(`${link.href}/`);
               return (
                 <Link
                   key={link.href}
                   href={link.href}
                   aria-current={active ? "page" : undefined}
-                  className={`inline-flex min-h-12 items-center border-b text-sm transition-colors hover:border-brand-600 hover:text-brand-700 ${active ? "border-brand-600 font-semibold text-brand-700" : "border-transparent font-medium"}`}
+                  className={`inline-flex min-w-32 items-center justify-center border-x border-l-0 border-slate-200 px-6 text-sm transition-colors hover:bg-brand-50 hover:text-brand-700 ${active ? "bg-brand-50 font-bold text-brand-700" : "font-semibold"}`}
                 >
                   {link.label}
                 </Link>
@@ -62,11 +97,11 @@ export function SiteHeader() {
           </nav>
 
           <div className="flex items-center gap-3">
-            <a href={telHref} className="hidden min-h-11 items-center text-sm font-semibold underline underline-offset-4 min-[520px]:inline-flex">
-              {site.phone}
-            </a>
-            <Link href="/quote" className="btn-primary hidden min-h-12 px-6 py-2 text-sm sm:inline-flex">
-              Get a quote
+            <Link
+              href="/quote"
+              className="btn-primary hidden min-h-12 px-6 py-2 text-sm sm:inline-flex"
+            >
+              Get a free quote <ArrowRightIcon className="size-4" />
             </Link>
             <button
               ref={toggleRef}
@@ -77,26 +112,41 @@ export function SiteHeader() {
               aria-label={open ? "Close navigation" : "Open navigation"}
               className="flex size-11 items-center justify-center lg:hidden"
             >
-              {open ? <XIcon className="size-6" /> : <MenuIcon className="size-6" />}
+              {open ? (
+                <XIcon className="size-6" />
+              ) : (
+                <MenuIcon className="size-6" />
+              )}
             </button>
           </div>
         </div>
       </div>
 
-      <div id="mobile-navigation" hidden={!open} className="border-b hair bg-white lg:hidden">
+      <div
+        id="mobile-navigation"
+        hidden={!open}
+        className="border-b border-slate-200 bg-white lg:hidden"
+      >
         <nav aria-label="Mobile navigation" className="shell py-2">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
               onClick={() => setOpen(false)}
-              className="flex items-center justify-between border-b hair py-4 font-medium text-slate-700"
+              className="flex items-center justify-between border-b border-slate-200 py-4 font-semibold text-ink-900"
             >
               {link.label}
-              <ArrowRightIcon className="size-5" />
+              <ArrowRightIcon className="size-5 text-brand-600" />
             </Link>
           ))}
-          <Link href="/quote" onClick={() => setOpen(false)} className="btn-primary my-6 w-full">
+          <a href={telHref} className="btn-ghost-light mt-5 w-full">
+            <PhoneIcon className="size-4" /> Call {site.phone}
+          </a>
+          <Link
+            href="/quote"
+            onClick={() => setOpen(false)}
+            className="btn-primary my-3 w-full"
+          >
             Get a free quote
           </Link>
         </nav>
