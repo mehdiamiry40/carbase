@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { site, telHref } from "@/config/site";
 import { areas } from "@/data/areas";
-import { Logo } from "@/components/icons";
+import { ArrowRightIcon, Logo, PhoneIcon } from "@/components/icons";
 
 const columns = [
   {
@@ -24,16 +24,34 @@ const columns = [
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-white/20 bg-ink-900 text-white">
-      <div className="shell py-16 lg:py-20">
-        <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-[1.25fr_0.75fr_0.75fr_1.1fr] lg:gap-10">
+    <footer className="bg-ink-900 text-white">
+      <div className="border-b border-white/20">
+        <div className="shell flex flex-col gap-7 py-10 md:flex-row md:items-center md:justify-between">
+          <div>
+            <p className="t-index text-brand-200">Ready when you are</p>
+            <h2 className="mt-3 font-display text-3xl font-medium sm:text-4xl">
+              Start with a free, no-obligation quote.
+            </h2>
+          </div>
+          <Link href="/quote" className="btn-primary shrink-0">
+            Tell us about your car <ArrowRightIcon className="size-4" />
+          </Link>
+        </div>
+      </div>
+
+      <div className="shell py-14 lg:py-20">
+        <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-[1.25fr_0.7fr_0.7fr_1.1fr] lg:gap-12">
           <div className="max-w-sm">
             <Logo />
-            <p className="mt-7 text-sm leading-relaxed text-brand-200">
-              A direct, local way to sell old, damaged, non-running and unwanted cars across South East Queensland.
+            <p className="mt-7 text-sm leading-relaxed text-white/70">
+              A direct, local way to sell old, damaged, non-running and unwanted
+              cars across South East Queensland.
             </p>
-            <a href={telHref} className="mt-6 inline-flex min-h-11 items-center text-xl font-semibold underline underline-offset-4">
-              {site.phone}
+            <a
+              href={telHref}
+              className="mt-7 inline-flex min-h-11 items-center gap-3 text-xl font-semibold underline decoration-brand-400 underline-offset-8"
+            >
+              <PhoneIcon className="size-5 text-brand-300" /> {site.phone}
             </a>
           </div>
 
@@ -45,7 +63,10 @@ export function SiteFooter() {
               <ul className="mt-4">
                 {column.links.map((link) => (
                   <li key={link.href}>
-                    <Link href={link.href} className="inline-flex min-h-11 items-center text-sm text-brand-200 transition hover:text-white">
+                    <Link
+                      href={link.href}
+                      className="inline-flex min-h-11 items-center text-sm text-white/70 transition hover:text-brand-200"
+                    >
                       {link.label}
                     </Link>
                   </li>
@@ -61,8 +82,11 @@ export function SiteFooter() {
             <ul className="mt-4 grid grid-cols-2 gap-x-5 lg:grid-cols-1">
               {areas.map((area) => (
                 <li key={area.slug}>
-                  <Link href={`/service-areas/${area.slug}`} className="inline-flex min-h-11 items-center text-sm text-brand-200 transition hover:text-white">
-                    Cash for cars {area.short}
+                  <Link
+                    href={`/service-areas/${area.slug}`}
+                    className="inline-flex min-h-11 items-center text-sm text-white/70 transition hover:text-brand-200"
+                  >
+                    {area.short}
                   </Link>
                 </li>
               ))}
@@ -70,9 +94,14 @@ export function SiteFooter() {
           </nav>
         </div>
 
-        <div className="mt-14 flex flex-col gap-5 border-t border-white/25 pt-7 text-xs text-brand-200 sm:flex-row sm:items-start sm:justify-between">
-          <p>© {new Date().getFullYear()} {site.legalName}. All rights reserved.</p>
-          <p className="max-w-xl sm:text-right">Serving Brisbane, the Gold Coast, Logan, Ipswich, Redlands and Moreton Bay.</p>
+        <div className="mt-14 flex flex-col gap-5 border-t border-white/25 pt-7 text-xs text-white/60 sm:flex-row sm:items-start sm:justify-between">
+          <p>
+            © {new Date().getFullYear()} {site.legalName}. All rights reserved.
+          </p>
+          <p className="max-w-xl sm:text-right">
+            Serving Brisbane, Gold Coast, Logan, Ipswich, Redlands and Moreton
+            Bay.
+          </p>
         </div>
       </div>
     </footer>
