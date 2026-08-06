@@ -99,8 +99,8 @@ export function SiteFooter() {
             © {new Date().getFullYear()} {site.legalName}. All rights reserved.
           </p>
           <p className="max-w-xl sm:text-right">
-            Serving Brisbane, Gold Coast, Logan, Ipswich, Redlands and Moreton
-            Bay.
+            Serving Brisbane, Gold Coast, Toowoomba, Logan, Ipswich, Redlands
+            and Moreton Bay.
           </p>
         </div>
       </div>

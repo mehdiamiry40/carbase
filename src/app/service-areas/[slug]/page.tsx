@@ -25,8 +25,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!area) return {};
   return pageMetadata({
     path: `/service-areas/${area.slug}`,
-    title: `Cash for Cars ${area.short} — Sell Your Car Today`,
-    description: `${site.name} buys cars across ${area.short} in any condition. Free quote, free pickup and instant payment. ${area.intro}`,
+    title:
+      area.seoTitle ??
+      `Cash for Cars ${area.short} & Free Car Removal`,
+    description:
+      area.seoDescription ??
+      `${site.name} buys cars across ${area.short} in any condition. Cash for cars and free car removal with free quote, free pickup and payment before collection. ${area.intro}`,
+    keywords:
+      area.keywords ?? [
+        `cash for cars ${area.short}`,
+        `car removal ${area.short}`,
+        `sell my car ${area.short}`,
+        `free car removal ${area.short}`,
+      ],
   });
 }
 
@@ -39,8 +50,11 @@ export default async function AreaPage({ params }: Props) {
     "@context": "https://schema.org",
     "@type": "Service",
     "@id": `${site.url}/service-areas/${area.slug}#service`,
-    name: `Cash for cars in ${area.short}`,
-    serviceType: "Car buying service",
+    name: `Cash for cars and car removal in ${area.short}`,
+    serviceType: ["Cash for cars", "Car removal"],
+    description:
+      area.seoDescription ??
+      `${site.name} offers cash for cars and free car removal across ${area.short}.`,
     areaServed: { "@type": "City", name: area.short },
     provider: {
       "@type": "LocalBusiness",
@@ -56,8 +70,18 @@ export default async function AreaPage({ params }: Props) {
     "@type": "BreadcrumbList",
     itemListElement: [
       { "@type": "ListItem", position: 1, name: "Home", item: site.url },
-      { "@type": "ListItem", position: 2, name: "Service areas", item: `${site.url}/service-areas` },
-      { "@type": "ListItem", position: 3, name: area.short, item: `${site.url}/service-areas/${area.slug}` },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Service areas",
+        item: `${site.url}/service-areas`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: area.short,
+        item: `${site.url}/service-areas/${area.slug}`,
+      },
     ],
   };
 
@@ -73,7 +97,7 @@ export default async function AreaPage({ params }: Props) {
       />
 
       <PageHero
-        eyebrow={`Servicing ${area.short} & surrounds`}
+        eyebrow={`Cash for cars & car removal · ${area.short}`}
         title={
           <>
             Cash for cars in{" "}
@@ -92,6 +116,27 @@ export default async function AreaPage({ params }: Props) {
           </Link>
         </div>
       </PageHero>
+
+      {area.seoSections && area.seoSections.length > 0 && (
+        <section className="bg-brand-50 py-20 lg:py-24">
+          <div className="mx-auto max-w-3xl px-4 sm:px-6">
+            <Reveal>
+              <div className="space-y-12">
+                {area.seoSections.map((section) => (
+                  <div key={section.heading}>
+                    <h2 className="font-display text-3xl font-semibold tracking-tight text-ink-900 sm:text-4xl">
+                      {section.heading}
+                    </h2>
+                    <p className="mt-4 text-lg leading-relaxed text-slate-600">
+                      {section.body}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </Reveal>
+          </div>
+        </section>
+      )}
 
       <section className="bg-white py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -134,7 +179,7 @@ export default async function AreaPage({ params }: Props) {
 
       <div className="bg-white pt-24">
         <CtaBanner
-          title={`Selling a car in ${area.short}?`}
+          title={`Need cash for cars or car removal in ${area.short}?`}
           subtitle="Get your free, no-obligation quote today — it takes about two minutes."
         />
       </div>

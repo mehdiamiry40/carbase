@@ -7,13 +7,19 @@ import { CheckIcon, PhoneIcon } from "@/components/icons";
 export const metadata = pageMetadata({
   path: "/quote",
   title: "Get a Free Old or Junk Car Quote",
-  description: `Request a free, no-obligation quote for an old, damaged or junk car from ${site.name}. Free pickup across Brisbane and the Gold Coast, with payment before collection.`,
+  description: `Request a free, no-obligation quote for an old, damaged or junk car from ${site.name}. Free car removal and pickup across Brisbane, the Gold Coast and Toowoomba, with payment before collection.`,
+  keywords: [
+    "cash for cars Toowoomba",
+    "car removal Toowoomba",
+    "free car quote Brisbane",
+    "sell junk car Queensland",
+  ],
 });
 
 const reassurance = [
   "Free quote with no obligation to sell",
   "Old, damaged, unregistered or not running — no problem",
-  "Free pickup across Brisbane & the Gold Coast",
+  "Free pickup across Brisbane, Gold Coast & Toowoomba",
   "Instant bank transfer before we take the car",
 ];
 

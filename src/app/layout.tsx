@@ -23,7 +23,7 @@ const barlow = Barlow({
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: `Cash for Old & Junk Cars Brisbane & Gold Coast | ${site.name}`,
+    default: `Cash for Cars Brisbane, Gold Coast & Toowoomba | ${site.name}`,
     template: `%s | ${site.name}`,
   },
   description: site.description,
@@ -31,6 +31,8 @@ export const metadata: Metadata = {
   applicationName: site.name,
   category: "automotive",
   keywords: [
+    "cash for cars Toowoomba",
+    "car removal Toowoomba",
     "cash for cars Brisbane",
     "cash for cars Gold Coast",
     "cash for junk cars Brisbane",
@@ -39,6 +41,7 @@ export const metadata: Metadata = {
     "sell my car Brisbane",
     "car buyer Brisbane",
     "free car removal Brisbane",
+    "free car removal Toowoomba",
     "sell damaged car Queensland",
   ],
   authors: [{ name: site.name, url: site.url }],
@@ -58,14 +61,14 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     siteName: site.name,
-    title: `Cash for Old & Junk Cars Brisbane & Gold Coast | ${site.name}`,
+    title: `Cash for Cars Brisbane, Gold Coast & Toowoomba | ${site.name}`,
     description: site.description,
     url: "/",
     locale: "en_AU",
   },
   twitter: {
     card: "summary_large_image",
-    title: `Cash for Old & Junk Cars Brisbane & Gold Coast | ${site.name}`,
+    title: `Cash for Cars Brisbane, Gold Coast & Toowoomba | ${site.name}`,
     description: site.description,
   },
 };
@@ -93,14 +96,29 @@ const businessJsonLd = {
     areaServed: "AU-QLD",
     availableLanguage: "English",
   },
-  makesOffer: {
-    "@type": "Offer",
-    itemOffered: {
-      "@type": "Service",
-      name: "Cash for old, damaged and junk cars with free vehicle pickup",
-      areaServed: "South East Queensland",
+  makesOffer: [
+    {
+      "@type": "Offer",
+      itemOffered: {
+        "@type": "Service",
+        name: "Cash for old, damaged and junk cars with free vehicle pickup",
+        areaServed: [
+          "Brisbane",
+          "Gold Coast",
+          "Toowoomba",
+          "South East Queensland",
+        ],
+      },
     },
-  },
+    {
+      "@type": "Offer",
+      itemOffered: {
+        "@type": "Service",
+        name: "Free car removal across South East Queensland",
+        areaServed: ["Brisbane", "Gold Coast", "Toowoomba"],
+      },
+    },
+  ],
 };
 
 const websiteJsonLd = {

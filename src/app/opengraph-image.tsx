@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og";
 import { logoMarkSvg } from "@/lib/logo";
 
 export const alt =
-  "Carbase — Cash for old, damaged and junk cars across Brisbane and the Gold Coast";
+  "Carbase — Cash for cars and car removal across Brisbane, Gold Coast and Toowoomba";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -78,7 +78,7 @@ export default function OpenGraphImage() {
             color: "#244f84",
           }}
         >
-          <span>Brisbane · Gold Coast · South East Queensland</span>
+          <span>Brisbane · Gold Coast · Toowoomba · SEQ</span>
           <span>Old · Damaged · Unregistered · Not running</span>
         </div>
       </div>

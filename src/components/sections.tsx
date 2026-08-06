@@ -188,7 +188,7 @@ export const steps = [
   {
     title: "We come to you",
     description:
-      "Happy with the offer? We arrange a time that suits and come to your home or work anywhere in Brisbane or on the Gold Coast.",
+      "Happy with the offer? We arrange a time that suits and come to your home or work anywhere in Brisbane, on the Gold Coast or in Toowoomba.",
     Icon: TruckIcon,
   },
   {
@@ -332,7 +332,7 @@ export function AreaCards({ dark = false }: { dark?: boolean }) {
 
 export function CtaBanner({
   title = "Ready to clear out that old car?",
-  subtitle = "Get a free, no-obligation quote for an old, damaged or unwanted car — with free pickup across Brisbane and the Gold Coast.",
+  subtitle = "Get a free, no-obligation quote for an old, damaged or unwanted car — with free car removal across Brisbane, the Gold Coast and Toowoomba.",
 }: {
   title?: string;
   subtitle?: string;

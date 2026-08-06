@@ -5,6 +5,12 @@ export type Area = {
   short: string;
   intro: string;
   suburbs: string[];
+  /** Optional SEO overrides for the area landing page */
+  seoTitle?: string;
+  seoDescription?: string;
+  keywords?: string[];
+  /** Extra on-page sections that strengthen local search intent */
+  seoSections?: { heading: string; body: string }[];
 };
 
 export const areas: Area[] = [
@@ -116,6 +122,54 @@ export const areas: Area[] = [
       "Morayfield",
       "Deception Bay",
       "Petrie",
+    ],
+  },
+  {
+    slug: "toowoomba",
+    name: "Toowoomba",
+    short: "Toowoomba",
+    intro:
+      "Looking for cash for cars Toowoomba locals can trust? Carbase buys old, damaged, unwanted and non-running vehicles across Toowoomba and the Darling Downs — with free car removal, a clear cash offer and payment before we take the car.",
+    suburbs: [
+      "Toowoomba CBD",
+      "Newtown",
+      "Rangeville",
+      "Middle Ridge",
+      "Wilsonton",
+      "Harristown",
+      "Kearneys Spring",
+      "Darling Heights",
+      "Highfields",
+      "Glenvale",
+      "Centenary Heights",
+      "Drayton",
+    ],
+    seoTitle: "Cash for Cars Toowoomba & Free Car Removal",
+    seoDescription:
+      "Cash for cars Toowoomba and free car removal Toowoomba with Carbase. We buy old, damaged and junk cars across Toowoomba and surrounds — free quote, free pickup and payment before collection.",
+    keywords: [
+      "cash for cars toowoomba",
+      "car removal toowoomba",
+      "cash for cars Toowoomba",
+      "car removal Toowoomba",
+      "sell my car Toowoomba",
+      "junk car removal Toowoomba",
+      "free car removal Toowoomba",
+      "cash for junk cars Toowoomba",
+    ],
+    seoSections: [
+      {
+        heading: "Cash for cars Toowoomba — any condition",
+        body: "Whether your car still drives or has been sitting for months, Carbase pays cash for cars in Toowoomba in almost every condition. Old sedans, damaged utes, written-off SUVs, unregistered vehicles and non-runners are all welcome. Tell us the make, model, year and condition for a free no-obligation quote — no roadworthy certificate required.",
+      },
+      {
+        heading: "Free car removal across Toowoomba",
+        body: "Need car removal in Toowoomba without towing fees? We collect from your home, workplace or roadside across Toowoomba and nearby suburbs. With free car removal, you keep the agreed cash amount — paid before the vehicle leaves — with no admin fees, no surprise deductions and no waiting around for a private buyer.",
+      },
+      {
+        heading: "Sell your car fast across the Darling Downs",
+        body: "From the CBD and Rangeville through to Highfields, Glenvale and Drayton, we make selling a car in Toowoomba simple. Most quotes go out the same day during business hours, and collection can often be arranged quickly once you accept. Whether you need cash for cars or reliable car removal in Toowoomba, start with a free quote and we will handle the rest.",
+      },
     ],
   },
 ];

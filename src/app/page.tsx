@@ -70,7 +70,7 @@ const reasons = [
   {
     Icon: MapPinIcon,
     title: "Local service",
-    copy: "A responsive team covering Brisbane, Gold Coast and surrounding regions.",
+    copy: "A responsive team covering Brisbane, Gold Coast, Toowoomba and surrounding regions.",
   },
 ];
 
@@ -103,15 +103,15 @@ export default function HomePage() {
         <div className="shell relative z-10 flex min-h-[650px] items-end py-8 sm:py-12 lg:min-h-[760px] lg:py-16">
           <div className="hero-panel max-w-[680px] border-2 border-white bg-ink-900/62 p-7 backdrop-blur-[2px] sm:p-10 lg:p-12">
             <p className="t-index text-brand-200">
-              Cash for cars · South East Queensland
+              Cash for cars &amp; car removal · SEQ
             </p>
             <h1 className="mt-5 max-w-[12ch] font-display text-5xl font-medium leading-[1.02] tracking-tight text-balance sm:text-6xl lg:text-[4.6rem]">
               Your old car can still take you somewhere.
             </h1>
             <p className="mt-6 max-w-[54ch] text-lg leading-relaxed text-white/90">
               Carbase buys old, damaged, non-running and unwanted cars across
-              Brisbane and the Gold Coast—with free pickup and payment before
-              collection.
+              Brisbane, the Gold Coast and Toowoomba—with free car removal,
+              free pickup and payment before collection.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <a href="#quote" className="btn-primary">
@@ -293,8 +293,9 @@ export default function HomePage() {
                 </h2>
               </div>
               <p className="max-w-2xl text-lg leading-relaxed text-slate-600 lg:justify-self-end">
-                Free pickup across Brisbane, the Gold Coast, Logan, Ipswich,
-                Redlands and Moreton Bay. Choose your region for local coverage.
+                Free pickup and car removal across Brisbane, the Gold Coast,
+                Toowoomba, Logan, Ipswich, Redlands and Moreton Bay. Choose your
+                region for local coverage.
               </p>
             </div>
           </Reveal>

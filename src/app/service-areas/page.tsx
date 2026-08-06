@@ -4,8 +4,16 @@ import { AreaCards, CtaBanner, PageHero } from "@/components/sections";
 
 export const metadata = pageMetadata({
   path: "/service-areas",
-  title: "Cash for Cars Service Areas in South East Queensland",
-  description: "Carbase buys old, damaged and junk cars across Brisbane, Gold Coast, Logan, Ipswich, Redlands and Moreton Bay, with free vehicle pickup.",
+  title: "Cash for Cars & Car Removal Service Areas in SEQ",
+  description:
+    "Carbase buys old, damaged and junk cars across Brisbane, Gold Coast, Toowoomba, Logan, Ipswich, Redlands and Moreton Bay, with free car removal and vehicle pickup.",
+  keywords: [
+    "cash for cars Toowoomba",
+    "car removal Toowoomba",
+    "cash for cars Brisbane",
+    "cash for cars Gold Coast",
+    "car removal South East Queensland",
+  ],
 });
 
 export default function ServiceAreasPage() {
@@ -19,7 +27,7 @@ export default function ServiceAreasPage() {
             <span className="text-gradient">we come to you</span>
           </>
         }
-        lede="Free pickup applies across every area below. Not on the list? Ask anyway — we can often make it work."
+        lede="Free pickup and car removal apply across every area below — including cash for cars Toowoomba and surrounds. Not on the list? Ask anyway — we can often make it work."
         compact
       />
       <section className="bg-white py-20">

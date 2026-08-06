@@ -6,7 +6,14 @@ import { CtaBanner, FaqList, PageHero } from "@/components/sections";
 export const metadata = pageMetadata({
   path: "/faq",
   title: "Cash for Cars FAQs — Quotes, Pickup & Payment",
-  description: "Answers about selling your car to Carbase, including eligible vehicles, quote timing, free pickup, payment, paperwork and cars under finance.",
+  description:
+    "Answers about selling your car to Carbase, including cash for cars Toowoomba, car removal Toowoomba, eligible vehicles, quote timing, free pickup, payment and paperwork.",
+  keywords: [
+    "cash for cars Toowoomba",
+    "car removal Toowoomba",
+    "cash for cars FAQ",
+    "free car removal Queensland",
+  ],
 });
 
 export default function FaqPage() {

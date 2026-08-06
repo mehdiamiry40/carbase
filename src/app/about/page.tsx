@@ -6,8 +6,8 @@ import { BanknoteIcon, MapPinIcon, ShieldIcon } from "@/components/icons";
 
 export const metadata = pageMetadata({
   path: "/about",
-  title: "About Carbase — A Local Brisbane & Gold Coast Car Buyer",
-  description: `${site.name} is a South East Queensland car buying service. Learn how our quotes, free pickup, paperwork and payment process work.`,
+  title: "About Carbase — Local Cash for Cars Across SEQ",
+  description: `${site.name} is a South East Queensland car buying and car removal service covering Brisbane, the Gold Coast and Toowoomba. Learn how our quotes, free pickup, paperwork and payment process work.`,
 });
 
 const values = [
@@ -58,8 +58,8 @@ export default function AboutPage() {
                 So we built the alternative. Tell us about your car once, get a
                 fair cash offer fast, and have the whole thing done —
                 inspection, paperwork, payment and pickup — often within a day.
-                That&apos;s the entire business: buying cars across Brisbane and
-                the Gold Coast and making it feel easy.
+                That&apos;s the entire business: buying cars across Brisbane,
+                the Gold Coast and Toowoomba and making it feel easy.
               </p>
               <p>
                 We specialise in ageing cars, accident-damaged vehicles, utes
