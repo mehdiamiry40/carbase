@@ -10,8 +10,8 @@ const days = Object.freeze([
 
 /**
  * @typedef {object} BusinessSchemaDetails
- * @property {string=} legalName
  * @property {string=} phone
+ * @property {string=} phoneInternational
  * @property {string=} email
  * @property {string=} abn
  * @property {string=} opens
@@ -20,20 +20,20 @@ const days = Object.freeze([
 
 /**
  * Return only verified optional business fields that are safe to publish.
- * No address or price field is generated because neither has a verified value.
+ * No address is generated because the service-area business has no
+ * customer-facing public address. No price field is generated because no
+ * verified range has been supplied.
  *
  * @param {BusinessSchemaDetails} details
  */
 export function buildBusinessSchemaFields(details) {
-  const legalName = details.legalName?.trim();
-  const phone = details.phone?.trim();
+  const phone = details.phoneInternational?.trim() || details.phone?.trim();
   const email = details.email?.trim();
   const abn = details.abn?.trim();
   const opens = details.opens?.trim();
   const closes = details.closes?.trim();
 
   return {
-    ...(legalName ? { legalName } : {}),
     ...(phone ? { telephone: phone } : {}),
     ...(email ? { email } : {}),
     ...(abn ? { taxID: abn } : {}),

@@ -34,6 +34,10 @@ const coverageSource = readFileSync(
   new URL("../src/app/service-areas/page.tsx", import.meta.url),
   "utf8",
 );
+const headerSource = readFileSync(
+  new URL("../src/components/SiteHeader.tsx", import.meta.url),
+  "utf8",
+);
 
 test("limits every public service-area signal to the Toowoomba Region", () => {
   assert.doesNotMatch(
@@ -67,4 +71,13 @@ test("keeps distinct search intent for the two Toowoomba service pages", () => {
     publicSource,
     /seoTitle: "Car Removal Toowoomba \| Free Vehicle Pickup"/,
   );
+});
+
+test("promotes both commercial pages in the primary navigation", () => {
+  assert.match(headerSource, /href: "\/cash-for-cars-toowoomba"/);
+  assert.match(headerSource, /href: "\/car-removal-toowoomba"/);
+});
+
+test("does not claim every sitemap URL changed on every deployment", () => {
+  assert.doesNotMatch(sitemapSource, /new Date\(\)|lastModified|changeFrequency|priority/);
 });

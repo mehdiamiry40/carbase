@@ -12,9 +12,19 @@ import {
   XIcon,
 } from "@/components/icons";
 
-const navLinks = [
-  { href: "/how-it-works", label: "How it works" },
+const serviceLinks = [
+  { href: "/cash-for-cars-toowoomba", label: "Cash for cars" },
+  { href: "/car-removal-toowoomba", label: "Car removal" },
+];
+
+const desktopNavLinks = [
+  ...serviceLinks,
   { href: "/service-areas", label: "Service areas" },
+  { href: "/how-it-works", label: "How it works" },
+];
+
+const mobileNavLinks = [
+  ...desktopNavLinks,
   { href: "/about", label: "About" },
   { href: "/faq", label: "FAQs" },
 ];
@@ -80,7 +90,7 @@ export function SiteHeader() {
             className="hidden h-full items-stretch lg:flex"
             aria-label="Main navigation"
           >
-            {navLinks.map((link) => {
+            {desktopNavLinks.map((link) => {
               const active =
                 pathname === link.href || pathname.startsWith(`${link.href}/`);
               return (
@@ -128,7 +138,7 @@ export function SiteHeader() {
         className="border-b border-slate-200 bg-white lg:hidden"
       >
         <nav aria-label="Mobile navigation" className="shell py-2">
-          {navLinks.map((link) => (
+          {mobileNavLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}

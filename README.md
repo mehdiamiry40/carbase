@@ -22,7 +22,7 @@ Also included: sitemap (`/sitemap.xml`), robots rules, Organization and service 
 
 ## Configuration checklist
 
-1. **`src/config/site.ts`** — verified operator name, ABN, public phone and hours live here. Update this single source if the business changes them.
+1. **`src/config/site.ts`** — verified operator name, Toowoomba operating base, ABN, public phone and hours live here. No street address is configured for the service-area business. Update this single source if the business changes them.
 2. **`src/data/testimonials.ts`** — intentionally empty. Add only reviews supplied by real customers with permission.
 3. **`src/data/faqs.ts`** — read through the answers and make sure they match how you actually operate (payment method, finance payouts, areas, etc.).
 4. **`src/data/areas.ts`** — keep the Toowoomba Region suburb and town list aligned with the locations you genuinely collect from.

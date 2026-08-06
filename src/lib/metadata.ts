@@ -7,19 +7,21 @@ export function pageMetadata({
   description,
   keywords,
   index = true,
+  follow = true,
 }: {
   path: string;
   title: string;
   description: string;
   keywords?: string | string[];
   index?: boolean;
+  follow?: boolean;
 }): Metadata {
   return {
     title,
     description,
     ...(keywords ? { keywords } : {}),
     alternates: { canonical: path },
-    robots: { index, follow: index },
+    robots: { index, follow },
     openGraph: {
       type: "website",
       siteName: site.name,

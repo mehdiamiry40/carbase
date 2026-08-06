@@ -71,7 +71,7 @@ const reasons = [
   {
     Icon: MapPinIcon,
     title: "Local service",
-    copy: "A focused team serving Toowoomba city, its suburbs and towns across the Toowoomba Region.",
+    copy: "A Toowoomba-based team serving the city, its suburbs and towns across the Toowoomba Region.",
   },
 ];
 
@@ -154,6 +154,56 @@ export default function HomePage() {
           <Reveal delay={100}>
             <QuoteForm heading="Request your free quote" />
           </Reveal>
+        </div>
+      </section>
+
+      <section
+        className="border-y border-slate-200 bg-white py-16 lg:py-20"
+        aria-labelledby="toowoomba-services"
+      >
+        <div className="shell">
+          <Reveal>
+            <div className="grid gap-8 lg:grid-cols-[0.72fr_1.28fr] lg:items-end lg:gap-16">
+              <div>
+                <p className="t-index text-brand-700">Toowoomba services</p>
+                <h2
+                  id="toowoomba-services"
+                  className="mt-5 font-display text-4xl font-medium leading-[1.08] tracking-tight text-ink-900 sm:text-5xl"
+                >
+                  Choose the help you need with your car.
+                </h2>
+              </div>
+              <p className="max-w-2xl text-lg leading-relaxed text-slate-600 lg:justify-self-end">
+                Start with the service that best matches your situation. Both include
+                a free quote, collection within our service area and payment before
+                the vehicle is loaded.
+              </p>
+            </div>
+          </Reveal>
+          <div className="mt-10 grid gap-5 lg:grid-cols-2">
+            {localPages.map((page, index) => (
+              <Reveal key={page.slug} delay={index * 100} className="h-full">
+                <Link
+                  href={`/${page.slug}`}
+                  className="group flex h-full flex-col border border-brand-200 bg-brand-50 p-7 transition hover:border-brand-600 sm:p-9"
+                >
+                  <span className="font-mono text-xs font-semibold text-brand-700">
+                    0{index + 1}
+                  </span>
+                  <h3 className="mt-5 font-display text-3xl font-semibold tracking-tight text-ink-900 group-hover:text-brand-700">
+                    {page.navLabel}
+                  </h3>
+                  <p className="mt-4 flex-1 text-[15px] leading-relaxed text-slate-600">
+                    {page.seoDescription}
+                  </p>
+                  <span className="mt-7 inline-flex items-center gap-2 font-semibold text-brand-700 underline underline-offset-4">
+                    Learn about this service
+                    <ArrowRightIcon className="size-4 transition group-hover:translate-x-1" />
+                  </span>
+                </Link>
+              </Reveal>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -288,23 +338,6 @@ export default function HomePage() {
           <div className="mt-12">
             <AreaCards />
           </div>
-          <Reveal>
-            <p className="mt-10 text-lg leading-relaxed text-slate-600">
-              Looking for a specific service? Read about{" "}
-              {localPages.map((page, i) => (
-                <span key={page.slug}>
-                  {i > 0 && " and "}
-                  <Link
-                    href={`/${page.slug}`}
-                    className="font-semibold text-brand-700 underline underline-offset-4"
-                  >
-                    {page.navLabel}
-                  </Link>
-                </span>
-              ))}
-              .
-            </p>
-          </Reveal>
         </div>
       </section>
 

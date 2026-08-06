@@ -62,6 +62,12 @@ export default function AboutPage() {
                 and making the process feel easy.
               </p>
               <p>
+                {site.name} is operated by {site.operatorName}, a service-area
+                business based in {site.operatingBase}. We come to the vehicle
+                for collection and serve customers throughout the Toowoomba
+                Region.
+              </p>
+              <p>
                 We specialise in ageing cars, accident-damaged vehicles, utes
                 with a hard life behind them and cars that no longer start.
                 Whatever condition it is in, you&apos;ll get a straight answer and
