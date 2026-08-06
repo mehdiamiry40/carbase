@@ -1,24 +1,29 @@
-// ─────────────────────────────────────────────────────────────────────────
-//  EDIT YOUR REAL BUSINESS DETAILS HERE.
-//  The whole site (header, footer, contact buttons, SEO tags, emails)
-//  reads from this one file — update it here and it changes everywhere.
-//  Values marked PLACEHOLDER must be replaced before launch.
-// ─────────────────────────────────────────────────────────────────────────
+// Verified business details used throughout the site. Keep display values and
+// their machine-readable counterparts in sync when the business changes them.
+
+const siteUrl = (
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://carbase.au"
+).replace(/\/+$/, "");
 
 export const site = {
   name: "Carbase",
-  legalName: "Carbase", // shown in the footer, e.g. "Carbase Pty Ltd"
-  tagline: "Cash for old, damaged and junk cars across South East Queensland",
+  legalName: "Emir Group Pty Ltd",
+  tagline: "Cash for old, damaged and unwanted cars across the Toowoomba Region",
   description:
-    "Carbase buys old, damaged, unwanted and junk cars across Brisbane and the Gold Coast. Free quote, free pickup and payment before collection.",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://carbase.com.au",
+    "Carbase buys old, damaged, non-running and unwanted cars throughout the Toowoomba Region. Get a free quote, free car removal and payment before collection.",
+  url: siteUrl,
 
-  phone: "0400 000 000", // PLACEHOLDER — your real mobile/landline
-  email: "quotes@carbase.com.au", // PLACEHOLDER — your real inbox
-  hours: "7 days, 7am – 7pm", // PLACEHOLDER — your real hours
-  abn: "ABN 00 000 000 000", // PLACEHOLDER — your ABN
+  phone: "0410 233 335",
+  hours: "8am–5pm, 7 days a week",
+  abn: "62 351 619 456",
 
-  serviceRegion: "Brisbane, Gold Coast & South East Queensland",
+  // Machine-readable version of `hours`, used for opening-hours structured
+  // data. The business has no public street address, so none is configured or
+  // emitted in structured data.
+  opens: "08:00",
+  closes: "17:00",
+
+  serviceRegion: "Toowoomba Region",
 } as const;
 
 /** tel: link built from the display phone number */

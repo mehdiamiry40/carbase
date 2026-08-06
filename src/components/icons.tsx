@@ -1,4 +1,10 @@
 import type { SVGProps } from "react";
+import {
+  LOGO_BASE_RECT,
+  LOGO_CAR_PATH,
+  LOGO_VIEWBOX,
+  logoColors,
+} from "@/lib/logo";
 
 type IconProps = SVGProps<SVGSVGElement>;
 
@@ -262,16 +268,48 @@ export function LightTruckIcon(props: IconProps) {
 
 /* ── Logo ────────────────────────────────────────────────────────────── */
 
-/** Simple Carbase wordmark, designed to work on light and dark bands. */
+/**
+ * Carbase mark — a squared "C" split into a white upper form (CAR) sitting on
+ * a red base (BASE), set in a navy tile. See `lib/logo.ts` for the geometry.
+ */
+export function LogoMark({
+  onLight = false,
+  className = "size-10",
+}: {
+  onLight?: boolean;
+  className?: string;
+}) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox={LOGO_VIEWBOX}
+      className={className}
+      aria-hidden
+      focusable="false"
+    >
+      <rect
+        width="48"
+        height="48"
+        fill={onLight ? logoColors.tile : logoColors.tileOnDark}
+      />
+      <path fill={logoColors.car} d={LOGO_CAR_PATH} />
+      <rect {...LOGO_BASE_RECT} fill={logoColors.base} />
+    </svg>
+  );
+}
+
+/** Carbase lockup: mark + wordmark for light or dark bands. */
 export function Logo({ onLight = false }: { onLight?: boolean }) {
   return (
-    <span
-      className="inline-flex items-center"
-    >
+    <span className="inline-flex items-center gap-3">
+      <LogoMark onLight={onLight} className="size-10 shrink-0" />
       <span
-        className={`font-display text-[1.65rem] font-semibold leading-none tracking-[0.06em] ${onLight ? "text-ink-900" : "text-white"}`}
+        className={`font-display text-[1.6rem] leading-none font-bold tracking-[0.07em] ${onLight ? "text-ink-900" : "text-white"}`}
       >
-        CAR<span className={onLight ? "text-brand-700" : "text-brand-300"}>BASE</span>
+        CAR
+        <span className={onLight ? "text-brand-700" : "text-brand-300"}>
+          BASE
+        </span>
       </span>
     </span>
   );

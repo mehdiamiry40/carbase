@@ -1,4 +1,4 @@
-# Carbase — Cash for Cars, Brisbane & Gold Coast
+# Carbase — Toowoomba Region Car Buyers
 
 Marketing + lead-generation website for Carbase, built with [Next.js](https://nextjs.org) (App Router), TypeScript and Tailwind CSS v4.
 
@@ -6,29 +6,31 @@ Marketing + lead-generation website for Carbase, built with [Next.js](https://ne
 
 | Route | Purpose |
 | --- | --- |
-| `/` | Home — hero with the quote form, trust bar, how-it-works, testimonials, areas, FAQ teaser |
+| `/` | Home — hero with the quote form, benefits, how-it-works, areas and FAQ teaser |
 | `/quote` | Full quote page (main call-to-action) |
 | `/how-it-works` | The 4-step selling process + pickup checklist |
 | `/about` | About the business |
 | `/faq` | All FAQs, with `FAQPage` structured data for Google |
-| `/service-areas` | Index of covered regions |
-| `/service-areas/[slug]` | Local SEO pages: Brisbane, Gold Coast, Logan, Ipswich, Redlands, Moreton Bay |
+| `/service-areas` | Toowoomba Region suburb and town coverage hub |
+| `/service-areas/toowoomba` | Permanent redirect to the canonical coverage hub |
+| `/cash-for-cars-toowoomba` | Dedicated cash-for-cars Toowoomba landing page |
+| `/car-removal-toowoomba` | Dedicated car-removal Toowoomba landing page |
 | `/privacy` | Starter privacy policy |
 | `/api/quote` | Receives quote form submissions (incl. photos) and emails them to you |
 
-Also included: sitemap (`/sitemap.xml`), robots rules, LocalBusiness structured data, Open Graph share image, sticky mobile call/quote bar.
+Also included: sitemap (`/sitemap.xml`), robots rules, Organization and service structured data, Open Graph share image, sticky mobile call/quote bar.
 
-## ✅ Before you launch — checklist
+## Configuration checklist
 
-1. **`src/config/site.ts`** — replace every `PLACEHOLDER` value: phone number, email, hours, ABN, legal name. The whole site updates from this one file.
-2. **`src/data/testimonials.ts`** — the reviews in there are **samples for layout only**. Replace them with real reviews from real customers (with permission). Don't launch with invented reviews.
+1. **`src/config/site.ts`** — verified operator name, ABN, public phone and hours live here. Update this single source if the business changes them.
+2. **`src/data/testimonials.ts`** — intentionally empty. Add only reviews supplied by real customers with permission.
 3. **`src/data/faqs.ts`** — read through the answers and make sure they match how you actually operate (payment method, finance payouts, areas, etc.).
-4. **`src/data/areas.ts`** — adjust regions/suburbs to your real coverage.
-5. **Email delivery** — copy `.env.example` to `.env`, sign up at [resend.com](https://resend.com) (free tier is plenty), and set:
+4. **`src/data/areas.ts`** — keep the Toowoomba Region suburb and town list aligned with the locations you genuinely collect from.
+5. **Email delivery** — copy `.env.example` to `.env`, sign up at [resend.com](https://resend.com), and set:
    - `RESEND_API_KEY` — your API key
-   - `QUOTE_TO_EMAIL` — the inbox that should receive leads
-   - `QUOTE_FROM_EMAIL` — keep the default while testing; switch to your own verified domain sender for production
-   Until the key is set, the form still works and leads are logged to the server console instead of emailed.
+   - `QUOTE_TO_EMAIL` — optional; defaults to the verified server-side quote inbox
+   - `QUOTE_FROM_EMAIL` — optional; keep the testing sender until you have a verified domain
+   Without an API key the quote endpoint returns `503`, the form shows the customer an error, and no customer details are written to logs.
 6. **`NEXT_PUBLIC_SITE_URL`** — set to your real domain when you connect one (used for SEO tags and the sitemap).
 7. **`/privacy`** — starter text only, not legal advice; review before launch.
 
@@ -36,6 +38,8 @@ Also included: sitemap (`/sitemap.xml`), robots rules, LocalBusiness structured 
 
 ```bash
 npm install
+npm test
+npm run typecheck
 npm run dev     # http://localhost:3000
 npm run build   # production build
 ```

@@ -2,7 +2,8 @@ import type { Metadata, Viewport } from "next";
 import { Barlow, Open_Sans } from "next/font/google";
 import "./globals.css";
 import { site } from "@/config/site";
-import { areas } from "@/data/areas";
+import { businessJsonLd } from "@/lib/structuredData";
+import { serializeJsonLd } from "@/lib/jsonLd";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { MobileCtaBar } from "@/components/MobileCtaBar";
@@ -23,7 +24,7 @@ const barlow = Barlow({
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: `Cash for Old & Junk Cars Brisbane & Gold Coast | ${site.name}`,
+    default: `Sell Your Car Toowoomba | Local Car Buyers | ${site.name}`,
     template: `%s | ${site.name}`,
   },
   description: site.description,
@@ -31,15 +32,14 @@ export const metadata: Metadata = {
   applicationName: site.name,
   category: "automotive",
   keywords: [
-    "cash for cars Brisbane",
-    "cash for cars Gold Coast",
-    "cash for junk cars Brisbane",
-    "old car removal Brisbane",
-    "damaged car buyers Gold Coast",
-    "sell my car Brisbane",
-    "car buyer Brisbane",
-    "free car removal Brisbane",
-    "sell damaged car Queensland",
+    "cash for cars Toowoomba",
+    "car removal Toowoomba",
+    "free car removal Toowoomba",
+    "sell my car Toowoomba",
+    "car buyers Toowoomba",
+    "cash for unwanted cars Toowoomba",
+    "scrap car removal Toowoomba",
+    "sell damaged car Toowoomba",
   ],
   authors: [{ name: site.name, url: site.url }],
   creator: site.name,
@@ -58,48 +58,21 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     siteName: site.name,
-    title: `Cash for Old & Junk Cars Brisbane & Gold Coast | ${site.name}`,
+    title: `Sell Your Car Toowoomba | Local Car Buyers | ${site.name}`,
     description: site.description,
     url: "/",
     locale: "en_AU",
   },
   twitter: {
     card: "summary_large_image",
-    title: `Cash for Old & Junk Cars Brisbane & Gold Coast | ${site.name}`,
+    title: `Sell Your Car Toowoomba | Local Car Buyers | ${site.name}`,
     description: site.description,
   },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#1d2747",
-};
-
-const businessJsonLd = {
-  "@context": "https://schema.org",
-  "@type": ["LocalBusiness", "AutomotiveBusiness"],
-  "@id": `${site.url}/#business`,
-  name: site.name,
-  description: site.description,
-  url: site.url,
-  telephone: site.phone,
-  email: site.email,
-  areaServed: areas.map((a) => ({ "@type": "City", name: a.short })),
-  priceRange: "$",
-  contactPoint: {
-    "@type": "ContactPoint",
-    telephone: site.phone,
-    contactType: "sales",
-    areaServed: "AU-QLD",
-    availableLanguage: "English",
-  },
-  makesOffer: {
-    "@type": "Offer",
-    itemOffered: {
-      "@type": "Service",
-      name: "Cash for old, damaged and junk cars with free vehicle pickup",
-      areaServed: "South East Queensland",
-    },
-  },
+  // Matches the navy tile the logo mark sits in.
+  themeColor: "#0a2f68",
 };
 
 const websiteJsonLd = {
@@ -120,11 +93,11 @@ export default function RootLayout({
       <body className="bg-white font-sans text-ink-900 antialiased">
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(businessJsonLd) }}
+          dangerouslySetInnerHTML={{ __html: serializeJsonLd(businessJsonLd) }}
         />
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+          dangerouslySetInnerHTML={{ __html: serializeJsonLd(websiteJsonLd) }}
         />
         <SiteHeader />
         <main>{children}</main>

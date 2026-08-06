@@ -5,16 +5,19 @@ export function pageMetadata({
   path,
   title,
   description,
+  keywords,
   index = true,
 }: {
   path: string;
   title: string;
   description: string;
+  keywords?: string | string[];
   index?: boolean;
 }): Metadata {
   return {
     title,
     description,
+    ...(keywords ? { keywords } : {}),
     alternates: { canonical: path },
     robots: { index, follow: index },
     openGraph: {

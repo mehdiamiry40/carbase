@@ -12,7 +12,7 @@ export const faqs: Faq[] = [
   {
     question: "How quickly will I get a quote?",
     answer:
-      "Most quotes go out the same day during business hours, often within the hour. The more detail (and photos) you give us in the form, the faster and sharper the offer.",
+      "Most quotes go out the same day during business hours. The more detail (and photos) you give us in the form, the faster and sharper the offer.",
   },
   {
     question: "How and when do I get paid?",
@@ -22,17 +22,17 @@ export const faqs: Faq[] = [
   {
     question: "Do you really pick the car up for free?",
     answer:
-      "Yes. Pickup is free anywhere in our service area across Brisbane, the Gold Coast and surrounds, whether the car drives or not. There are no towing fees, admin fees or hidden charges taken out of your offer.",
+      "Yes. Pickup and car removal are free throughout our Toowoomba Region service area, whether the car drives or not. There are no towing fees, admin fees or hidden charges taken out of your offer.",
   },
   {
     question: "Does the car need a roadworthy certificate (RWC)?",
     answer:
-      "No. Because you're selling to a business rather than a private buyer, you don't need to supply a roadworthy certificate. We buy the car exactly as it is.",
+      "It depends on the registration status and how the sale is processed. Queensland says an unregistered vehicle can be sold without a safety certificate, and an exemption applies when a registered vehicle is traded to a licensed motor dealer. Tell us whether the car is registered and we will confirm the paperwork before pickup.",
   },
   {
     question: "What paperwork do I need?",
     answer:
-      "Photo ID and proof you own the car — usually the Queensland registration papers. If the car is unregistered, other proof of ownership works too. We sort the transfer paperwork with you at pickup, and it only takes a few minutes.",
+      "Bring photo ID and proof you own the car — usually the Queensland registration papers, a purchase receipt or another record that identifies the vehicle. Registered and unregistered vehicles have different Queensland requirements, so we confirm the transfer or cancellation steps with you before pickup.",
   },
   {
     question: "Can you buy a car that's still under finance?",
@@ -47,6 +47,11 @@ export const faqs: Faq[] = [
   {
     question: "Which areas do you cover?",
     answer:
-      "All of Brisbane and the Gold Coast, plus surrounding areas including Logan, Ipswich, the Redlands and Moreton Bay. Outside those areas? Ask anyway — we can often make it work.",
+      "Carbase serves the Toowoomba Region only. We collect throughout Toowoomba city and its suburbs, plus communities within the Toowoomba Regional Council boundary such as Highfields, Oakey, Pittsworth, Crows Nest, Clifton and Millmerran.",
+  },
+  {
+    question: "Do you offer cash for cars and car removal in Toowoomba?",
+    answer:
+      "Yes. Carbase provides cash for cars and free car removal throughout the Toowoomba Region, including Glenvale, Rangeville, Drayton, Highfields and other locations within the Regional Council boundary. Request a free quote and we will arrange payment before collection.",
   },
 ];

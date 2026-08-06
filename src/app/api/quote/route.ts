@@ -1,8 +1,18 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import { site } from "@/config/site";
+import {
+  logQuoteDeliveryFailure,
+  logQuoteDeliveryUnavailable,
+  quoteDeliveryUnavailable,
+  resolveQuoteDelivery,
+} from "@/lib/quoteDelivery.mjs";
 
 export const runtime = "nodejs";
+
+// Verified private destination for quote leads. Keep this server-side: it is
+// not a public NAP/contact email and must not be emitted into page metadata.
+const DEFAULT_QUOTE_TO_EMAIL = "mehdiamiry40@gmail.com";
 
 const MAX_PHOTOS = 5;
 const MAX_PHOTO_BYTES = 3_000_000;
@@ -89,16 +99,18 @@ export async function POST(request: Request) {
 
   const summary = `${lead.year} ${lead.make} ${lead.model}`;
 
-  const apiKey = process.env.RESEND_API_KEY;
-  if (!apiKey) {
-    // Email delivery not configured yet — log the lead so it isn't lost,
-    // and still show the visitor a success message.
-    console.log("[quote lead — RESEND_API_KEY not set, not emailed]", {
-      ...lead,
-      photos: photos.map((p) => `${p.name} (${Math.round(p.size / 1024)} KB)`),
-    });
-    return NextResponse.json({ ok: true, delivered: false });
+  const delivery = resolveQuoteDelivery(process.env, DEFAULT_QUOTE_TO_EMAIL);
+  if (!delivery) {
+    // Fail closed: do not claim receipt when there is no delivery path, and do
+    // not put a customer's contact or vehicle details into server logs.
+    logQuoteDeliveryUnavailable();
+    return NextResponse.json(
+      quoteDeliveryUnavailable.body,
+      { status: quoteDeliveryUnavailable.status },
+    );
   }
+
+  const { apiKey, destination, sender } = delivery;
 
   const rows = [
     ["Car", summary],
@@ -138,8 +150,8 @@ export async function POST(request: Request) {
     );
 
     const { error } = await resend.emails.send({
-      from: process.env.QUOTE_FROM_EMAIL ?? "Carbase Website <onboarding@resend.dev>",
-      to: process.env.QUOTE_TO_EMAIL ?? site.email,
+      from: sender,
+      to: destination,
       replyTo: lead.email || undefined,
       subject: `New quote request: ${summary} — ${lead.name} (${lead.phone})`,
       html,
@@ -147,14 +159,14 @@ export async function POST(request: Request) {
     });
 
     if (error) {
-      console.error("[quote lead] Resend error:", error, { lead: { ...lead } });
+      logQuoteDeliveryFailure();
       return NextResponse.json(
         { ok: false, error: "We couldn't send your request just now — please call us instead." },
         { status: 502 },
       );
     }
-  } catch (err) {
-    console.error("[quote lead] send failed:", err, { lead: { ...lead } });
+  } catch {
+    logQuoteDeliveryFailure();
     return NextResponse.json(
       { ok: false, error: "We couldn't send your request just now — please call us instead." },
       { status: 502 },
