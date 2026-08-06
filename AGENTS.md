@@ -8,11 +8,11 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 <!-- END:nextjs-agent-rules -->
 
-## Cursor Cloud specific instructions
+## Carbase project instructions
 
 Carbase is a single Next.js 16 (App Router, Turbopack) marketing + lead-gen site. There is no database, backend service, or monorepo — only the dev server plus one dynamic API route (`/api/quote`).
 
-- Run the app: `npm run dev` serves everything at `http://localhost:3000` (dev server started via `npm install` in the update script). `npm run build` produces the production build.
-- Type checking / "lint": there is no ESLint or test tooling configured. `npm run build` runs the TypeScript type check, so use it as the type/CI gate before committing.
-- Quote form (`POST /api/quote`): required fields are `make`, `model`, `year`, `name`, `phone`, `suburb`. When `RESEND_API_KEY` is unset, leads are logged to the server console and the API returns `{ ok: true, delivered: false }` — the form still shows success to the user, so email is optional for local testing. Set `RESEND_API_KEY`, `QUOTE_TO_EMAIL`, `QUOTE_FROM_EMAIL` (see `.env.example`) only to verify real email delivery.
+- Install with `npm install`; `npm run dev` serves the site at `http://localhost:3000`. Before committing, run `npm test`, `npm run typecheck`, and `npm run build`.
+- Carbase serves the Toowoomba Region only. Keep customer-facing service claims, location content, metadata, structured data, canonicals, and the sitemap scoped to that region; do not add other service locations. The canonical production origin is `https://carbase.au`.
+- Quote form (`POST /api/quote`): required fields are `make`, `model`, `year`, `name`, `phone`, `suburb`. Delivery requires `RESEND_API_KEY`; when delivery is unavailable, the endpoint must fail closed and must not log customer or vehicle details. `QUOTE_TO_EMAIL` and `QUOTE_FROM_EMAIL` are optional server-side overrides documented in `.env.example`.
 - Remote images (`images.unsplash.com`) are configured in `next.config.ts`; pages still work if they fail to load.
