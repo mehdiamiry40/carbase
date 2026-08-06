@@ -263,19 +263,19 @@ export function LightTruckIcon(props: IconProps) {
 /* ── Logo ────────────────────────────────────────────────────────────── */
 
 /**
- * Carbase mark — a geometric car resting on a solid “base” plank.
- * Reads clearly from favicon size up to header/footer lockups.
+ * Carbase mark — a side-profile car resting on a solid “base” plank.
+ * Tuned to stay legible from favicon size up to header/footer lockups.
  */
 export function LogoMark({
   onLight = false,
-  className = "size-9",
+  className = "size-10",
 }: {
   onLight?: boolean;
   className?: string;
 }) {
   const bg = onLight ? "#0a2f68" : "#dc1f4b";
   const fg = "#ffffff";
-  const base = onLight ? "#dc1f4b" : "#ffffff";
+  const plank = onLight ? "#dc1f4b" : "#ffffff";
 
   return (
     <svg
@@ -286,18 +286,23 @@ export function LogoMark({
       focusable="false"
     >
       <rect width="48" height="48" fill={bg} />
-      {/* Body + cabin */}
+      {/* Cabin roof */}
       <path
         fill={fg}
-        d="M8.5 27.8h31v-3.4c0-1.35-.82-2.55-2.08-3.02l-4.7-1.72-3.35-5.4A3.15 3.15 0 0 0 26.7 12.5h-7.4a3.15 3.15 0 0 0-2.67 1.76l-3.35 5.4-4.7 1.72A3.2 3.2 0 0 0 6.5 24.4v3.4h2z"
+        d="M16.5 14h11.2c1.1 0 2.1.55 2.7 1.45l3.1 4.85H13.4l3.1-4.85A3.2 3.2 0 0 1 16.5 14z"
       />
-      {/* Window cutout */}
-      <path fill={bg} d="M19.6 16.2h8.2l2.35 4.7H17.25l2.35-4.7z" />
-      {/* Wheels (cut through body into badge) */}
-      <circle cx="16.2" cy="28.2" r="3.7" fill={bg} stroke={fg} strokeWidth="2.6" />
-      <circle cx="31.8" cy="28.2" r="3.7" fill={bg} stroke={fg} strokeWidth="2.6" />
-      {/* Base plank */}
-      <rect x="8" y="35.5" width="32" height="5" fill={base} />
+      {/* Body / chassis */}
+      <path
+        fill={fg}
+        d="M7 25.2h34v-3.1c0-1.2-.75-2.25-1.9-2.65L34.5 18H13.5l-4.6 1.45A2.8 2.8 0 0 0 7 22.1v3.1z"
+      />
+      {/* Window band (side-profile cue) */}
+      <rect x="15.5" y="16.2" width="14.5" height="3.6" fill={bg} />
+      {/* Wheels */}
+      <circle cx="15.5" cy="27.2" r="4" fill={bg} stroke={fg} strokeWidth="2.8" />
+      <circle cx="32.5" cy="27.2" r="4" fill={bg} stroke={fg} strokeWidth="2.8" />
+      {/* Base plank — the “base” in Carbase */}
+      <rect x="7" y="34.5" width="34" height="6" fill={plank} />
     </svg>
   );
 }
@@ -305,13 +310,13 @@ export function LogoMark({
 /** Carbase lockup: mark + wordmark for light or dark bands. */
 export function Logo({ onLight = false }: { onLight?: boolean }) {
   return (
-    <span className="inline-flex items-center gap-2.5">
-      <LogoMark onLight={onLight} className="size-9 shrink-0 sm:size-10" />
+    <span className="inline-flex items-center gap-3">
+      <LogoMark onLight={onLight} className="size-10 shrink-0" />
       <span
-        className={`font-display text-[1.55rem] font-semibold leading-none tracking-[0.07em] sm:text-[1.65rem] ${onLight ? "text-ink-900" : "text-white"}`}
+        className={`font-display text-[1.6rem] font-semibold leading-none tracking-[0.08em] ${onLight ? "text-ink-900" : "text-white"}`}
       >
         CAR
-        <span className={onLight ? "text-brand-700" : "text-brand-200"}>
+        <span className={onLight ? "text-brand-700" : "text-brand-300"}>
           BASE
         </span>
       </span>

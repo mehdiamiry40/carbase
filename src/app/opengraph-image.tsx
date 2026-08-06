@@ -23,7 +23,7 @@ export default function OpenGraphImage() {
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: 22 }}>
-          {/* Logo mark — car on base */}
+          {/* Logo mark — car on base (OG-friendly geometry) */}
           <div
             style={{
               display: "flex",
@@ -31,28 +31,64 @@ export default function OpenGraphImage() {
               height: 72,
               background: "#0a2f68",
               position: "relative",
-              alignItems: "center",
-              justifyContent: "center",
+              overflow: "hidden",
             }}
           >
             <div
               style={{
-                display: "flex",
-                width: 46,
-                height: 22,
+                position: "absolute",
+                top: 18,
+                left: 20,
+                width: 32,
+                height: 12,
                 background: "#ffffff",
-                marginBottom: 10,
-                clipPath:
-                  "polygon(18% 0%, 82% 0%, 92% 45%, 100% 45%, 100% 100%, 0% 100%, 0% 45%, 8% 45%)",
+                display: "flex",
               }}
             />
             <div
               style={{
                 position: "absolute",
-                bottom: 10,
-                left: 12,
-                right: 12,
-                height: 8,
+                top: 28,
+                left: 10,
+                width: 52,
+                height: 14,
+                background: "#ffffff",
+                display: "flex",
+              }}
+            />
+            <div
+              style={{
+                position: "absolute",
+                top: 38,
+                left: 16,
+                width: 12,
+                height: 12,
+                borderRadius: 999,
+                border: "4px solid #ffffff",
+                background: "#0a2f68",
+                display: "flex",
+              }}
+            />
+            <div
+              style={{
+                position: "absolute",
+                top: 38,
+                left: 44,
+                width: 12,
+                height: 12,
+                borderRadius: 999,
+                border: "4px solid #ffffff",
+                background: "#0a2f68",
+                display: "flex",
+              }}
+            />
+            <div
+              style={{
+                position: "absolute",
+                bottom: 8,
+                left: 10,
+                width: 52,
+                height: 9,
                 background: "#dc1f4b",
                 display: "flex",
               }}
