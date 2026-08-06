@@ -103,7 +103,8 @@ export function SiteFooter() {
 
         <div className="mt-14 flex flex-col gap-5 border-t border-white/25 pt-7 text-xs text-white/60 sm:flex-row sm:items-start sm:justify-between">
           <p>
-            © {new Date().getFullYear()} {site.legalName}. All rights reserved.
+            © {new Date().getFullYear()} {site.legalName}. ABN {site.abn}. All
+            rights reserved.
           </p>
           <p className="max-w-xl sm:text-right">
             Serving Brisbane, Gold Coast, Toowoomba, Logan, Ipswich, Redlands

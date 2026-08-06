@@ -81,7 +81,7 @@ export const localPages: LocalPage[] = [
       {
         question: "How much cash can I get for my car in Toowoomba?",
         answer:
-          "It depends on the make, model, year, kilometres and condition, plus what the parts and metal are currently worth. Rather than guess, send the details through the quote form — the offer is free, comes back the same day during business hours, and there is no obligation to accept it.",
+          "It depends on the make, model, year, kilometres and condition, plus what the parts and metal are currently worth. Rather than guess, send the details through the quote form — the offer is free, usually comes back the same day during business hours, and there is no obligation to accept it.",
       },
       {
         question: "Do you pay cash for cars that do not run?",
@@ -174,7 +174,7 @@ export const localPages: LocalPage[] = [
       {
         question: "How quickly can you remove a car in Toowoomba?",
         answer:
-          "Quotes usually go out the same day during business hours, and once you accept, removal is generally arranged within a day or two depending on where in the Toowoomba region the car is and how the week's runs are scheduled.",
+          "Quotes usually go out the same day during business hours. Once you accept, we arrange removal around your location and the available collection schedule.",
       },
       {
         question: "Do I have to be home when the car is removed?",

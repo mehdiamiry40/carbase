@@ -1,34 +1,23 @@
-// ─────────────────────────────────────────────────────────────────────────
-//  EDIT YOUR REAL BUSINESS DETAILS HERE.
-//  The whole site (header, footer, contact buttons, SEO tags, emails)
-//  reads from this one file — update it here and it changes everywhere.
-//  Values marked PLACEHOLDER must be replaced before launch.
-// ─────────────────────────────────────────────────────────────────────────
+// Verified business details used throughout the site. Keep display values and
+// their machine-readable counterparts in sync when the business changes them.
 
 export const site = {
   name: "Carbase",
-  legalName: "Carbase", // shown in the footer, e.g. "Carbase Pty Ltd"
+  legalName: "Emir Group Pty Ltd",
   tagline: "Cash for old, damaged and junk cars across South East Queensland",
   description:
     "Carbase buys old, damaged, unwanted and junk cars across Brisbane, the Gold Coast and Toowoomba. Free quote, free car removal and payment before collection.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://carbase.com.au",
 
-  phone: "0400 000 000", // PLACEHOLDER — your real mobile/landline
-  email: "quotes@carbase.com.au", // PLACEHOLDER — your real inbox
-  hours: "7 days, 7am – 7pm", // PLACEHOLDER — your real hours
-  abn: "ABN 00 000 000 000", // PLACEHOLDER — your ABN
+  phone: "0410 233 335",
+  hours: "8am–5pm, 7 days a week",
+  abn: "62 351 619 456",
 
   // Machine-readable version of `hours`, used for opening-hours structured
-  // data. Keep these two in sync — Google treats a mismatch between what the
-  // page says and what the schema says as a quality signal against you.
-  opens: "07:00", // PLACEHOLDER
-  closes: "19:00", // PLACEHOLDER
-
-  // Region the business trades in. There is no shopfront address to publish,
-  // so structured data carries the state only — never invent a street address
-  // for a LocalBusiness, it is a fast way to lose a Google Business listing.
-  addressRegion: "QLD",
-  addressCountry: "AU",
+  // data. The business has no public street address, so none is configured or
+  // emitted in structured data.
+  opens: "08:00",
+  closes: "17:00",
 
   serviceRegion: "Brisbane, Gold Coast, Toowoomba & SEQ",
 } as const;

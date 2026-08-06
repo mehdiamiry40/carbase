@@ -32,7 +32,7 @@ export const areas: Area[] = [
     name: "Brisbane",
     short: "Brisbane",
     intro:
-      "From the CBD out to the bayside, we buy old, damaged and unwanted cars across Brisbane. Tell us about your car in the morning and in most cases we can inspect, pay and collect it the same day.",
+      "From the CBD out to the bayside, we buy old, damaged and unwanted cars across Brisbane. Tell us about your car and we will usually prepare a quote the same day during business hours, then arrange pickup around a suitable collection time.",
     suburbs: [
       "Brisbane CBD",
       "Fortitude Valley",
@@ -214,7 +214,7 @@ export const areas: Area[] = [
       {
         question: "How long does it take to get a car collected in Toowoomba?",
         answer:
-          "Most Toowoomba quotes go out the same day during business hours. Once you accept, collection is usually arranged within a day or two depending on where in the region you are and how our runs are scheduled that week.",
+          "Most Toowoomba quotes go out the same day during business hours. Once you accept, we arrange collection around your location and the available schedule.",
       },
     ],
   },

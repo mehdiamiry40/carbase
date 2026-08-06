@@ -48,7 +48,7 @@ export default function HowItWorksPage() {
             <span className="text-gradient">four steps</span>
           </>
         }
-        lede="Most sales wrap up within a day or two of the first message — and often the same day. Here's the whole process, start to finish."
+        lede="Quotes usually go out the same day during business hours. Once you accept, we arrange the remaining steps around a suitable collection time. Here's the whole process, start to finish."
       />
 
       <section className="bg-white py-24">

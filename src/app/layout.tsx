@@ -2,8 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Barlow, Open_Sans } from "next/font/google";
 import "./globals.css";
 import { site } from "@/config/site";
-import { areas, getArea } from "@/data/areas";
-import { localPages } from "@/data/localPages";
+import { businessJsonLd } from "@/lib/structuredData";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { MobileCtaBar } from "@/components/MobileCtaBar";
@@ -77,80 +76,6 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   // Matches the navy tile the logo mark sits in.
   themeColor: "#0a2f68",
-};
-
-const businessJsonLd = {
-  "@context": "https://schema.org",
-  "@type": ["LocalBusiness", "AutomotiveBusiness"],
-  "@id": `${site.url}/#business`,
-  name: site.name,
-  description: site.description,
-  url: site.url,
-  telephone: site.phone,
-  email: site.email,
-  areaServed: areas.map((a) => ({ "@type": "City", name: a.short })),
-  priceRange: "$",
-  address: {
-    "@type": "PostalAddress",
-    addressRegion: site.addressRegion,
-    addressCountry: site.addressCountry,
-  },
-  openingHoursSpecification: {
-    "@type": "OpeningHoursSpecification",
-    dayOfWeek: [
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-      "Sunday",
-    ],
-    opens: site.opens,
-    closes: site.closes,
-  },
-  contactPoint: {
-    "@type": "ContactPoint",
-    telephone: site.phone,
-    contactType: "sales",
-    areaServed: "AU-QLD",
-    availableLanguage: "English",
-  },
-  // Each offer points at the page that sells it, so the service and the
-  // landing page are understood as the same thing.
-  makesOffer: [
-    {
-      "@type": "Offer",
-      itemOffered: {
-        "@type": "Service",
-        name: "Cash for old, damaged and junk cars with free vehicle pickup",
-        areaServed: [
-          "Brisbane",
-          "Gold Coast",
-          "Toowoomba",
-          "South East Queensland",
-        ],
-      },
-    },
-    {
-      "@type": "Offer",
-      itemOffered: {
-        "@type": "Service",
-        name: "Free car removal across South East Queensland",
-        areaServed: ["Brisbane", "Gold Coast", "Toowoomba"],
-      },
-    },
-    ...localPages.map((page) => ({
-      "@type": "Offer",
-      url: `${site.url}/${page.slug}`,
-      itemOffered: {
-        "@type": "Service",
-        name: page.serviceName,
-        serviceType: page.serviceType,
-        areaServed: getArea(page.areaSlug)?.short ?? page.areaSlug,
-      },
-    })),
-  ],
 };
 
 const websiteJsonLd = {

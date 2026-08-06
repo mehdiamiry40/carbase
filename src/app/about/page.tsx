@@ -56,10 +56,10 @@ export default function AboutPage() {
               </p>
               <p>
                 So we built the alternative. Tell us about your car once, get a
-                fair cash offer fast, and have the whole thing done —
-                inspection, paperwork, payment and pickup — often within a day.
-                That&apos;s the entire business: buying cars across Brisbane,
-                the Gold Coast and Toowoomba and making it feel easy.
+                fair cash offer fast, then arrange the inspection, paperwork,
+                payment and pickup around a suitable collection time. That&apos;s
+                the entire business: buying cars across Brisbane, the Gold
+                Coast and Toowoomba and making it feel easy.
               </p>
               <p>
                 We specialise in ageing cars, accident-damaged vehicles, utes

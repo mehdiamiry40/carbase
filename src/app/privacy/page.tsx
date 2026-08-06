@@ -1,4 +1,4 @@
-import { site } from "@/config/site";
+import { site, telHref } from "@/config/site";
 import { pageMetadata } from "@/lib/metadata";
 import { PageHero } from "@/components/sections";
 
@@ -49,12 +49,12 @@ export default function PrivacyPage() {
             </h2>
             <p className="mt-3 text-[15px] leading-relaxed text-slate-600">
               You can ask us at any time what information we hold about you, or
-              ask us to correct or delete it, by emailing{" "}
+              ask us to correct or delete it, by calling{" "}
               <a
-                href={`mailto:${site.email}`}
+                href={telHref}
                 className="font-semibold text-brand-700 hover:underline"
               >
-                {site.email}
+                {site.phone}
               </a>
               . This policy is provided under the Australian Privacy Principles
               in the Privacy Act 1988 (Cth).
