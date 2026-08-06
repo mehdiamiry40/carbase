@@ -89,15 +89,19 @@ export async function POST(request: Request) {
 
   const summary = `${lead.year} ${lead.make} ${lead.model}`;
 
-  const apiKey = process.env.RESEND_API_KEY;
+  const apiKey = process.env.RESEND_API_KEY?.trim();
+  const destination = process.env.QUOTE_TO_EMAIL?.trim() || site.email;
   if (!apiKey) {
-    // Email delivery not configured yet — log the lead so it isn't lost,
-    // and still show the visitor a success message.
-    console.log("[quote lead — RESEND_API_KEY not set, not emailed]", {
-      ...lead,
-      photos: photos.map((p) => `${p.name} (${Math.round(p.size / 1024)} KB)`),
-    });
-    return NextResponse.json({ ok: true, delivered: false });
+    // Fail closed: never tell a customer their enquiry was received when no
+    // delivery path exists, and never write their details to server logs.
+    console.warn("[quote] Email delivery is not configured. Set RESEND_API_KEY.");
+    return NextResponse.json(
+      {
+        ok: false,
+        error: "Online quote requests are temporarily unavailable. Please call us instead.",
+      },
+      { status: 503 },
+    );
   }
 
   const rows = [
@@ -139,7 +143,7 @@ export async function POST(request: Request) {
 
     const { error } = await resend.emails.send({
       from: process.env.QUOTE_FROM_EMAIL ?? "Carbase Website <onboarding@resend.dev>",
-      to: process.env.QUOTE_TO_EMAIL ?? site.email,
+      to: destination,
       replyTo: lead.email || undefined,
       subject: `New quote request: ${summary} — ${lead.name} (${lead.phone})`,
       html,
@@ -147,14 +151,14 @@ export async function POST(request: Request) {
     });
 
     if (error) {
-      console.error("[quote lead] Resend error:", error, { lead: { ...lead } });
+      console.error("[quote] delivery failed.");
       return NextResponse.json(
         { ok: false, error: "We couldn't send your request just now — please call us instead." },
         { status: 502 },
       );
     }
-  } catch (err) {
-    console.error("[quote lead] send failed:", err, { lead: { ...lead } });
+  } catch {
+    console.error("[quote] delivery failed.");
     return NextResponse.json(
       { ok: false, error: "We couldn't send your request just now — please call us instead." },
       { status: 502 },
