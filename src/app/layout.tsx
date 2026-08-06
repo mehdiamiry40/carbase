@@ -7,6 +7,7 @@ import { serializeJsonLd } from "@/lib/jsonLd";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { MobileCtaBar } from "@/components/MobileCtaBar";
+import { SiteAnalytics } from "@/components/SiteAnalytics";
 
 const openSans = Open_Sans({
   subsets: ["latin"],
@@ -105,6 +106,7 @@ export default function RootLayout({
         {/* spacer so the sticky mobile bar never covers footer content */}
         <div className="h-20 bg-ink-950 md:hidden" aria-hidden />
         <MobileCtaBar />
+        <SiteAnalytics />
       </body>
     </html>
   );

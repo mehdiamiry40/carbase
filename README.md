@@ -32,7 +32,8 @@ Also included: sitemap (`/sitemap.xml`), robots rules, Organization and service 
    - `QUOTE_FROM_EMAIL` — optional; keep the testing sender until you have a verified domain
    Without an API key the quote endpoint returns `503`, the form shows the customer an error, and no customer details are written to logs.
 6. **`NEXT_PUBLIC_SITE_URL`** — set to your real domain when you connect one (used for SEO tags and the sitemap).
-7. **`/privacy`** — starter text only, not legal advice; review before launch.
+7. **Analytics** — set `NEXT_PUBLIC_GA_MEASUREMENT_ID` to the GA4 web stream ID. The site records page views, successful quote requests as `generate_lead`, and phone-link clicks as `phone_click`; quote and vehicle details are never included in analytics events.
+8. **`/privacy`** — starter text only, not legal advice; review before launch.
 
 ## Develop
 
@@ -46,4 +47,4 @@ npm run build   # production build
 
 ## Deploy
 
-The site deploys cleanly to [Vercel](https://vercel.com) — import the repo, add the environment variables from `.env.example`, and deploy. Remember to add `RESEND_API_KEY`, `QUOTE_TO_EMAIL` and `NEXT_PUBLIC_SITE_URL` in the Vercel project settings.
+The site deploys cleanly to [Vercel](https://vercel.com) — import the repo, add the environment variables from `.env.example`, and deploy. Remember to add `RESEND_API_KEY`, `QUOTE_TO_EMAIL`, `NEXT_PUBLIC_SITE_URL` and `NEXT_PUBLIC_GA_MEASUREMENT_ID` in the Vercel project settings.

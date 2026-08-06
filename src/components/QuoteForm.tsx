@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { site, telHref } from "@/config/site";
+import { trackQuoteSubmission } from "@/components/SiteAnalytics";
 import {
   ArrowLeftIcon,
   ArrowRightIcon,
@@ -226,12 +227,14 @@ export function QuoteForm({ heading = "Get your free quote" }: { heading?: strin
     setStatus("submitting");
     try {
       const res = await fetch("/api/quote", { method: "POST", body: data });
+      const body = (await res.json().catch(() => null)) as {
+        delivered?: boolean;
+        error?: string;
+      } | null;
       if (!res.ok) {
-        const body = (await res.json().catch(() => null)) as {
-          error?: string;
-        } | null;
         throw new Error(body?.error ?? "Something went wrong sending your details.");
       }
+      if (body?.delivered) trackQuoteSubmission();
       setStatus("success");
       photos.forEach((p) => URL.revokeObjectURL(p.previewUrl));
     } catch (e) {
