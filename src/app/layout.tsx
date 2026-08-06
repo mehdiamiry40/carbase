@@ -71,7 +71,8 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#1d2747",
+  // Matches the navy tile the logo mark sits in.
+  themeColor: "#0a2f68",
 };
 
 const businessJsonLd = {

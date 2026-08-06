@@ -1,9 +1,12 @@
 import { ImageResponse } from "next/og";
+import { logoMarkSvg } from "@/lib/logo";
 
 export const alt =
   "Carbase — Cash for old, damaged and junk cars across Brisbane and the Gold Coast";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
+
+const markSrc = `data:image/svg+xml;base64,${Buffer.from(logoMarkSvg()).toString("base64")}`;
 
 export default function OpenGraphImage() {
   return new ImageResponse(
@@ -23,117 +26,9 @@ export default function OpenGraphImage() {
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: 22 }}>
-          {/* Tow-truck mark (OG-friendly blocks) */}
-          <div
-            style={{
-              display: "flex",
-              width: 72,
-              height: 72,
-              background: "#0a2f68",
-              position: "relative",
-              overflow: "hidden",
-            }}
-          >
-            {/* Cab */}
-            <div
-              style={{
-                position: "absolute",
-                top: 28,
-                left: 9,
-                width: 24,
-                height: 16,
-                background: "#ffffff",
-                display: "flex",
-              }}
-            />
-            {/* Bed */}
-            <div
-              style={{
-                position: "absolute",
-                top: 37,
-                left: 33,
-                width: 24,
-                height: 6,
-                background: "#ffffff",
-                display: "flex",
-              }}
-            />
-            {/* Boom mast */}
-            <div
-              style={{
-                position: "absolute",
-                top: 12,
-                left: 52,
-                width: 6,
-                height: 24,
-                background: "#ffffff",
-                display: "flex",
-              }}
-            />
-            {/* Boom arm */}
-            <div
-              style={{
-                position: "absolute",
-                top: 12,
-                left: 35,
-                width: 23,
-                height: 5,
-                background: "#ffffff",
-                display: "flex",
-              }}
-            />
-            {/* Hook cable */}
-            <div
-              style={{
-                position: "absolute",
-                top: 17,
-                left: 37,
-                width: 3,
-                height: 12,
-                background: "#dc1f4b",
-                display: "flex",
-              }}
-            />
-            {/* Wheels */}
-            <div
-              style={{
-                position: "absolute",
-                top: 44,
-                left: 14,
-                width: 12,
-                height: 12,
-                borderRadius: 999,
-                border: "3px solid #ffffff",
-                background: "#0a2f68",
-                display: "flex",
-              }}
-            />
-            <div
-              style={{
-                position: "absolute",
-                top: 44,
-                left: 44,
-                width: 12,
-                height: 12,
-                borderRadius: 999,
-                border: "3px solid #ffffff",
-                background: "#0a2f68",
-                display: "flex",
-              }}
-            />
-            {/* Ground */}
-            <div
-              style={{
-                position: "absolute",
-                bottom: 6,
-                left: 10,
-                width: 52,
-                height: 5,
-                background: "#dc1f4b",
-                display: "flex",
-              }}
-            />
-          </div>
+          {/* Satori rasterises images but not arbitrary SVG elements, so the
+              mark comes in as a data URI rather than being rebuilt in divs. */}
+          <img src={markSrc} width={76} height={76} alt="" />
           <div
             style={{
               display: "flex",
