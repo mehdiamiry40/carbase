@@ -1,3 +1,5 @@
+import type { Faq } from "@/data/faqs";
+
 export type Area = {
   slug: string;
   name: string;
@@ -5,12 +7,23 @@ export type Area = {
   short: string;
   intro: string;
   suburbs: string[];
+  /** Surrounding towns we also cover — picks up long-tail "near me" searches */
+  nearby?: string[];
+  /**
+   * Optional hero overrides. Used when an area has its own dedicated keyword
+   * landing pages — the area page then plays a supporting, coverage-focused
+   * role, so its H1 must not repeat the keyword those pages are targeting.
+   */
+  heroEyebrow?: string;
+  heroTitleLead?: string;
   /** Optional SEO overrides for the area landing page */
   seoTitle?: string;
   seoDescription?: string;
   keywords?: string[];
   /** Extra on-page sections that strengthen local search intent */
   seoSections?: { heading: string; body: string }[];
+  /** Area-specific questions, rendered on the page and as FAQPage schema */
+  faqs?: Faq[];
 };
 
 export const areas: Area[] = [
@@ -129,9 +142,11 @@ export const areas: Area[] = [
     name: "Toowoomba",
     short: "Toowoomba",
     intro:
-      "Looking for cash for cars Toowoomba locals can trust? Carbase buys old, damaged, unwanted and non-running vehicles across Toowoomba and the Darling Downs — with free car removal, a clear cash offer and payment before we take the car.",
+      "Carbase covers Toowoomba and the wider Darling Downs — the CBD, every suburb on the range, and the towns beyond it. Here is where we collect from, how far out we travel, and what to expect when you sell us a car up here.",
+    heroEyebrow: "Service area · Toowoomba",
+    heroTitleLead: "Car buyers across",
     suburbs: [
-      "Toowoomba CBD",
+      "Toowoomba City",
       "Newtown",
       "Rangeville",
       "Middle Ridge",
@@ -139,36 +154,67 @@ export const areas: Area[] = [
       "Harristown",
       "Kearneys Spring",
       "Darling Heights",
-      "Highfields",
       "Glenvale",
       "Centenary Heights",
       "Drayton",
+      "Mount Lofty",
+      "North Toowoomba",
+      "East Toowoomba",
+      "Cranley",
+      "Wilsonton Heights",
     ],
-    seoTitle: "Cash for Cars Toowoomba & Free Car Removal",
+    nearby: [
+      "Highfields",
+      "Westbrook",
+      "Gowrie Junction",
+      "Withcott",
+      "Meringandan West",
+      "Cambooya",
+      "Oakey",
+      "Pittsworth",
+      "Crows Nest",
+      "Hodgson Vale",
+    ],
+    seoTitle: "Car Buyers Toowoomba — Suburbs We Cover",
     seoDescription:
-      "Cash for cars Toowoomba and free car removal Toowoomba with Carbase. We buy old, damaged and junk cars across Toowoomba and surrounds — free quote, free pickup and payment before collection.",
+      "Carbase buys cars right across Toowoomba and the Darling Downs, from the CBD and Rangeville out to Highfields, Oakey and Pittsworth. See the suburbs we cover, then get a free quote with free pickup.",
     keywords: [
-      "cash for cars toowoomba",
-      "car removal toowoomba",
-      "cash for cars Toowoomba",
-      "car removal Toowoomba",
+      "car buyers Toowoomba",
       "sell my car Toowoomba",
-      "junk car removal Toowoomba",
-      "free car removal Toowoomba",
-      "cash for junk cars Toowoomba",
+      "we buy cars Toowoomba",
+      "car removal Darling Downs",
+      "cash for cars Toowoomba suburbs",
+      "scrap car buyers Toowoomba",
     ],
     seoSections: [
       {
-        heading: "Cash for cars Toowoomba — any condition",
-        body: "Whether your car still drives or has been sitting for months, Carbase pays cash for cars in Toowoomba in almost every condition. Old sedans, damaged utes, written-off SUVs, unregistered vehicles and non-runners are all welcome. Tell us the make, model, year and condition for a free no-obligation quote — no roadworthy certificate required.",
+        heading: "Toowoomba and the Darling Downs, suburb by suburb",
+        body: "Carbase covers the whole Toowoomba region rather than just the CBD. We regularly collect from Rangeville, Middle Ridge, Wilsonton, Harristown, Glenvale and Centenary Heights, and we head out to Highfields, Westbrook, Withcott, Oakey, Pittsworth and Crows Nest just as readily. If your suburb is not listed below, ask anyway — the range is a guide, not a boundary.",
       },
       {
-        heading: "Free car removal across Toowoomba",
-        body: "Need car removal in Toowoomba without towing fees? We collect from your home, workplace or roadside across Toowoomba and nearby suburbs. With free car removal, you keep the agreed cash amount — paid before the vehicle leaves — with no admin fees, no surprise deductions and no waiting around for a private buyer.",
+        heading: "One team for the whole sale",
+        body: "The same people who quote your car are the ones who turn up to collect it. That means no third-party towing contractor, no handover between call centres and no renegotiation on the driveway. You get a firm figure up front, a collection time that suits you, and the money in your account before the car is loaded.",
       },
       {
-        heading: "Sell your car fast across the Darling Downs",
-        body: "From the CBD and Rangeville through to Highfields, Glenvale and Drayton, we make selling a car in Toowoomba simple. Most quotes go out the same day during business hours, and collection can often be arranged quickly once you accept. Whether you need cash for cars or reliable car removal in Toowoomba, start with a free quote and we will handle the rest.",
+        heading: "Selling from a rural block or acreage",
+        body: "Plenty of cars on the Downs have been sitting in a shed or back paddock for years. Flat tyres, no battery, no rego, half-dismantled — none of that stops us. Tell us roughly where the vehicle sits and how much room there is to get a truck in, and we will let you know what is possible when we send the quote.",
+      },
+    ],
+    faqs: [
+      {
+        question: "Do you charge to come out to Toowoomba from Brisbane?",
+        answer:
+          "No. Pickup is free everywhere we operate, and that includes Toowoomba and the surrounding Darling Downs towns. The travel is our cost, not yours — the figure we quote is the figure that lands in your account.",
+      },
+      {
+        question: "Which Toowoomba suburbs do you collect from?",
+        answer:
+          "All of them. We are in Rangeville, Newtown, Wilsonton, Harristown, Glenvale, Middle Ridge, Kearneys Spring, Drayton and the CBD most often, and we also cover Highfields, Westbrook, Gowrie Junction, Withcott, Cambooya, Oakey, Pittsworth and Crows Nest.",
+      },
+      {
+        question: "How long does it take to get a car collected in Toowoomba?",
+        answer:
+          "Most Toowoomba quotes go out the same day during business hours. Once you accept, collection is usually arranged within a day or two depending on where in the region you are and how our runs are scheduled that week.",
       },
     ],
   },
