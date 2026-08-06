@@ -6,43 +6,72 @@ import { Photo } from "@/components/Photo";
 import { Reveal } from "@/components/Reveal";
 import {
   AreaCards,
-  BrandMarquee,
   CtaBanner,
   FaqList,
-  SectionHeading,
-  StatBand,
   StepsGrid,
 } from "@/components/sections";
 import {
   ArrowRightIcon,
+  BanknoteIcon,
   FourWdIcon,
   LightTruckIcon,
+  MapPinIcon,
   SedanIcon,
   SuvIcon,
+  TruckIcon,
   UteIcon,
   VanIcon,
 } from "@/components/icons";
 
 const vehicleTypes = [
-  { Icon: SedanIcon, label: "Sedans & hatches" },
-  { Icon: SuvIcon, label: "SUVs & wagons" },
-  { Icon: UteIcon, label: "Utes" },
-  { Icon: VanIcon, label: "Vans" },
-  { Icon: FourWdIcon, label: "4x4s" },
-  { Icon: LightTruckIcon, label: "Light trucks" },
+  {
+    Icon: SedanIcon,
+    label: "Sedans & hatches",
+    copy: "Old, unwanted and high-kilometre everyday cars.",
+  },
+  {
+    Icon: SuvIcon,
+    label: "SUVs & wagons",
+    copy: "Family vehicles in any age or condition.",
+  },
+  {
+    Icon: UteIcon,
+    label: "Utes",
+    copy: "Work utes, dual-cabs and trade vehicles.",
+  },
+  {
+    Icon: VanIcon,
+    label: "Vans",
+    copy: "Commercial vans, people movers and couriers.",
+  },
+  {
+    Icon: FourWdIcon,
+    label: "4x4s",
+    copy: "Off-road vehicles, projects and damaged 4WDs.",
+  },
+  {
+    Icon: LightTruckIcon,
+    label: "Light trucks",
+    copy: "Small trucks and commercial vehicles.",
+  },
 ];
 
-const offerFactors = [
-  ["Vehicle details", "Make, model, year, kilometres and transmission."],
-  ["Condition", "Mechanical, body, interior and registration condition."],
-  ["Recoverable value", "Usable parts, salvage demand and current scrap value."],
-  ["Collection", "Your suburb, access and whether the vehicle drives."],
-];
-
-const sellerPromises = [
-  ["A clear offer", "You see the amount you will receive before arranging pickup."],
-  ["No collection fee", "Pickup is included throughout our listed service area."],
-  ["Payment first", "Bank transfer is made before the vehicle leaves your possession."],
+const reasons = [
+  {
+    Icon: BanknoteIcon,
+    title: "A clear offer",
+    copy: "Know exactly what you will receive before you arrange collection.",
+  },
+  {
+    Icon: TruckIcon,
+    title: "Pickup included",
+    copy: "We collect from your home or workplace with no towing fee deducted.",
+  },
+  {
+    Icon: MapPinIcon,
+    title: "Local service",
+    copy: "A responsive team covering Brisbane, Gold Coast and surrounding regions.",
+  },
 ];
 
 export default function HomePage() {
@@ -63,182 +92,229 @@ export default function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(homeFaqJsonLd) }}
       />
 
-      <section className="relative min-h-[720px] overflow-hidden bg-ink-900 text-white lg:min-h-[calc(100svh-6rem)]">
+      <section className="relative min-h-[650px] overflow-hidden bg-ink-900 text-white lg:min-h-[760px]">
         <Photo
           name="hero"
           preload
-          alt="Old and wrecked cars in an automotive recycling yard"
+          alt="Old and damaged cars ready to be sold and collected by Carbase"
           className="object-center"
         />
-        <span className="photo-scrim" aria-hidden />
-
-        <div className="shell relative z-10 py-16 lg:py-20">
-          <div className="grid items-center gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
-            <div>
-              <p className="t-index w-fit border-b border-white/70 pb-3">
-                Old, damaged &amp; junk cars · South East Queensland
-              </p>
-              <h1 className="mt-7 max-w-[12ch] font-display text-5xl font-semibold leading-[1.02] tracking-tight text-balance sm:text-6xl lg:text-7xl">
-                We buy old, damaged and junk cars.
-              </h1>
-              <p className="mt-7 max-w-[58ch] text-lg leading-relaxed text-white">
-                Turn the unwanted car taking up space into cash. Carbase buys non-running, accident-damaged, unregistered and end-of-life vehicles across Brisbane and the Gold Coast, with free pickup included.
-              </p>
-              <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-                <Link href="/quote" className="btn-primary bg-white text-ink-900 hover:bg-brand-200">
-                  Get a free quote
-                </Link>
-                <a href={telHref} className="btn-ghost-dark">
-                  Call {site.phone}
-                </a>
-              </div>
+        <span className="photo-scrim-home" aria-hidden />
+        <div className="shell relative z-10 flex min-h-[650px] items-end py-8 sm:py-12 lg:min-h-[760px] lg:py-16">
+          <div className="hero-panel max-w-[680px] border-2 border-white bg-ink-900/62 p-7 backdrop-blur-[2px] sm:p-10 lg:p-12">
+            <p className="t-index text-brand-200">
+              Cash for cars · South East Queensland
+            </p>
+            <h1 className="mt-5 max-w-[12ch] font-display text-5xl font-medium leading-[1.02] tracking-tight text-balance sm:text-6xl lg:text-[4.6rem]">
+              Your old car can still take you somewhere.
+            </h1>
+            <p className="mt-6 max-w-[54ch] text-lg leading-relaxed text-white/90">
+              Carbase buys old, damaged, non-running and unwanted cars across
+              Brisbane and the Gold Coast—with free pickup and payment before
+              collection.
+            </p>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <a href="#quote" className="btn-primary">
+                Get a free quote <ArrowRightIcon className="size-4" />
+              </a>
+              <a href={telHref} className="btn-ghost-dark">
+                Call {site.phone}
+              </a>
             </div>
-
-            <div id="quote" className="lg:pl-6">
-              <QuoteForm heading="Tell us about your car" />
-            </div>
-          </div>
-
-          <div className="mt-14">
-            <StatBand />
           </div>
         </div>
       </section>
 
-      <BrandMarquee />
-
-      <section className="border-t hair bg-white py-16 lg:py-24">
-        <div className="shell grid gap-12 lg:grid-cols-2 lg:items-center lg:gap-20">
+      <section id="quote" className="scroll-mt-28 bg-brand-50 py-16 lg:py-24">
+        <div className="shell grid gap-12 lg:grid-cols-[0.82fr_1.18fr] lg:items-start lg:gap-20">
           <Reveal>
-            <div>
-              <p className="section-rule"><span>How offers are prepared</span><span>01</span></p>
-              <h2 className="mt-7 max-w-[14ch] font-display text-4xl font-semibold leading-[1.08] tracking-tight sm:text-5xl">
-                A useful quote starts with the right details.
+            <div className="lg:sticky lg:top-36">
+              <p className="t-index text-brand-700">Start here</p>
+              <h2 className="mt-5 max-w-[12ch] font-display text-4xl font-medium leading-[1.08] tracking-tight text-ink-900 sm:text-5xl">
+                Tell us about the car. We&apos;ll take it from here.
               </h2>
-              <p className="mt-6 max-w-xl leading-relaxed text-slate-600">
-                Tell us what you are selling once. We use the vehicle details, condition, current market and collection location to prepare your offer—without listings, test drives or weeks of messages.
+              <p className="mt-6 max-w-xl text-lg leading-relaxed text-slate-600">
+                Share the make, model, year and condition. Photos are optional,
+                but they help us prepare a sharper offer without making you wait
+                for an inspection.
               </p>
-              <dl className="mt-8 border-y hair">
-                {offerFactors.map(([term, detail]) => (
-                  <div key={term} className="grid gap-1 border-b hair py-4 last:border-b-0 sm:grid-cols-[10rem_1fr] sm:gap-6">
-                    <dt className="font-semibold text-ink-900">{term}</dt>
-                    <dd className="text-sm text-slate-600">{detail}</dd>
+              <dl className="mt-10 border-y border-brand-200">
+                {[
+                  [
+                    "Usually same day",
+                    "Most enquiries receive a response during business hours.",
+                  ],
+                  [
+                    "No obligation",
+                    "Review the offer and decide in your own time.",
+                  ],
+                  ["No hidden fees", "The agreed amount is what you receive."],
+                ].map(([term, detail]) => (
+                  <div
+                    key={term}
+                    className="grid gap-1 border-b border-brand-200 py-5 last:border-b-0 sm:grid-cols-[10rem_1fr] sm:gap-6"
+                  >
+                    <dt className="font-display text-lg font-semibold text-ink-900">
+                      {term}
+                    </dt>
+                    <dd className="text-sm leading-relaxed text-slate-600">
+                      {detail}
+                    </dd>
                   </div>
                 ))}
               </dl>
-              <Link href="/how-it-works" className="mt-8 inline-flex items-center gap-2 font-semibold underline underline-offset-4">
-                See the full process <ArrowRightIcon className="size-5" />
-              </Link>
             </div>
           </Reveal>
-
           <Reveal delay={100}>
-            <div className="relative min-h-[520px] overflow-hidden bg-brand-100">
-              <Photo name="damaged" alt="An old damaged car that Carbase can quote and collect" sizes="(max-width: 1024px) 100vw, 50vw" />
-              <span className="photo-scrim-soft" aria-hidden />
-              <p className="absolute right-5 bottom-5 left-5 z-10 border-t border-white/60 pt-4 text-sm font-semibold text-white">
-                One enquiry. One clear next step.
-              </p>
-            </div>
+            <QuoteForm heading="Request your free quote" />
           </Reveal>
         </div>
       </section>
 
-      <section className="border-t hair bg-slate-50 py-16 lg:py-24">
+      <section className="bg-white py-16 lg:py-24">
         <div className="shell">
-          <Reveal>
-            <SectionHeading
-              eyebrow="The process · 02"
-              title="From vehicle details to payment in four steps."
-              lede="A simple path from your first enquiry to collection, with no obligation to continue after receiving an offer."
-            />
-          </Reveal>
-          <div className="mt-14"><StepsGrid /></div>
-        </div>
-      </section>
-
-      <section className="relative flex min-h-[520px] items-center overflow-hidden bg-ink-900 text-white">
-        <Photo name="junkyard" alt="Damaged and unwanted cars stored for recycling" />
-        <span className="photo-scrim" aria-hidden />
-        <div className="shell relative z-10 py-20 text-center">
-          <p className="t-index mx-auto w-fit border-b border-white/70 pb-3">Old · Damaged · Not running</p>
-          <h2 className="mx-auto mt-6 max-w-[15ch] font-display text-4xl font-semibold leading-[1.08] sm:text-5xl">
-            If the car is past its best, we still want it.
-          </h2>
-          <p className="mx-auto mt-6 max-w-2xl text-lg text-white">
-            Rust, accident damage, mechanical failure and missing registration are all okay. You do not need to repair, detail or advertise it first.
-          </p>
-          <Link href="/quote" className="btn-primary mt-8 bg-white text-ink-900 hover:bg-brand-200">
-            Request an offer
-          </Link>
-        </div>
-      </section>
-
-      <section className="border-t hair bg-white py-16 lg:py-24">
-        <div className="shell">
-          <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <p className="t-index mb-4 text-brand-700">What we buy · 03</p>
-              <h2 className="font-display text-4xl font-semibold tracking-tight sm:text-5xl">Vehicles of every kind.</h2>
-            </div>
-            <Link href="/quote" className="inline-flex items-center gap-2 font-semibold underline underline-offset-4">
-              Get a quote <ArrowRightIcon className="size-5" />
-            </Link>
+          <div className="grid gap-8 lg:grid-cols-[0.72fr_1.28fr] lg:items-end lg:gap-16">
+            <Reveal>
+              <div>
+                <p className="t-index text-brand-700">What we buy</p>
+                <h2 className="mt-5 font-display text-4xl font-medium leading-[1.08] tracking-tight text-ink-900 sm:text-5xl">
+                  Every make. Every model. Almost every condition.
+                </h2>
+              </div>
+            </Reveal>
+            <p className="max-w-2xl text-lg leading-relaxed text-slate-600 lg:justify-self-end">
+              From a reliable runabout you no longer need to a written-off
+              vehicle that cannot leave the driveway, send us the details. There
+              is no need to repair, detail or advertise it first.
+            </p>
           </div>
-
-          <ul className="mt-10 grid grid-cols-2 border-l border-t hair sm:grid-cols-3 lg:grid-cols-6">
-            {vehicleTypes.map(({ Icon, label }, index) => (
-              <li key={label} className="flex min-h-44 flex-col justify-between border-r border-b hair p-5">
-                <span className="font-mono text-xs text-brand-600">{String(index + 1).padStart(2, "0")}</span>
-                <Icon className="h-9 w-16 text-brand-600" />
-                <span className="font-display text-lg font-semibold text-ink-900">{label}</span>
+          <ul className="mt-12 grid border-l border-t border-slate-200 sm:grid-cols-2 lg:grid-cols-3">
+            {vehicleTypes.map(({ Icon, label, copy }, index) => (
+              <li
+                key={label}
+                className="group min-h-60 border-r border-b border-slate-200 p-7 transition hover:bg-brand-50 sm:p-8"
+              >
+                <div className="flex items-start justify-between gap-5">
+                  <span className="flex size-16 items-center justify-center bg-brand-600 text-white transition group-hover:bg-ink-900">
+                    <Icon className="h-8 w-14" />
+                  </span>
+                  <span className="font-mono text-xs text-slate-400">
+                    0{index + 1}
+                  </span>
+                </div>
+                <h3 className="mt-8 font-display text-2xl font-semibold text-ink-900">
+                  {label}
+                </h3>
+                <p className="mt-3 text-sm leading-relaxed text-slate-600">
+                  {copy}
+                </p>
               </li>
             ))}
           </ul>
-          <p className="mt-5 text-sm text-slate-600">
-            Including old, high-kilometre, damaged, non-running, written-off and unregistered vehicles.
-          </p>
         </div>
       </section>
 
-      <section className="border-t hair bg-ink-900 py-16 text-white lg:py-24">
-        <div className="shell grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
-          <div>
-            <p className="t-index mb-4 text-brand-200">Seller clarity · 04</p>
-            <h2 className="font-display text-4xl font-semibold tracking-tight sm:text-5xl">Know the terms before pickup.</h2>
-            <p className="mt-6 text-brand-200">Clear expectations make a car sale easier for everyone.</p>
-          </div>
-          <dl className="border-y border-white/30">
-            {sellerPromises.map(([term, detail], index) => (
-              <div key={term} className="grid gap-3 border-b border-white/30 py-6 last:border-b-0 sm:grid-cols-[3rem_12rem_1fr] sm:gap-6">
-                <span className="font-mono text-xs text-brand-200">{String(index + 1).padStart(2, "0")}</span>
-                <dt className="font-display text-xl font-semibold">{term}</dt>
-                <dd className="text-sm leading-relaxed text-brand-200">{detail}</dd>
-              </div>
-            ))}
-          </dl>
+      <section className="grid bg-ink-900 text-white lg:grid-cols-2">
+        <div className="relative min-h-[440px] lg:min-h-[650px]">
+          <Photo
+            name="pickup"
+            alt="An unwanted car ready for free collection"
+            sizes="(max-width: 1024px) 100vw, 50vw"
+          />
+          <span className="photo-scrim-soft" aria-hidden />
+        </div>
+        <div className="flex items-center px-6 py-16 sm:px-10 lg:px-16 lg:py-24 xl:px-24">
+          <Reveal>
+            <div className="max-w-xl">
+              <p className="t-index text-brand-200">A simpler sale</p>
+              <h2 className="mt-5 font-display text-4xl font-medium leading-[1.08] tracking-tight sm:text-5xl">
+                A direct way to sell, without the usual runaround.
+              </h2>
+              <p className="mt-6 text-lg leading-relaxed text-white/75">
+                Skip listings, low-ball messages, inspections and test drives.
+                Carbase gives you one clear path from vehicle details to payment
+                and pickup.
+              </p>
+              <ul className="mt-10 border-t border-white/25">
+                {reasons.map(({ Icon, title, copy }) => (
+                  <li
+                    key={title}
+                    className="grid grid-cols-[3rem_1fr] gap-5 border-b border-white/25 py-6"
+                  >
+                    <Icon className="mt-1 size-7 text-brand-300" />
+                    <div>
+                      <h3 className="font-display text-xl font-semibold">
+                        {title}
+                      </h3>
+                      <p className="mt-1 text-sm leading-relaxed text-white/70">
+                        {copy}
+                      </p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+              <Link href="/how-it-works" className="btn-primary mt-9">
+                See how it works <ArrowRightIcon className="size-4" />
+              </Link>
+            </div>
+          </Reveal>
         </div>
       </section>
 
-      <section className="border-t hair bg-slate-50 py-16 lg:py-24">
+      <section className="bg-slate-50 py-16 lg:py-24">
         <div className="shell">
           <Reveal>
-            <SectionHeading
-              eyebrow="Service area · 05"
-              title="Free pickup across Brisbane, the Gold Coast and surrounding regions."
-              lede="Choose your region for local suburb coverage and service information."
-            />
+            <div className="max-w-3xl">
+              <p className="t-index text-brand-700">
+                Four straightforward steps
+              </p>
+              <h2 className="mt-5 font-display text-4xl font-medium leading-[1.08] tracking-tight text-ink-900 sm:text-5xl">
+                From first details to final pickup.
+              </h2>
+              <p className="mt-5 max-w-2xl text-lg leading-relaxed text-slate-600">
+                A clear process, so you always know what happens next.
+              </p>
+            </div>
           </Reveal>
-          <div className="mt-14"><AreaCards /></div>
+          <div className="mt-12">
+            <StepsGrid />
+          </div>
         </div>
       </section>
 
-      <section className="border-t hair bg-white py-16 lg:py-24">
-        <div className="shell grid gap-12 lg:grid-cols-[0.75fr_1.25fr] lg:gap-20">
+      <section className="bg-white py-16 lg:py-24">
+        <div className="shell">
+          <Reveal>
+            <div className="grid gap-8 lg:grid-cols-[0.78fr_1.22fr] lg:items-end lg:gap-16">
+              <div>
+                <p className="t-index text-brand-700">Our service area</p>
+                <h2 className="mt-5 font-display text-4xl font-medium leading-[1.08] tracking-tight text-ink-900 sm:text-5xl">
+                  Local collection, wherever you are.
+                </h2>
+              </div>
+              <p className="max-w-2xl text-lg leading-relaxed text-slate-600 lg:justify-self-end">
+                Free pickup across Brisbane, the Gold Coast, Logan, Ipswich,
+                Redlands and Moreton Bay. Choose your region for local coverage.
+              </p>
+            </div>
+          </Reveal>
+          <div className="mt-12">
+            <AreaCards />
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-brand-50 py-16 lg:py-24">
+        <div className="shell grid gap-12 lg:grid-cols-[0.7fr_1.3fr] lg:gap-20">
           <div>
-            <p className="t-index mb-4 text-brand-700">Useful answers · 06</p>
-            <h2 className="font-display text-4xl font-semibold tracking-tight sm:text-5xl">Before you request a quote.</h2>
-            <Link href="/faq" className="mt-8 inline-flex items-center gap-2 font-semibold underline underline-offset-4">
+            <p className="t-index text-brand-700">Useful answers</p>
+            <h2 className="mt-5 font-display text-4xl font-medium leading-[1.08] tracking-tight text-ink-900 sm:text-5xl">
+              Before you request a quote.
+            </h2>
+            <Link
+              href="/faq"
+              className="mt-8 inline-flex items-center gap-2 font-semibold text-brand-700 underline underline-offset-4"
+            >
               Read all FAQs <ArrowRightIcon className="size-5" />
             </Link>
           </div>
