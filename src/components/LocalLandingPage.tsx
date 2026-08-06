@@ -28,7 +28,9 @@ import {
 export function LocalLandingPage({ page }: { page: LocalPage }) {
   const area = getArea(page.areaSlug);
   const url = `${site.url}/${page.slug}`;
-  const suburbs = area ? [...area.suburbs, ...(area.nearby ?? [])] : [];
+  const exampleLocations = area
+    ? [...area.suburbs, ...(area.nearby ?? [])].slice(0, 6)
+    : [];
   const webPageId = `${url}#webpage`;
   const serviceId = `${url}#service`;
   const faqId = `${url}#faq`;
@@ -43,10 +45,10 @@ export function LocalLandingPage({ page }: { page: LocalPage }) {
     url,
     mainEntityOfPage: { "@id": webPageId },
     provider: { "@id": `${site.url}/#business` },
-    areaServed: [
-      { "@type": "City", name: area?.short ?? page.areaSlug },
-      ...suburbs.map((suburb) => ({ "@type": "Place", name: suburb })),
-    ],
+    areaServed: {
+      "@type": "AdministrativeArea",
+      name: "Toowoomba Region, Queensland",
+    },
     offers: {
       "@type": "Offer",
       priceCurrency: "AUD",
@@ -75,16 +77,9 @@ export function LocalLandingPage({ page }: { page: LocalPage }) {
       {
         "@type": "ListItem",
         position: 2,
-        name: "Service areas",
-        item: `${site.url}/service-areas`,
+        name: page.navLabel,
+        item: url,
       },
-      {
-        "@type": "ListItem",
-        position: 3,
-        name: area?.short ?? "Toowoomba",
-        item: `${site.url}/service-areas/${page.areaSlug}`,
-      },
-      { "@type": "ListItem", position: 4, name: page.navLabel, item: url },
     ],
   };
 
@@ -104,8 +99,8 @@ export function LocalLandingPage({ page }: { page: LocalPage }) {
         breadcrumb: { "@id": breadcrumbId },
         citation: page.officialLinks.map((link) => link.href),
         spatialCoverage: {
-          "@type": "Place",
-          name: `${area?.short ?? "Toowoomba"}, Queensland`,
+          "@type": "AdministrativeArea",
+          name: "Toowoomba Region, Queensland",
         },
       },
       serviceJsonLd,
@@ -252,13 +247,13 @@ export function LocalLandingPage({ page }: { page: LocalPage }) {
             <Reveal>
               <SectionHeading
                 eyebrow="Where we come to you"
-                title={`${page.h1Highlight} suburbs and surrounding towns`}
-                lede="These are the areas we visit most. If yours is not here but you are nearby, ask anyway — we can usually make it work."
+                title="Serving the Toowoomba Region"
+                lede="A few of our regular collection locations are shown below. Our coverage is limited to addresses within the Toowoomba Region."
               />
             </Reveal>
             <Reveal delay={120}>
               <ul className="mx-auto mt-12 flex max-w-3xl flex-wrap justify-center gap-3">
-                {suburbs.map((suburb) => (
+                {exampleLocations.map((suburb) => (
                   <li
                     key={suburb}
                     className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-card transition hover:border-brand-300 hover:text-brand-700"
@@ -268,6 +263,15 @@ export function LocalLandingPage({ page }: { page: LocalPage }) {
                   </li>
                 ))}
               </ul>
+              <div className="mt-9 text-center">
+                <Link
+                  href="/service-areas"
+                  className="inline-flex items-center gap-2 font-semibold text-brand-700 underline underline-offset-4"
+                >
+                  See every Toowoomba Region location we cover
+                  <ArrowRightIcon className="size-4" />
+                </Link>
+              </div>
             </Reveal>
           </div>
         </section>
@@ -311,7 +315,7 @@ export function LocalLandingPage({ page }: { page: LocalPage }) {
 
       <CtaBanner
         title={`Ready to sort out the car?`}
-        subtitle={`Free quote, free pickup and payment before collection — anywhere in ${area?.short ?? page.h1Highlight} and the surrounding region.`}
+        subtitle="Free quote, free pickup and payment before collection throughout the Toowoomba Region."
       />
     </>
   );

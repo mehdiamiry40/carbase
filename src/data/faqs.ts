@@ -22,7 +22,7 @@ export const faqs: Faq[] = [
   {
     question: "Do you really pick the car up for free?",
     answer:
-      "Yes. Pickup and car removal are free anywhere in our service area across Brisbane, the Gold Coast, Toowoomba and surrounds, whether the car drives or not. There are no towing fees, admin fees or hidden charges taken out of your offer.",
+      "Yes. Pickup and car removal are free throughout our Toowoomba Region service area, whether the car drives or not. There are no towing fees, admin fees or hidden charges taken out of your offer.",
   },
   {
     question: "Does the car need a roadworthy certificate (RWC)?",
@@ -47,11 +47,11 @@ export const faqs: Faq[] = [
   {
     question: "Which areas do you cover?",
     answer:
-      "All of Brisbane and the Gold Coast, plus Toowoomba and surrounding areas including Logan, Ipswich, the Redlands and Moreton Bay. Looking for cash for cars Toowoomba or car removal Toowoomba? We cover the Darling Downs as well. Outside those areas? Ask anyway — we can often make it work.",
+      "Carbase serves the Toowoomba Region only. We collect throughout Toowoomba city and its suburbs, plus communities within the Toowoomba Regional Council boundary such as Highfields, Oakey, Pittsworth, Crows Nest, Clifton and Millmerran.",
   },
   {
     question: "Do you offer cash for cars and car removal in Toowoomba?",
     answer:
-      "Yes. Carbase provides cash for cars Toowoomba-wide and free car removal across Toowoomba and nearby suburbs including Highfields, Glenvale, Rangeville and Drayton. Request a free quote and we will arrange payment before collection.",
+      "Yes. Carbase provides cash for cars and free car removal throughout the Toowoomba Region, including Glenvale, Rangeville, Drayton, Highfields and other locations within the Regional Council boundary. Request a free quote and we will arrange payment before collection.",
   },
 ];

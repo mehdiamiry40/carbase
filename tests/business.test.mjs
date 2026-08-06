@@ -57,6 +57,7 @@ test("business schema uses verified optional fields and omits invented ones", ()
 
   assert.equal(fields.legalName, details.legalName);
   assert.equal(fields.telephone, details.phone);
+  assert.equal(fields.contactPoint.areaServed, "Toowoomba Region");
   assert.equal("email" in fields, false);
   assert.equal(fields.taxID, details.abn);
   assert.equal(fields.openingHoursSpecification.opens, details.opens);

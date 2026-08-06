@@ -188,7 +188,7 @@ export const steps = [
   {
     title: "We come to you",
     description:
-      "Happy with the offer? We arrange a time that suits and come to your home or work anywhere in Brisbane, on the Gold Coast or in Toowoomba.",
+      "Happy with the offer? We arrange a time that suits and come to your home, workplace or property within the Toowoomba Region.",
     Icon: TruckIcon,
   },
   {
@@ -286,11 +286,13 @@ export function FaqList({ items = faqs }: { items?: Faq[] }) {
 
 export function AreaCards({ dark = false }: { dark?: boolean }) {
   return (
-    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <div
+      className={`grid gap-4 ${areas.length === 1 ? "max-w-2xl" : "sm:grid-cols-2 lg:grid-cols-3"}`}
+    >
       {areas.map((area, i) => (
         <Reveal key={area.slug} delay={(i % 3) * 100}>
           <Link
-            href={`/service-areas/${area.slug}`}
+            href="/service-areas"
             className={`group flex h-full items-center justify-between gap-4 border p-6 transition duration-200 ${
               dark
                 ? "border-white/30 bg-white/5 backdrop-blur hover:border-white"
@@ -313,7 +315,7 @@ export function AreaCards({ dark = false }: { dark?: boolean }) {
                   dark ? "text-slate-400" : "text-slate-500"
                 }`}
               >
-                {area.suburbs.length}+ suburbs · free pickup
+                {area.suburbs.length + (area.nearby?.length ?? 0)} listed locations · free pickup
               </span>
             </span>
             <ArrowRightIcon
@@ -334,7 +336,7 @@ export function AreaCards({ dark = false }: { dark?: boolean }) {
 
 export function CtaBanner({
   title = "Ready to clear out that old car?",
-  subtitle = "Get a free, no-obligation quote for an old, damaged or unwanted car — with free car removal across Brisbane, the Gold Coast and Toowoomba.",
+  subtitle = "Get a free, no-obligation quote for an old, damaged or unwanted car — with free car removal across the Toowoomba Region.",
 }: {
   title?: string;
   subtitle?: string;

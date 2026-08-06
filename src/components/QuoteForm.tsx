@@ -540,7 +540,7 @@ export function QuoteForm({ heading = "Get your free quote" }: { heading?: strin
                 type="text"
                 value={values.suburb}
                 onChange={set("suburb")}
-                placeholder="e.g. Southport"
+                placeholder="e.g. Rangeville"
                 className="input-base"
               />
             </label>

@@ -8,9 +8,9 @@ const siteUrl = (
 export const site = {
   name: "Carbase",
   legalName: "Emir Group Pty Ltd",
-  tagline: "Cash for old, damaged and junk cars across South East Queensland",
+  tagline: "Cash for old, damaged and unwanted cars across the Toowoomba Region",
   description:
-    "Carbase buys old, damaged, unwanted and junk cars across Brisbane, the Gold Coast and Toowoomba. Free quote, free car removal and payment before collection.",
+    "Carbase buys old, damaged, non-running and unwanted cars throughout the Toowoomba Region. Get a free quote, free car removal and payment before collection.",
   url: siteUrl,
 
   phone: "0410 233 335",
@@ -23,7 +23,7 @@ export const site = {
   opens: "08:00",
   closes: "17:00",
 
-  serviceRegion: "Brisbane, Gold Coast, Toowoomba & SEQ",
+  serviceRegion: "Toowoomba Region",
 } as const;
 
 /** tel: link built from the display phone number */
