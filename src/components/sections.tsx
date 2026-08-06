@@ -237,6 +237,8 @@ export function StepsGrid({ detailed = false }: { detailed?: boolean }) {
 /* ── Testimonials ────────────────────────────────────────────────────── */
 
 export function Testimonials() {
+  if (testimonials.length === 0) return null;
+
   return (
     <div className="grid gap-6 md:grid-cols-3">
       {testimonials.map((t, i) => (

@@ -12,7 +12,7 @@ export const faqs: Faq[] = [
   {
     question: "How quickly will I get a quote?",
     answer:
-      "Most quotes go out the same day during business hours, often within the hour. The more detail (and photos) you give us in the form, the faster and sharper the offer.",
+      "Most quotes go out the same day during business hours. The more detail (and photos) you give us in the form, the faster and sharper the offer.",
   },
   {
     question: "How and when do I get paid?",
