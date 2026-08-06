@@ -3,6 +3,7 @@ import { Barlow, Open_Sans } from "next/font/google";
 import "./globals.css";
 import { site } from "@/config/site";
 import { businessJsonLd } from "@/lib/structuredData";
+import { serializeJsonLd } from "@/lib/jsonLd";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { MobileCtaBar } from "@/components/MobileCtaBar";
@@ -23,7 +24,7 @@ const barlow = Barlow({
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: `Cash for Cars Brisbane, Gold Coast & Toowoomba | ${site.name}`,
+    default: `Sell Your Car Toowoomba | Local Car Buyers | ${site.name}`,
     template: `%s | ${site.name}`,
   },
   description: site.description,
@@ -33,16 +34,12 @@ export const metadata: Metadata = {
   keywords: [
     "cash for cars Toowoomba",
     "car removal Toowoomba",
-    "cash for cars Brisbane",
-    "cash for cars Gold Coast",
-    "cash for junk cars Brisbane",
-    "old car removal Brisbane",
-    "damaged car buyers Gold Coast",
-    "sell my car Brisbane",
-    "car buyer Brisbane",
-    "free car removal Brisbane",
     "free car removal Toowoomba",
-    "sell damaged car Queensland",
+    "sell my car Toowoomba",
+    "car buyers Toowoomba",
+    "cash for unwanted cars Toowoomba",
+    "scrap car removal Toowoomba",
+    "sell damaged car Toowoomba",
   ],
   authors: [{ name: site.name, url: site.url }],
   creator: site.name,
@@ -61,14 +58,14 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     siteName: site.name,
-    title: `Cash for Cars Brisbane, Gold Coast & Toowoomba | ${site.name}`,
+    title: `Sell Your Car Toowoomba | Local Car Buyers | ${site.name}`,
     description: site.description,
     url: "/",
     locale: "en_AU",
   },
   twitter: {
     card: "summary_large_image",
-    title: `Cash for Cars Brisbane, Gold Coast & Toowoomba | ${site.name}`,
+    title: `Sell Your Car Toowoomba | Local Car Buyers | ${site.name}`,
     description: site.description,
   },
 };
@@ -96,11 +93,11 @@ export default function RootLayout({
       <body className="bg-white font-sans text-ink-900 antialiased">
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(businessJsonLd) }}
+          dangerouslySetInnerHTML={{ __html: serializeJsonLd(businessJsonLd) }}
         />
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+          dangerouslySetInnerHTML={{ __html: serializeJsonLd(websiteJsonLd) }}
         />
         <SiteHeader />
         <main>{children}</main>

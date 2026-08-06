@@ -6,8 +6,8 @@ import { BanknoteIcon, MapPinIcon, ShieldIcon } from "@/components/icons";
 
 export const metadata = pageMetadata({
   path: "/about",
-  title: "About Carbase — Local Cash for Cars Across SEQ",
-  description: `${site.name} is a South East Queensland car buying and car removal service covering Brisbane, the Gold Coast and Toowoomba. Learn how our quotes, free pickup, paperwork and payment process work.`,
+  title: "About Carbase | Toowoomba Car Buyers",
+  description: `${site.name} is a Toowoomba Region car buying and removal service. Learn how our quotes, free pickup, paperwork and payment process work.`,
 });
 
 const values = [
@@ -19,7 +19,7 @@ const values = [
   {
     Icon: MapPinIcon,
     title: "Genuinely local",
-    text: "We only operate in South East Queensland. That means real people who know the area, and pickups that happen when we say they will.",
+    text: "We only operate in the Toowoomba Region. That means a focused service area and a team that knows the city, suburbs and regional towns.",
   },
   {
     Icon: ShieldIcon,
@@ -58,8 +58,8 @@ export default function AboutPage() {
                 So we built the alternative. Tell us about your car once, get a
                 fair cash offer fast, then arrange the inspection, paperwork,
                 payment and pickup around a suitable collection time. That&apos;s
-                the entire business: buying cars across Brisbane, the Gold
-                Coast and Toowoomba and making it feel easy.
+                the entire business: buying cars across the Toowoomba Region
+                and making the process feel easy.
               </p>
               <p>
                 We specialise in ageing cars, accident-damaged vehicles, utes

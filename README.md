@@ -1,4 +1,4 @@
-# Carbase — Cash for Cars, South East Queensland
+# Carbase — Toowoomba Region Car Buyers
 
 Marketing + lead-generation website for Carbase, built with [Next.js](https://nextjs.org) (App Router), TypeScript and Tailwind CSS v4.
 
@@ -11,21 +11,21 @@ Marketing + lead-generation website for Carbase, built with [Next.js](https://ne
 | `/how-it-works` | The 4-step selling process + pickup checklist |
 | `/about` | About the business |
 | `/faq` | All FAQs, with `FAQPage` structured data for Google |
-| `/service-areas` | Index of covered regions |
-| `/service-areas/[slug]` | Local SEO pages: Brisbane, Gold Coast, Logan, Ipswich, Redlands, Moreton Bay, Toowoomba |
+| `/service-areas` | Toowoomba Region suburb and town coverage hub |
+| `/service-areas/toowoomba` | Permanent redirect to the canonical coverage hub |
 | `/cash-for-cars-toowoomba` | Dedicated cash-for-cars Toowoomba landing page |
 | `/car-removal-toowoomba` | Dedicated car-removal Toowoomba landing page |
 | `/privacy` | Starter privacy policy |
 | `/api/quote` | Receives quote form submissions (incl. photos) and emails them to you |
 
-Also included: sitemap (`/sitemap.xml`), robots rules, LocalBusiness structured data, Open Graph share image, sticky mobile call/quote bar.
+Also included: sitemap (`/sitemap.xml`), robots rules, Organization and service structured data, Open Graph share image, sticky mobile call/quote bar.
 
 ## Configuration checklist
 
 1. **`src/config/site.ts`** — verified operator name, ABN, public phone and hours live here. Update this single source if the business changes them.
 2. **`src/data/testimonials.ts`** — intentionally empty. Add only reviews supplied by real customers with permission.
 3. **`src/data/faqs.ts`** — read through the answers and make sure they match how you actually operate (payment method, finance payouts, areas, etc.).
-4. **`src/data/areas.ts`** — adjust regions/suburbs to your real coverage.
+4. **`src/data/areas.ts`** — keep the Toowoomba Region suburb and town list aligned with the locations you genuinely collect from.
 5. **Email delivery** — copy `.env.example` to `.env`, sign up at [resend.com](https://resend.com), and set:
    - `RESEND_API_KEY` — your API key
    - `QUOTE_TO_EMAIL` — optional; defaults to the verified server-side quote inbox

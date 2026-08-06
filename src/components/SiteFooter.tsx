@@ -52,7 +52,7 @@ export function SiteFooter() {
             <Logo />
             <p className="mt-7 text-sm leading-relaxed text-white/70">
               A direct, local way to sell old, damaged, non-running and unwanted
-              cars across South East Queensland.
+              cars throughout the Toowoomba Region.
             </p>
             <a
               href={telHref}
@@ -82,15 +82,15 @@ export function SiteFooter() {
             </nav>
           ))}
 
-          <nav aria-label="Popular service areas, footer">
+          <nav aria-label="Service region, footer">
             <p className="border-b border-white/25 pb-3 font-display text-xl font-semibold">
-              Service areas
+              Service region
             </p>
             <ul className="mt-4 grid grid-cols-2 gap-x-5 lg:grid-cols-1">
               {areas.map((area) => (
                 <li key={area.slug}>
                   <Link
-                    href={`/service-areas/${area.slug}`}
+                    href="/service-areas"
                     className="inline-flex min-h-11 items-center text-sm text-white/70 transition hover:text-brand-200"
                   >
                     {area.short}
@@ -107,8 +107,8 @@ export function SiteFooter() {
             rights reserved.
           </p>
           <p className="max-w-xl sm:text-right">
-            Serving Brisbane, Gold Coast, Toowoomba, Logan, Ipswich, Redlands
-            and Moreton Bay.
+            Serving Toowoomba city, suburbs and regional communities within the
+            Toowoomba Regional Council area.
           </p>
         </div>
       </div>

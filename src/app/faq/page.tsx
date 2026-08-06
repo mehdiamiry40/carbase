@@ -1,18 +1,18 @@
 import { faqs } from "@/data/faqs";
 import { pageMetadata } from "@/lib/metadata";
+import { serializeJsonLd } from "@/lib/jsonLd";
 import { Reveal } from "@/components/Reveal";
 import { CtaBanner, FaqList, PageHero } from "@/components/sections";
 
 export const metadata = pageMetadata({
   path: "/faq",
-  title: "Cash for Cars FAQs — Quotes, Pickup & Payment",
+  title: "Selling Your Car FAQs | Toowoomba Region",
   description:
-    "Answers about selling your car to Carbase, including cash for cars Toowoomba, car removal Toowoomba, eligible vehicles, quote timing, free pickup, payment and paperwork.",
+    "Answers for Toowoomba Region car sellers about eligible vehicles, quote timing, free pickup, payment and Queensland paperwork.",
   keywords: [
-    "cash for cars Toowoomba",
-    "car removal Toowoomba",
-    "cash for cars FAQ",
-    "free car removal Queensland",
+    "selling a car Toowoomba FAQ",
+    "Toowoomba car quote questions",
+    "vehicle sale paperwork Queensland",
   ],
 });
 
@@ -31,7 +31,7 @@ export default function FaqPage() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(faqJsonLd) }}
       />
       <PageHero
         eyebrow="FAQ"

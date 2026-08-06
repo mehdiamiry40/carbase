@@ -20,8 +20,8 @@ const checklist = [
 
 const knowings = [
   {
-    title: "No roadworthy needed",
-    text: "You're selling to a business, so no RWC is required — we buy the car exactly as it sits.",
+    title: "Clear paperwork",
+    text: "Safety-certificate and registration steps depend on whether the vehicle is registered and how the sale is processed. We confirm what applies before pickup.",
   },
   {
     title: "Payment before pickup",
@@ -29,7 +29,7 @@ const knowings = [
   },
   {
     title: "Registration & transfer",
-    text: "We complete the transfer paperwork together at pickup, and you can claim back any remaining rego from TMR afterwards.",
+    text: "We complete the sale paperwork together. If the registration is being cancelled, TMR may refund part of the unused registration after its cancellation fee.",
   },
   {
     title: "Cars under finance",
