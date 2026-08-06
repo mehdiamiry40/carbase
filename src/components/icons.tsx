@@ -262,16 +262,58 @@ export function LightTruckIcon(props: IconProps) {
 
 /* ── Logo ────────────────────────────────────────────────────────────── */
 
-/** Simple Carbase wordmark, designed to work on light and dark bands. */
+/**
+ * Carbase mark — a geometric car resting on a solid “base” plank.
+ * Reads clearly from favicon size up to header/footer lockups.
+ */
+export function LogoMark({
+  onLight = false,
+  className = "size-9",
+}: {
+  onLight?: boolean;
+  className?: string;
+}) {
+  const bg = onLight ? "#0a2f68" : "#dc1f4b";
+  const fg = "#ffffff";
+  const base = onLight ? "#dc1f4b" : "#ffffff";
+
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 48 48"
+      className={className}
+      aria-hidden
+      focusable="false"
+    >
+      <rect width="48" height="48" fill={bg} />
+      {/* Body + cabin */}
+      <path
+        fill={fg}
+        d="M8.5 27.8h31v-3.4c0-1.35-.82-2.55-2.08-3.02l-4.7-1.72-3.35-5.4A3.15 3.15 0 0 0 26.7 12.5h-7.4a3.15 3.15 0 0 0-2.67 1.76l-3.35 5.4-4.7 1.72A3.2 3.2 0 0 0 6.5 24.4v3.4h2z"
+      />
+      {/* Window cutout */}
+      <path fill={bg} d="M19.6 16.2h8.2l2.35 4.7H17.25l2.35-4.7z" />
+      {/* Wheels (cut through body into badge) */}
+      <circle cx="16.2" cy="28.2" r="3.7" fill={bg} stroke={fg} strokeWidth="2.6" />
+      <circle cx="31.8" cy="28.2" r="3.7" fill={bg} stroke={fg} strokeWidth="2.6" />
+      {/* Base plank */}
+      <rect x="8" y="35.5" width="32" height="5" fill={base} />
+    </svg>
+  );
+}
+
+/** Carbase lockup: mark + wordmark for light or dark bands. */
 export function Logo({ onLight = false }: { onLight?: boolean }) {
   return (
-    <span
-      className="inline-flex items-center"
-    >
+    <span className="inline-flex items-center gap-2.5">
+      <LogoMark onLight={onLight} className="size-9 shrink-0 sm:size-10" />
       <span
-        className={`font-display text-[1.65rem] font-semibold leading-none tracking-[0.06em] ${onLight ? "text-ink-900" : "text-white"}`}
+        className={`font-display text-[1.55rem] font-semibold leading-none tracking-[0.07em] sm:text-[1.65rem] ${onLight ? "text-ink-900" : "text-white"}`}
       >
-        CAR<span className={onLight ? "text-brand-700" : "text-brand-300"}>BASE</span>
+        CAR
+        <span className={onLight ? "text-brand-700" : "text-brand-200"}>
+          BASE
+        </span>
       </span>
     </span>
   );
