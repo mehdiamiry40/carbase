@@ -1,4 +1,10 @@
 import type { SVGProps } from "react";
+import {
+  LOGO_BASE_RECT,
+  LOGO_CAR_PATH,
+  LOGO_VIEWBOX,
+  logoColors,
+} from "@/lib/logo";
 
 type IconProps = SVGProps<SVGSVGElement>;
 
@@ -263,8 +269,8 @@ export function LightTruckIcon(props: IconProps) {
 /* ── Logo ────────────────────────────────────────────────────────────── */
 
 /**
- * Carbase mark — a simple side-profile tow truck.
- * Bold cab, boom and hook so it stays clear at favicon size.
+ * Carbase mark — a squared "C" split into a white upper form (CAR) sitting on
+ * a red base (BASE), set in a navy tile. See `lib/logo.ts` for the geometry.
  */
 export function LogoMark({
   onLight = false,
@@ -273,42 +279,21 @@ export function LogoMark({
   onLight?: boolean;
   className?: string;
 }) {
-  const bg = onLight ? "#0a2f68" : "#dc1f4b";
-  const fg = "#ffffff";
-  const accent = onLight ? "#dc1f4b" : "#ffffff";
-
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 48 48"
+      viewBox={LOGO_VIEWBOX}
       className={className}
       aria-hidden
       focusable="false"
     >
-      <rect width="48" height="48" fill={bg} />
-      {/* Cab */}
-      <path fill={fg} d="M6 29V19h9l4.2 6H22v4H6z" />
-      {/* Window */}
-      <path fill={bg} d="M8.5 20.2h5l2 2.8H8.5v-2.8z" />
-      {/* Flatbed */}
-      <rect x="22" y="25" width="17" height="4" fill={fg} />
-      {/* Boom mast + arm over the bed */}
-      <rect x="35" y="9" width="4" height="16" fill={fg} />
-      <rect x="24" y="9" width="15" height="3.5" fill={fg} />
-      {/* Hook cable + J-hook above the bed */}
-      <rect x="24.8" y="12.5" width="2.4" height="6.5" fill={accent} />
-      <path
-        fill="none"
-        stroke={accent}
-        strokeWidth="2.4"
-        strokeLinecap="square"
-        d="M22.8 19h6.4v3.6c0 1.4-1.1 2.5-2.5 2.5s-2.5-1.1-2.5-2.5"
+      <rect
+        width="48"
+        height="48"
+        fill={onLight ? logoColors.tile : logoColors.tileOnDark}
       />
-      {/* Wheels */}
-      <circle cx="13" cy="32" r="4.2" fill={bg} stroke={fg} strokeWidth="2.8" />
-      <circle cx="33" cy="32" r="4.2" fill={bg} stroke={fg} strokeWidth="2.8" />
-      {/* Ground stripe */}
-      <rect x="7" y="38" width="34" height="3.5" fill={accent} />
+      <path fill={logoColors.car} d={LOGO_CAR_PATH} />
+      <rect {...LOGO_BASE_RECT} fill={logoColors.base} />
     </svg>
   );
 }
@@ -319,7 +304,7 @@ export function Logo({ onLight = false }: { onLight?: boolean }) {
     <span className="inline-flex items-center gap-3">
       <LogoMark onLight={onLight} className="size-10 shrink-0" />
       <span
-        className={`font-display text-[1.6rem] font-semibold leading-none tracking-[0.08em] ${onLight ? "text-ink-900" : "text-white"}`}
+        className={`font-display text-[1.6rem] leading-none font-bold tracking-[0.07em] ${onLight ? "text-ink-900" : "text-white"}`}
       >
         CAR
         <span className={onLight ? "text-brand-700" : "text-brand-300"}>
