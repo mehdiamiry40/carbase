@@ -304,7 +304,7 @@ export function QuoteForm({ heading = "Get your free quote" }: { heading?: strin
         <h2 className="font-display text-xl font-bold tracking-tight text-slate-900">
           {heading}
         </h2>
-        <span className="text-xs font-semibold whitespace-nowrap text-slate-400">
+        <span className="text-xs font-semibold whitespace-nowrap text-slate-600">
           Step {step + 1} of {STEPS.length}
         </span>
       </div>
@@ -320,14 +320,14 @@ export function QuoteForm({ heading = "Get your free quote" }: { heading?: strin
                     ? "bg-brand-600 text-white"
                     : i === step
                       ? "bg-linear-to-r from-brand-600 to-brand-500 text-white shadow-glow-sm"
-                      : "bg-slate-100 text-slate-400"
+                      : "bg-slate-100 text-slate-600"
                 }`}
               >
                 {i < step ? <CheckIcon className="size-3" strokeWidth={3} /> : i + 1}
               </span>
               <span
                 className={`text-xs font-semibold whitespace-nowrap ${
-                  i === step ? "text-slate-900" : "text-slate-400"
+                  i === step ? "text-slate-900" : "text-slate-600"
                 } ${i > 0 ? "hidden sm:inline" : ""}`}
               >
                 {label}
@@ -470,7 +470,7 @@ export function QuoteForm({ heading = "Get your free quote" }: { heading?: strin
               {photos.length < MAX_PHOTOS && (
                 <label
                   htmlFor="quote-photos"
-                  className="flex size-20 cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border-2 border-dashed border-slate-300 text-slate-400 transition hover:border-brand-400 hover:bg-brand-50/50 hover:text-brand-600"
+                  className="flex size-20 cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border-2 border-dashed border-slate-300 text-slate-600 transition hover:border-brand-400 hover:bg-brand-50/50 hover:text-brand-600"
                 >
                   <CameraIcon className="size-6" />
                   <span className="text-[10px] font-bold">Add</span>
@@ -597,7 +597,7 @@ export function QuoteForm({ heading = "Get your free quote" }: { heading?: strin
         )}
       </div>
 
-      <p className="mt-4 text-center text-xs leading-relaxed text-slate-400">
+      <p className="mt-4 text-center text-xs leading-relaxed text-slate-600">
         Free, no-obligation quote. We only use your details to contact you about
         selling your car —{" "}
         <a href="/privacy" className="underline hover:text-slate-600">

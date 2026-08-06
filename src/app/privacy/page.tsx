@@ -33,6 +33,10 @@ export default function PrivacyPage() {
       <PageHero eyebrow="Legal" title="Privacy policy" compact />
       <section className="bg-white py-20">
         <div className="mx-auto max-w-3xl space-y-10 px-4 sm:px-6">
+          <p className="text-[15px] leading-relaxed text-slate-600">
+            {site.name} is operated by {site.operatorName}, ABN {site.abn}. In
+            this policy, “we”, “us” and “our” refer to {site.operatorName}.
+          </p>
           {sections.map((s) => (
             <div key={s.title}>
               <h2 className="font-display text-xl font-bold text-slate-900">

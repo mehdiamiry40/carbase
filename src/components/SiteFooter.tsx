@@ -103,12 +103,12 @@ export function SiteFooter() {
 
         <div className="mt-14 flex flex-col gap-5 border-t border-white/25 pt-7 text-xs text-white/60 sm:flex-row sm:items-start sm:justify-between">
           <p>
-            © {new Date().getFullYear()} {site.legalName}. ABN {site.abn}. All
-            rights reserved.
+            © {new Date().getFullYear()} {site.name}. Operated by{" "}
+            {site.operatorName}. ABN {site.abn}. All rights reserved.
           </p>
           <p className="max-w-xl sm:text-right">
-            Serving Toowoomba city, suburbs and regional communities within the
-            Toowoomba Regional Council area.
+            Based in Toowoomba. Mobile collection across the city, suburbs and
+            regional communities within the Toowoomba Regional Council area.
           </p>
         </div>
       </div>

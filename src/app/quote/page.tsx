@@ -16,7 +16,7 @@ const reassurance = [
   "Free quote with no obligation to sell",
   "Old, damaged, unregistered or not running — no problem",
   "Free pickup throughout the Toowoomba Region",
-  "Instant bank transfer before we take the car",
+  "Bank transfer before we take the car",
 ];
 
 export default function QuotePage() {

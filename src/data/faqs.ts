@@ -17,7 +17,7 @@ export const faqs: Faq[] = [
   {
     question: "How and when do I get paid?",
     answer:
-      "By instant bank transfer, on the spot, before we take the car anywhere. You'll see the money leave our account while we're still with you — we never take a vehicle without the payment being made first.",
+      "By bank transfer before we take the car anywhere. We make the payment while we're still with you and never take a vehicle without payment being made first. Transfer timing can depend on the banks involved.",
   },
   {
     question: "Do you really pick the car up for free?",

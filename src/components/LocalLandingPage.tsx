@@ -49,12 +49,6 @@ export function LocalLandingPage({ page }: { page: LocalPage }) {
       "@type": "AdministrativeArea",
       name: "Toowoomba Region, Queensland",
     },
-    offers: {
-      "@type": "Offer",
-      priceCurrency: "AUD",
-      availability: "https://schema.org/InStock",
-      description: "Free quote, free vehicle pickup and payment before collection.",
-    },
   };
 
   const faqJsonLd = {

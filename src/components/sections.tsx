@@ -194,43 +194,47 @@ export const steps = [
   {
     title: "Paid on the spot",
     description:
-      "Quick inspection, five minutes of paperwork, then instant bank transfer — before we take the car. Free pickup included.",
+      "Quick inspection, five minutes of paperwork, then bank transfer before we take the car. Free pickup included.",
     Icon: ArrowRightIcon,
   },
 ];
 
 export function StepsGrid({ detailed = false }: { detailed?: boolean }) {
   return (
-    <ol className="relative grid gap-10 gap-y-12 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
+    <div className="relative">
       <div
         className="absolute top-7 right-[12%] left-[12%] hidden h-px bg-brand-300 lg:block"
         aria-hidden
       />
-      {steps.map((step, i) => (
-        <Reveal key={step.title} delay={i * 110}>
-          <li className="group relative h-full border border-brand-200 bg-white p-7 transition duration-200 hover:border-brand-500">
-            <div className="flex items-center justify-between">
-              <span className="relative flex size-14 items-center justify-center bg-brand-600 text-white">
-                <step.Icon className="size-6" />
-              </span>
-              <span className="font-mono text-xs font-semibold text-brand-600">
-                0{i + 1}
-              </span>
-            </div>
-            <h3 className="font-display mt-5 text-xl font-semibold text-ink-900">
-              {step.title}
-            </h3>
-            <p
-              className={`mt-2 text-[15px] leading-relaxed text-slate-600 ${
-                detailed ? "" : "line-clamp-4"
-              }`}
-            >
-              {step.description}
-            </p>
+      <ol className="relative grid gap-10 gap-y-12 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
+        {steps.map((step, i) => (
+          <li key={step.title} className="h-full">
+            <Reveal delay={i * 110} className="h-full">
+              <div className="group relative h-full border border-brand-200 bg-white p-7 transition duration-200 hover:border-brand-500">
+                <div className="flex items-center justify-between">
+                  <span className="relative flex size-14 items-center justify-center bg-brand-600 text-white">
+                    <step.Icon className="size-6" />
+                  </span>
+                  <span className="font-mono text-xs font-semibold text-brand-600">
+                    0{i + 1}
+                  </span>
+                </div>
+                <h3 className="font-display mt-5 text-xl font-semibold text-ink-900">
+                  {step.title}
+                </h3>
+                <p
+                  className={`mt-2 text-[15px] leading-relaxed text-slate-600 ${
+                    detailed ? "" : "line-clamp-4"
+                  }`}
+                >
+                  {step.description}
+                </p>
+              </div>
+            </Reveal>
           </li>
-        </Reveal>
-      ))}
-    </ol>
+        ))}
+      </ol>
+    </div>
   );
 }
 
