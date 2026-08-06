@@ -23,7 +23,7 @@ export default function OpenGraphImage() {
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: 22 }}>
-          {/* Logo mark — car on base (OG-friendly geometry) */}
+          {/* Tow-truck mark (OG-friendly blocks) */}
           <div
             style={{
               display: "flex",
@@ -34,37 +34,76 @@ export default function OpenGraphImage() {
               overflow: "hidden",
             }}
           >
-            <div
-              style={{
-                position: "absolute",
-                top: 18,
-                left: 20,
-                width: 32,
-                height: 12,
-                background: "#ffffff",
-                display: "flex",
-              }}
-            />
+            {/* Cab */}
             <div
               style={{
                 position: "absolute",
                 top: 28,
-                left: 10,
-                width: 52,
-                height: 14,
+                left: 9,
+                width: 24,
+                height: 16,
                 background: "#ffffff",
                 display: "flex",
               }}
             />
+            {/* Bed */}
             <div
               style={{
                 position: "absolute",
-                top: 38,
-                left: 16,
+                top: 37,
+                left: 33,
+                width: 24,
+                height: 6,
+                background: "#ffffff",
+                display: "flex",
+              }}
+            />
+            {/* Boom mast */}
+            <div
+              style={{
+                position: "absolute",
+                top: 12,
+                left: 52,
+                width: 6,
+                height: 24,
+                background: "#ffffff",
+                display: "flex",
+              }}
+            />
+            {/* Boom arm */}
+            <div
+              style={{
+                position: "absolute",
+                top: 12,
+                left: 35,
+                width: 23,
+                height: 5,
+                background: "#ffffff",
+                display: "flex",
+              }}
+            />
+            {/* Hook cable */}
+            <div
+              style={{
+                position: "absolute",
+                top: 17,
+                left: 37,
+                width: 3,
+                height: 12,
+                background: "#dc1f4b",
+                display: "flex",
+              }}
+            />
+            {/* Wheels */}
+            <div
+              style={{
+                position: "absolute",
+                top: 44,
+                left: 14,
                 width: 12,
                 height: 12,
                 borderRadius: 999,
-                border: "4px solid #ffffff",
+                border: "3px solid #ffffff",
                 background: "#0a2f68",
                 display: "flex",
               }}
@@ -72,23 +111,24 @@ export default function OpenGraphImage() {
             <div
               style={{
                 position: "absolute",
-                top: 38,
+                top: 44,
                 left: 44,
                 width: 12,
                 height: 12,
                 borderRadius: 999,
-                border: "4px solid #ffffff",
+                border: "3px solid #ffffff",
                 background: "#0a2f68",
                 display: "flex",
               }}
             />
+            {/* Ground */}
             <div
               style={{
                 position: "absolute",
-                bottom: 8,
+                bottom: 6,
                 left: 10,
                 width: 52,
-                height: 9,
+                height: 5,
                 background: "#dc1f4b",
                 display: "flex",
               }}

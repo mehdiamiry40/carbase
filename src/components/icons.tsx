@@ -263,8 +263,8 @@ export function LightTruckIcon(props: IconProps) {
 /* ── Logo ────────────────────────────────────────────────────────────── */
 
 /**
- * Carbase mark — a side-profile car resting on a solid “base” plank.
- * Tuned to stay legible from favicon size up to header/footer lockups.
+ * Carbase mark — a simple side-profile tow truck.
+ * Bold cab, boom and hook so it stays clear at favicon size.
  */
 export function LogoMark({
   onLight = false,
@@ -275,7 +275,7 @@ export function LogoMark({
 }) {
   const bg = onLight ? "#0a2f68" : "#dc1f4b";
   const fg = "#ffffff";
-  const plank = onLight ? "#dc1f4b" : "#ffffff";
+  const accent = onLight ? "#dc1f4b" : "#ffffff";
 
   return (
     <svg
@@ -286,23 +286,29 @@ export function LogoMark({
       focusable="false"
     >
       <rect width="48" height="48" fill={bg} />
-      {/* Cabin roof */}
+      {/* Cab */}
+      <path fill={fg} d="M6 29V19h9l4.2 6H22v4H6z" />
+      {/* Window */}
+      <path fill={bg} d="M8.5 20.2h5l2 2.8H8.5v-2.8z" />
+      {/* Flatbed */}
+      <rect x="22" y="25" width="17" height="4" fill={fg} />
+      {/* Boom mast + arm over the bed */}
+      <rect x="35" y="9" width="4" height="16" fill={fg} />
+      <rect x="24" y="9" width="15" height="3.5" fill={fg} />
+      {/* Hook cable + J-hook above the bed */}
+      <rect x="24.8" y="12.5" width="2.4" height="6.5" fill={accent} />
       <path
-        fill={fg}
-        d="M16.5 14h11.2c1.1 0 2.1.55 2.7 1.45l3.1 4.85H13.4l3.1-4.85A3.2 3.2 0 0 1 16.5 14z"
+        fill="none"
+        stroke={accent}
+        strokeWidth="2.4"
+        strokeLinecap="square"
+        d="M22.8 19h6.4v3.6c0 1.4-1.1 2.5-2.5 2.5s-2.5-1.1-2.5-2.5"
       />
-      {/* Body / chassis */}
-      <path
-        fill={fg}
-        d="M7 25.2h34v-3.1c0-1.2-.75-2.25-1.9-2.65L34.5 18H13.5l-4.6 1.45A2.8 2.8 0 0 0 7 22.1v3.1z"
-      />
-      {/* Window band (side-profile cue) */}
-      <rect x="15.5" y="16.2" width="14.5" height="3.6" fill={bg} />
       {/* Wheels */}
-      <circle cx="15.5" cy="27.2" r="4" fill={bg} stroke={fg} strokeWidth="2.8" />
-      <circle cx="32.5" cy="27.2" r="4" fill={bg} stroke={fg} strokeWidth="2.8" />
-      {/* Base plank — the “base” in Carbase */}
-      <rect x="7" y="34.5" width="34" height="6" fill={plank} />
+      <circle cx="13" cy="32" r="4.2" fill={bg} stroke={fg} strokeWidth="2.8" />
+      <circle cx="33" cy="32" r="4.2" fill={bg} stroke={fg} strokeWidth="2.8" />
+      {/* Ground stripe */}
+      <rect x="7" y="38" width="34" height="3.5" fill={accent} />
     </svg>
   );
 }
