@@ -25,6 +25,10 @@ const sections = [
     title: "Storage and security",
     body: "Quote requests are delivered to us by email and handled only by our team. We take reasonable steps to protect your information from misuse, loss and unauthorised access.",
   },
+  {
+    title: "Website analytics",
+    body: "We use Google Analytics to understand visits and interactions with this website, including successful quote requests and phone-link clicks. Google may process device, browser, approximate location and usage information and may use cookies for this purpose. We do not send the personal, vehicle or photo details from your quote request to Google Analytics. You can control or block cookies through your browser settings.",
+  },
 ];
 
 export default function PrivacyPage() {
