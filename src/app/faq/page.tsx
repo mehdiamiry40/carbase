@@ -1,5 +1,6 @@
 import { faqs } from "@/data/faqs";
 import { pageMetadata } from "@/lib/metadata";
+import { serializeJsonLd } from "@/lib/jsonLd";
 import { Reveal } from "@/components/Reveal";
 import { CtaBanner, FaqList, PageHero } from "@/components/sections";
 
@@ -31,7 +32,7 @@ export default function FaqPage() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(faqJsonLd) }}
       />
       <PageHero
         eyebrow="FAQ"

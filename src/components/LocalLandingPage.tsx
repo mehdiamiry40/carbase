@@ -2,31 +2,46 @@ import Link from "next/link";
 import { site, telHref } from "@/config/site";
 import { getArea } from "@/data/areas";
 import type { LocalPage } from "@/data/localPages";
+import { serializeJsonLd } from "@/lib/jsonLd";
 import { Accordion } from "@/components/Accordion";
+import { QuoteForm } from "@/components/QuoteForm";
 import { Reveal } from "@/components/Reveal";
-import { CtaBanner, PageHero, SectionHeading, StepsGrid } from "@/components/sections";
-import { ArrowRightIcon, MapPinIcon, PhoneIcon } from "@/components/icons";
+import {
+  CtaBanner,
+  PageHero,
+  SectionHeading,
+  StepsGrid,
+} from "@/components/sections";
+import {
+  ArrowRightIcon,
+  CheckIcon,
+  MapPinIcon,
+  PhoneIcon,
+} from "@/components/icons";
 
 /**
  * Renders a keyword-targeted local landing page (see `data/localPages.ts`).
  *
- * The three JSON-LD blocks are the point of this page as much as the copy is:
- * Service tells Google what is offered and where, FAQPage is what earns the
- * expanded result, and BreadcrumbList replaces the bare URL in the SERP.
+ * The connected JSON-LD graph describes the page, service, questions and
+ * breadcrumb trail without pretending the business has a Toowoomba shopfront.
  */
 export function LocalLandingPage({ page }: { page: LocalPage }) {
   const area = getArea(page.areaSlug);
   const url = `${site.url}/${page.slug}`;
   const suburbs = area ? [...area.suburbs, ...(area.nearby ?? [])] : [];
+  const webPageId = `${url}#webpage`;
+  const serviceId = `${url}#service`;
+  const faqId = `${url}#faq`;
+  const breadcrumbId = `${url}#breadcrumb`;
 
   const serviceJsonLd = {
-    "@context": "https://schema.org",
     "@type": "Service",
-    "@id": `${url}#service`,
+    "@id": serviceId,
     name: page.serviceName,
     serviceType: page.serviceType,
     description: page.seoDescription,
     url,
+    mainEntityOfPage: { "@id": webPageId },
     provider: { "@id": `${site.url}/#business` },
     areaServed: [
       { "@type": "City", name: area?.short ?? page.areaSlug },
@@ -41,9 +56,10 @@ export function LocalLandingPage({ page }: { page: LocalPage }) {
   };
 
   const faqJsonLd = {
-    "@context": "https://schema.org",
     "@type": "FAQPage",
-    "@id": `${url}#faq`,
+    "@id": faqId,
+    url: `${url}#questions`,
+    isPartOf: { "@id": webPageId },
     mainEntity: page.faqs.map((faq) => ({
       "@type": "Question",
       name: faq.question,
@@ -52,11 +68,49 @@ export function LocalLandingPage({ page }: { page: LocalPage }) {
   };
 
   const breadcrumbJsonLd = {
-    "@context": "https://schema.org",
     "@type": "BreadcrumbList",
+    "@id": breadcrumbId,
     itemListElement: [
       { "@type": "ListItem", position: 1, name: "Home", item: site.url },
-      { "@type": "ListItem", position: 2, name: page.seoTitle, item: url },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Service areas",
+        item: `${site.url}/service-areas`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: area?.short ?? "Toowoomba",
+        item: `${site.url}/service-areas/${page.areaSlug}`,
+      },
+      { "@type": "ListItem", position: 4, name: page.navLabel, item: url },
+    ],
+  };
+
+  const pageJsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": webPageId,
+        url,
+        name: page.seoTitle,
+        description: page.seoDescription,
+        inLanguage: "en-AU",
+        isPartOf: { "@id": `${site.url}/#website` },
+        about: { "@id": serviceId },
+        mainEntity: { "@id": serviceId },
+        breadcrumb: { "@id": breadcrumbId },
+        citation: page.officialLinks.map((link) => link.href),
+        spatialCoverage: {
+          "@type": "Place",
+          name: `${area?.short ?? "Toowoomba"}, Queensland`,
+        },
+      },
+      serviceJsonLd,
+      faqJsonLd,
+      breadcrumbJsonLd,
     ],
   };
 
@@ -64,15 +118,7 @@ export function LocalLandingPage({ page }: { page: LocalPage }) {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(pageJsonLd) }}
       />
 
       <PageHero
@@ -86,16 +132,52 @@ export function LocalLandingPage({ page }: { page: LocalPage }) {
         lede={page.lede}
       >
         <div className="mt-9 flex flex-col gap-3.5 sm:flex-row">
-          <Link href="/quote" className="btn-primary">
+          <a href="#local-quote" className="btn-primary">
             Get my free quote
             <ArrowRightIcon className="size-4" />
-          </Link>
+          </a>
           <a href={telHref} className="btn-ghost-dark">
             <PhoneIcon className="size-4 text-accent-400" />
             {site.phone}
           </a>
         </div>
       </PageHero>
+
+      <section id="local-quote" className="scroll-mt-28 bg-white py-16 lg:py-24">
+        <div className="shell grid gap-12 lg:grid-cols-[0.82fr_1.18fr] lg:items-start lg:gap-20">
+          <Reveal>
+            <div className="lg:sticky lg:top-36">
+              <p className="t-index text-brand-700">Free local quote</p>
+              <h2 className="mt-5 max-w-[13ch] font-display text-4xl font-medium leading-[1.08] tracking-tight text-ink-900 sm:text-5xl">
+                Get a quote for your car in {area?.short ?? page.h1Highlight}.
+              </h2>
+              <p className="mt-6 max-w-xl text-lg leading-relaxed text-slate-600">
+                Share the vehicle details and pickup suburb. Accurate photos and
+                condition notes help us give you a clearer written offer and
+                arrange the right truck.
+              </p>
+              <ul className="mt-8 space-y-4">
+                {[
+                  "Free quote with no obligation to accept",
+                  "Pickup included across the listed service area",
+                  "Payment confirmed before the vehicle is loaded",
+                  "Paperwork requirements confirmed before collection",
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-3 text-slate-700">
+                    <span className="mt-0.5 flex size-5.5 shrink-0 items-center justify-center rounded-full bg-emerald-600 text-white">
+                      <CheckIcon className="size-3" strokeWidth={3} />
+                    </span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </Reveal>
+          <Reveal delay={100}>
+            <QuoteForm heading={`Get a ${area?.short ?? "local"} quote`} />
+          </Reveal>
+        </div>
+      </section>
 
       <section className="bg-brand-50 py-16 lg:py-24">
         <div className="shell max-w-3xl">
@@ -113,6 +195,54 @@ export function LocalLandingPage({ page }: { page: LocalPage }) {
               </Reveal>
             ))}
           </div>
+        </div>
+      </section>
+
+      <section
+        className="bg-slate-50 py-16 lg:py-20"
+        aria-labelledby="official-guidance"
+      >
+        <div className="shell">
+          <Reveal>
+            <div className="max-w-3xl">
+              <p className="t-index text-brand-700">Official guidance</p>
+              <h2
+                id="official-guidance"
+                className="mt-5 font-display text-3xl font-semibold tracking-tight text-ink-900 sm:text-4xl"
+              >
+                Check the Queensland vehicle paperwork.
+              </h2>
+              <p className="mt-4 text-lg leading-relaxed text-slate-600">
+                Registered, unregistered and written-off vehicles can require
+                different steps. These Queensland Government pages are the
+                source of truth; we will confirm which process applies before
+                collection.
+              </p>
+            </div>
+          </Reveal>
+          <ul className="mt-10 grid gap-4 lg:grid-cols-3">
+            {page.officialLinks.map((link, index) => (
+              <li key={link.href}>
+                <Reveal delay={index * 80} className="h-full">
+                  <a
+                    href={link.href}
+                    rel="external"
+                    className="group block h-full border border-slate-200 bg-white p-6 shadow-card transition hover:border-brand-300"
+                  >
+                    <span className="flex items-start justify-between gap-4">
+                      <span className="font-display text-xl font-semibold text-ink-900 group-hover:text-brand-700">
+                        {link.label}
+                      </span>
+                      <ArrowRightIcon className="mt-1 size-4 shrink-0 text-brand-600" />
+                    </span>
+                    <span className="mt-3 block text-sm leading-relaxed text-slate-600">
+                      {link.description}
+                    </span>
+                  </a>
+                </Reveal>
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 
@@ -154,7 +284,7 @@ export function LocalLandingPage({ page }: { page: LocalPage }) {
         </div>
       </section>
 
-      <section className="bg-white py-16 lg:py-24">
+      <section id="questions" className="scroll-mt-28 bg-white py-16 lg:py-24">
         <div className="shell grid gap-12 lg:grid-cols-[0.7fr_1.3fr] lg:gap-20">
           <div>
             <p className="t-index text-brand-700">Questions</p>

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { site, telHref } from "@/config/site";
 import { faqs } from "@/data/faqs";
 import { localPages } from "@/data/localPages";
+import { serializeJsonLd } from "@/lib/jsonLd";
 import { QuoteForm } from "@/components/QuoteForm";
 import { Photo } from "@/components/Photo";
 import { Reveal } from "@/components/Reveal";
@@ -90,7 +91,7 @@ export default function HomePage() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(homeFaqJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(homeFaqJsonLd) }}
       />
 
       <section className="relative min-h-[650px] overflow-hidden bg-ink-900 text-white lg:min-h-[760px]">

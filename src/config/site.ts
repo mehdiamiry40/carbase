@@ -1,13 +1,17 @@
 // Verified business details used throughout the site. Keep display values and
 // their machine-readable counterparts in sync when the business changes them.
 
+const siteUrl = (
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://carbase.au"
+).replace(/\/+$/, "");
+
 export const site = {
   name: "Carbase",
   legalName: "Emir Group Pty Ltd",
   tagline: "Cash for old, damaged and junk cars across South East Queensland",
   description:
     "Carbase buys old, damaged, unwanted and junk cars across Brisbane, the Gold Coast and Toowoomba. Free quote, free car removal and payment before collection.",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://carbase.com.au",
+  url: siteUrl,
 
   phone: "0410 233 335",
   hours: "8am–5pm, 7 days a week",

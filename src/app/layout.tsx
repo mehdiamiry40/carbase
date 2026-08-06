@@ -3,6 +3,7 @@ import { Barlow, Open_Sans } from "next/font/google";
 import "./globals.css";
 import { site } from "@/config/site";
 import { businessJsonLd } from "@/lib/structuredData";
+import { serializeJsonLd } from "@/lib/jsonLd";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { MobileCtaBar } from "@/components/MobileCtaBar";
@@ -96,11 +97,11 @@ export default function RootLayout({
       <body className="bg-white font-sans text-ink-900 antialiased">
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(businessJsonLd) }}
+          dangerouslySetInnerHTML={{ __html: serializeJsonLd(businessJsonLd) }}
         />
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+          dangerouslySetInnerHTML={{ __html: serializeJsonLd(websiteJsonLd) }}
         />
         <SiteHeader />
         <main>{children}</main>

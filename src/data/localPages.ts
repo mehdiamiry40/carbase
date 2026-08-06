@@ -29,6 +29,8 @@ export type LocalPage = {
   serviceType: string[];
   sections: { heading: string; body: string }[];
   faqs: Faq[];
+  /** Primary-source guidance that supports high-stakes paperwork content */
+  officialLinks: { href: string; label: string; description: string }[];
   /** Contextual internal links — keep the anchor text keyword-bearing */
   related: { href: string; label: string }[];
 };
@@ -42,9 +44,9 @@ export const localPages: LocalPage[] = [
     eyebrow: "Cash for cars · Toowoomba",
     h1Lead: "Cash for cars in",
     h1Highlight: "Toowoomba",
-    seoTitle: "Cash for Cars Toowoomba, Paid Before Pickup",
+    seoTitle: "Cash for Cars Toowoomba | Free Car Removal",
     seoDescription:
-      "Cash for cars in Toowoomba — Carbase makes a firm offer on old, damaged and non-running vehicles, pays by bank transfer before pickup, and collects for free.",
+      "Sell your old, damaged or non-running car in Toowoomba. Get a free quote, payment before pickup and free car removal across Toowoomba and the Darling Downs.",
     keywords: [
       "cash for cars Toowoomba",
       "cash for cars toowoomba",
@@ -74,7 +76,7 @@ export const localPages: LocalPage[] = [
       },
       {
         heading: "Paperwork for a Queensland sale",
-        body: "Bring photo ID and something showing the car is yours — usually the Queensland registration papers. If it is unregistered, other proof of ownership is fine. You will not need a roadworthy certificate, because you are selling to a business rather than a private buyer. Remember to remove your plates and cancel the registration with TMR afterwards to stop the rego clock running. We fill in the transfer paperwork with you at pickup; it takes about five minutes.",
+        body: "Bring photo ID and proof that the car is yours — usually the Queensland registration papers, a purchase receipt or another ownership record that identifies the vehicle. Safety-certificate and registration steps depend on whether the car is registered and how the sale is processed. Unregistered vehicles can be sold without a safety certificate, but Queensland still requires a signed paper trail. Tell us the registration status when you request a quote and we will confirm what needs to be ready before pickup.",
       },
     ],
     faqs: [
@@ -98,6 +100,31 @@ export const localPages: LocalPage[] = [
         answer:
           "Often, yes. Get a payout figure from your lender and mention it in the quote form. If our offer covers the payout we can pay the lender directly and transfer the balance to you.",
       },
+      {
+        question: "Do you buy utes, 4WDs and light trucks in Toowoomba?",
+        answer:
+          "Yes. We quote work utes, dual-cabs, 4WDs, vans and light commercial vehicles as well as passenger cars. Include the vehicle's size, condition and exact pickup location so we can value it and plan the right collection equipment.",
+      },
+    ],
+    officialLinks: [
+      {
+        href: "https://www.qld.gov.au/transport/registration/roadworthy",
+        label: "Queensland safety certificate rules",
+        description:
+          "When a safety certificate is required and the exemptions that may apply.",
+      },
+      {
+        href: "https://www.qld.gov.au/transport/buying/unregistered/selling",
+        label: "Selling an unregistered vehicle",
+        description:
+          "The ownership record and signed paper trail Queensland asks sellers to keep.",
+      },
+      {
+        href: "https://www.qld.gov.au/transport/registration/transfer/online",
+        label: "Transferring Queensland registration",
+        description:
+          "Official seller steps for eligible registered vehicles.",
+      },
     ],
     related: [
       { href: "/car-removal-toowoomba", label: "Free car removal in Toowoomba" },
@@ -116,9 +143,9 @@ export const localPages: LocalPage[] = [
     eyebrow: "Car removal · Toowoomba",
     h1Lead: "Free car removal in",
     h1Highlight: "Toowoomba",
-    seoTitle: "Free Car Removal Toowoomba, No Towing Fees",
+    seoTitle: "Car Removal Toowoomba | Free Pickup & Cash",
     seoDescription:
-      "Free car removal in Toowoomba for scrap, junk, unregistered and non-running cars. No towing fee, no admin charges — we pay you first, then tow the car away.",
+      "Free car removal in Toowoomba for scrap, unwanted and non-running cars. Get a free quote, payment before pickup and no towing fee deducted from your offer.",
     keywords: [
       "car removal Toowoomba",
       "car removal toowoomba",
@@ -148,7 +175,7 @@ export const localPages: LocalPage[] = [
       },
       {
         heading: "Before the truck arrives",
-        body: "Take everything out of the car — glovebox, boot, under the seats, sun visors and the spare wheel well. Removed cars are dismantled, so anything left behind is gone for good. Take your plates off as well; you will need them to cancel the registration with the Queensland Department of Transport and Main Roads, and cancelling promptly is what stops you being billed for rego on a car you no longer own. You can also claim a refund on any unused registration once it is cancelled.",
+        body: "Take everything out of the car — glovebox, boot, under the seats, sun visors and the spare wheel well. Do not remove the plates until we confirm whether the registration will be transferred or cancelled. If the vehicle is being deregistered, Queensland requires the registered operator to complete the cancellation process and usually surrender the plates. A current registration may qualify for a partial refund after the cancellation fee.",
       },
       {
         heading: "Where the car ends up",
@@ -180,6 +207,31 @@ export const localPages: LocalPage[] = [
         question: "Do I have to be home when the car is removed?",
         answer:
           "Someone needs to be there to sign the transfer paperwork, hand over the keys if there are any, and confirm the payment has arrived. It only takes a few minutes, and we book a window that works around you.",
+      },
+      {
+        question: "What happens to my number plates and registration?",
+        answer:
+          "That depends on whether the registered vehicle is transferred or deregistered. Keep the plates on until we confirm the sale paperwork. If the registration is being cancelled, the registered operator normally completes the Queensland cancellation form and surrenders the plates; TMR may refund part of a current registration after its fee.",
+      },
+    ],
+    officialLinks: [
+      {
+        href: "https://www.qld.gov.au/transport/registration/cancel",
+        label: "Cancelling Queensland registration",
+        description:
+          "Official forms, number-plate rules and information about possible refunds.",
+      },
+      {
+        href: "https://www.qld.gov.au/transport/buying/unregistered/selling",
+        label: "Selling an unregistered vehicle",
+        description:
+          "The details Queensland says to include in the sale record.",
+      },
+      {
+        href: "https://www.qld.gov.au/transport/vehicle-safety/written-off-vehicles/notify",
+        label: "Notifying TMR about a written-off vehicle",
+        description:
+          "What to do when an insurer has not already recorded a write-off.",
       },
     ],
     related: [

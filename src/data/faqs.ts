@@ -27,12 +27,12 @@ export const faqs: Faq[] = [
   {
     question: "Does the car need a roadworthy certificate (RWC)?",
     answer:
-      "No. Because you're selling to a business rather than a private buyer, you don't need to supply a roadworthy certificate. We buy the car exactly as it is.",
+      "It depends on the registration status and how the sale is processed. Queensland says an unregistered vehicle can be sold without a safety certificate, and an exemption applies when a registered vehicle is traded to a licensed motor dealer. Tell us whether the car is registered and we will confirm the paperwork before pickup.",
   },
   {
     question: "What paperwork do I need?",
     answer:
-      "Photo ID and proof you own the car — usually the Queensland registration papers. If the car is unregistered, other proof of ownership works too. We sort the transfer paperwork with you at pickup, and it only takes a few minutes.",
+      "Bring photo ID and proof you own the car — usually the Queensland registration papers, a purchase receipt or another record that identifies the vehicle. Registered and unregistered vehicles have different Queensland requirements, so we confirm the transfer or cancellation steps with you before pickup.",
   },
   {
     question: "Can you buy a car that's still under finance?",
