@@ -4,6 +4,8 @@ import Link from "next/link";
 import { site } from "@/config/site";
 import { pageMetadata } from "@/lib/metadata";
 import { areas, getArea } from "@/data/areas";
+import { localPagesForArea } from "@/data/localPages";
+import { Accordion } from "@/components/Accordion";
 import { Reveal } from "@/components/Reveal";
 import {
   CtaBanner,
@@ -46,6 +48,9 @@ export default async function AreaPage({ params }: Props) {
   const area = getArea(slug);
   if (!area) notFound();
 
+  const landingPages = localPagesForArea(area.slug);
+  const suburbs = [...area.suburbs, ...(area.nearby ?? [])];
+
   const serviceJsonLd = {
     "@context": "https://schema.org",
     "@type": "Service",
@@ -55,15 +60,26 @@ export default async function AreaPage({ params }: Props) {
     description:
       area.seoDescription ??
       `${site.name} offers cash for cars and free car removal across ${area.short}.`,
-    areaServed: { "@type": "City", name: area.short },
-    provider: {
-      "@type": "LocalBusiness",
-      name: site.name,
-      telephone: site.phone,
-      url: site.url,
-    },
+    areaServed: [
+      { "@type": "City", name: area.short },
+      ...suburbs.map((suburb) => ({ "@type": "Place", name: suburb })),
+    ],
+    provider: { "@id": `${site.url}/#business` },
     url: `${site.url}/service-areas/${area.slug}`,
   };
+
+  const faqJsonLd = area.faqs?.length
+    ? {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "@id": `${site.url}/service-areas/${area.slug}#faq`,
+        mainEntity: area.faqs.map((faq) => ({
+          "@type": "Question",
+          name: faq.question,
+          acceptedAnswer: { "@type": "Answer", text: faq.answer },
+        })),
+      }
+    : null;
 
   const breadcrumbJsonLd = {
     "@context": "https://schema.org",
@@ -95,12 +111,18 @@ export default async function AreaPage({ params }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
+      {faqJsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+        />
+      )}
 
       <PageHero
-        eyebrow={`Cash for cars & car removal · ${area.short}`}
+        eyebrow={area.heroEyebrow ?? `Cash for cars & car removal · ${area.short}`}
         title={
           <>
-            Cash for cars in{" "}
+            {area.heroTitleLead ?? "Cash for cars in"}{" "}
             <span className="text-gradient">{area.name}</span>
           </>
         }
@@ -115,6 +137,21 @@ export default async function AreaPage({ params }: Props) {
             How it works
           </Link>
         </div>
+        {landingPages.length > 0 && (
+          <ul className="mt-8 flex flex-wrap gap-x-6 gap-y-3">
+            {landingPages.map((page) => (
+              <li key={page.slug}>
+                <Link
+                  href={`/${page.slug}`}
+                  className="inline-flex items-center gap-2 font-semibold text-white underline decoration-brand-400 underline-offset-8"
+                >
+                  {page.serviceName}
+                  <ArrowRightIcon className="size-4" />
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
       </PageHero>
 
       {area.seoSections && area.seoSections.length > 0 && (
@@ -149,7 +186,7 @@ export default async function AreaPage({ params }: Props) {
           </Reveal>
           <Reveal delay={120}>
             <ul className="mx-auto mt-12 flex max-w-3xl flex-wrap justify-center gap-3">
-              {area.suburbs.map((suburb) => (
+              {suburbs.map((suburb) => (
                 <li
                   key={suburb}
                   className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-card transition hover:border-brand-300 hover:text-brand-700"
@@ -176,6 +213,28 @@ export default async function AreaPage({ params }: Props) {
           </div>
         </div>
       </section>
+
+      {area.faqs && area.faqs.length > 0 && (
+        <section className="bg-white py-24">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="grid gap-12 lg:grid-cols-[0.7fr_1.3fr] lg:gap-20">
+              <div>
+                <p className="t-index text-brand-700">Local questions</p>
+                <h2 className="mt-5 font-display text-4xl font-medium leading-[1.08] tracking-tight text-ink-900 sm:text-5xl">
+                  Selling a car in {area.short}.
+                </h2>
+                <Link
+                  href="/faq"
+                  className="mt-8 inline-flex items-center gap-2 font-semibold text-brand-700 underline underline-offset-4"
+                >
+                  Read all FAQs <ArrowRightIcon className="size-5" />
+                </Link>
+              </div>
+              <Accordion items={area.faqs} />
+            </div>
+          </div>
+        </section>
+      )}
 
       <div className="bg-white pt-24">
         <CtaBanner

@@ -2,7 +2,8 @@ import type { Metadata, Viewport } from "next";
 import { Barlow, Open_Sans } from "next/font/google";
 import "./globals.css";
 import { site } from "@/config/site";
-import { areas } from "@/data/areas";
+import { areas, getArea } from "@/data/areas";
+import { localPages } from "@/data/localPages";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { MobileCtaBar } from "@/components/MobileCtaBar";
@@ -89,6 +90,25 @@ const businessJsonLd = {
   email: site.email,
   areaServed: areas.map((a) => ({ "@type": "City", name: a.short })),
   priceRange: "$",
+  address: {
+    "@type": "PostalAddress",
+    addressRegion: site.addressRegion,
+    addressCountry: site.addressCountry,
+  },
+  openingHoursSpecification: {
+    "@type": "OpeningHoursSpecification",
+    dayOfWeek: [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+      "Sunday",
+    ],
+    opens: site.opens,
+    closes: site.closes,
+  },
   contactPoint: {
     "@type": "ContactPoint",
     telephone: site.phone,
@@ -96,6 +116,8 @@ const businessJsonLd = {
     areaServed: "AU-QLD",
     availableLanguage: "English",
   },
+  // Each offer points at the page that sells it, so the service and the
+  // landing page are understood as the same thing.
   makesOffer: [
     {
       "@type": "Offer",
@@ -118,6 +140,16 @@ const businessJsonLd = {
         areaServed: ["Brisbane", "Gold Coast", "Toowoomba"],
       },
     },
+    ...localPages.map((page) => ({
+      "@type": "Offer",
+      url: `${site.url}/${page.slug}`,
+      itemOffered: {
+        "@type": "Service",
+        name: page.serviceName,
+        serviceType: page.serviceType,
+        areaServed: getArea(page.areaSlug)?.short ?? page.areaSlug,
+      },
+    })),
   ],
 };
 

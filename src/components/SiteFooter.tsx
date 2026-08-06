@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { site, telHref } from "@/config/site";
 import { areas } from "@/data/areas";
+import { localPages } from "@/data/localPages";
 import { ArrowRightIcon, Logo, PhoneIcon } from "@/components/icons";
 
 const columns = [
@@ -10,6 +11,12 @@ const columns = [
       { href: "/quote", label: "Get a free quote" },
       { href: "/how-it-works", label: "How it works" },
       { href: "/faq", label: "Seller FAQs" },
+      // Sitewide keyword-anchored links to the local landing pages — the main
+      // internal-linking signal pointing at them.
+      ...localPages.map((page) => ({
+        href: `/${page.slug}`,
+        label: page.navLabel,
+      })),
     ],
   },
   {

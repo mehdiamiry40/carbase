@@ -18,6 +18,18 @@ export const site = {
   hours: "7 days, 7am – 7pm", // PLACEHOLDER — your real hours
   abn: "ABN 00 000 000 000", // PLACEHOLDER — your ABN
 
+  // Machine-readable version of `hours`, used for opening-hours structured
+  // data. Keep these two in sync — Google treats a mismatch between what the
+  // page says and what the schema says as a quality signal against you.
+  opens: "07:00", // PLACEHOLDER
+  closes: "19:00", // PLACEHOLDER
+
+  // Region the business trades in. There is no shopfront address to publish,
+  // so structured data carries the state only — never invent a street address
+  // for a LocalBusiness, it is a fast way to lose a Google Business listing.
+  addressRegion: "QLD",
+  addressCountry: "AU",
+
   serviceRegion: "Brisbane, Gold Coast, Toowoomba & SEQ",
 } as const;
 

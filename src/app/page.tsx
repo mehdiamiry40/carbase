@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { site, telHref } from "@/config/site";
 import { faqs } from "@/data/faqs";
+import { localPages } from "@/data/localPages";
 import { QuoteForm } from "@/components/QuoteForm";
 import { Photo } from "@/components/Photo";
 import { Reveal } from "@/components/Reveal";
@@ -302,6 +303,23 @@ export default function HomePage() {
           <div className="mt-12">
             <AreaCards />
           </div>
+          <Reveal>
+            <p className="mt-10 text-lg leading-relaxed text-slate-600">
+              On the Darling Downs? We have dedicated pages for{" "}
+              {localPages.map((page, i) => (
+                <span key={page.slug}>
+                  {i > 0 && " and "}
+                  <Link
+                    href={`/${page.slug}`}
+                    className="font-semibold text-brand-700 underline underline-offset-4"
+                  >
+                    {page.navLabel}
+                  </Link>
+                </span>
+              ))}
+              .
+            </p>
+          </Reveal>
         </div>
       </section>
 
