@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useId, useState } from "react";
 import { ChevronDownIcon } from "@/components/icons";
 import type { Faq } from "@/data/faqs";
 
@@ -13,17 +13,22 @@ export function Accordion({
   defaultOpen?: number | null;
 }) {
   const [open, setOpen] = useState<number | null>(defaultOpen);
+  const accordionId = useId();
 
   return (
     <div className="divide-y divide-brand-200 border-y border-brand-200 bg-transparent">
       {items.map((faq, i) => {
         const isOpen = open === i;
+        const buttonId = `${accordionId}-button-${i}`;
+        const panelId = `${accordionId}-panel-${i}`;
         return (
           <div key={faq.question}>
             <button
               type="button"
+              id={buttonId}
               onClick={() => setOpen(isOpen ? null : i)}
               aria-expanded={isOpen}
+              aria-controls={panelId}
               className="flex w-full items-center justify-between gap-4 py-5 text-left"
             >
               <span className="font-display text-lg font-semibold text-ink-900">
@@ -40,6 +45,9 @@ export function Accordion({
               </span>
             </button>
             <div
+              id={panelId}
+              role="region"
+              aria-labelledby={buttonId}
               className={`grid transition-[grid-template-rows] duration-300 ease-out ${
                 isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
               }`}

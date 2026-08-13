@@ -32,16 +32,6 @@ export const metadata: Metadata = {
   alternates: { canonical: "/" },
   applicationName: site.name,
   category: "automotive",
-  keywords: [
-    "cash for cars Toowoomba",
-    "car removal Toowoomba",
-    "free car removal Toowoomba",
-    "sell my car Toowoomba",
-    "car buyers Toowoomba",
-    "cash for unwanted cars Toowoomba",
-    "scrap car removal Toowoomba",
-    "sell damaged car Toowoomba",
-  ],
   authors: [{ name: site.name, url: site.url }],
   creator: site.name,
   publisher: site.name,
@@ -100,8 +90,16 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: serializeJsonLd(websiteJsonLd) }}
         />
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[60] focus:bg-white focus:px-4 focus:py-3 focus:text-sm focus:font-bold focus:text-ink-900 focus:shadow-lg"
+        >
+          Skip to content
+        </a>
         <SiteHeader />
-        <main>{children}</main>
+        <main id="main-content" tabIndex={-1}>
+          {children}
+        </main>
         <SiteFooter />
         {/* spacer so the sticky mobile bar never covers footer content */}
         <div className="h-20 bg-ink-950 md:hidden" aria-hidden />

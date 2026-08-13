@@ -22,6 +22,10 @@ const sections = [
     body: "We use your details solely to prepare your quote, contact you about selling your vehicle and, if you accept an offer, to complete the purchase and transfer paperwork. We do not sell your personal information or share it with third parties for their marketing.",
   },
   {
+    title: "Service providers",
+    body: "Quote requests are sent using Resend, an email delivery service, so we can receive your enquiry. If website analytics are enabled, Google Analytics processes device, browser, approximate location and usage information as described below. These providers only receive what they need to perform that service.",
+  },
+  {
     title: "Storage and security",
     body: "Quote requests are delivered to us by email and handled only by our team. We take reasonable steps to protect your information from misuse, loss and unauthorised access.",
   },

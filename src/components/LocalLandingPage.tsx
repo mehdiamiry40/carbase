@@ -300,7 +300,8 @@ export function LocalLandingPage({ page }: { page: LocalPage }) {
                 <Reveal delay={index * 80} className="h-full">
                   <a
                     href={link.href}
-                    rel="external"
+                    rel="noopener noreferrer"
+                    target="_blank"
                     className="group block h-full border border-slate-200 bg-white p-6 shadow-card transition hover:border-brand-300"
                   >
                     <span className="flex items-start justify-between gap-4">

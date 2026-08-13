@@ -6,7 +6,7 @@ import { BanknoteIcon, MapPinIcon, ShieldIcon } from "@/components/icons";
 
 export const metadata = pageMetadata({
   path: "/about",
-  title: "About Carbase | Toowoomba Car Buyers",
+  title: "About Us | Toowoomba Car Buyers",
   description: `${site.name} is a Toowoomba Region car buying and removal service. Learn how our quotes, free pickup, paperwork and payment process work.`,
 });
 

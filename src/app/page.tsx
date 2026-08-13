@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { site, telHref } from "@/config/site";
 import { faqs } from "@/data/faqs";
@@ -74,6 +75,19 @@ const reasons = [
     copy: "A Toowoomba-based team serving the city, its suburbs and towns across the Toowoomba Region.",
   },
 ];
+
+export const metadata: Metadata = {
+  keywords: [
+    "cash for cars Toowoomba",
+    "car removal Toowoomba",
+    "free car removal Toowoomba",
+    "sell my car Toowoomba",
+    "car buyers Toowoomba",
+    "cash for unwanted cars Toowoomba",
+    "scrap car removal Toowoomba",
+    "sell damaged car Toowoomba",
+  ],
+};
 
 export default function HomePage() {
   return (

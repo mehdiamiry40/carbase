@@ -74,6 +74,12 @@ export async function POST(request: Request) {
       { status: 400 },
     );
   }
+  if (lead.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(lead.email)) {
+    return NextResponse.json(
+      { ok: false, error: "Please provide a valid email address, or leave it blank." },
+      { status: 400 },
+    );
+  }
 
   const photos = form
     .getAll("photos")
