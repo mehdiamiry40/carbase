@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { site, telHref } from "@/config/site";
+import { areas } from "@/data/areas";
 import { trackQuoteSubmission } from "@/components/SiteAnalytics";
 import {
   ArrowLeftIcon,
@@ -62,6 +63,12 @@ const emptyValues: Values = {
 
 const STEPS = ["Your car", "Photos", "Contact"] as const;
 
+const SUBURB_SUGGESTIONS = [
+  ...new Set(areas.flatMap((area) => [...area.suburbs, ...(area.nearby ?? [])])),
+];
+
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 /** Downscale + re-encode a photo so five of them fit in one request. */
 async function compressImage(file: File): Promise<Blob> {
   const MAX_DIM = 1600;
@@ -120,6 +127,9 @@ export function QuoteForm({ heading = "Get your free quote" }: { heading?: strin
       }
       if (values.phone.replace(/\D/g, "").length < 8) {
         return "That phone number looks too short.";
+      }
+      if (values.email.trim() && !EMAIL_PATTERN.test(values.email.trim())) {
+        return "Please enter a valid email address, or leave it blank.";
       }
     }
     return null;
@@ -302,7 +312,16 @@ export function QuoteForm({ heading = "Get your free quote" }: { heading?: strin
   const progress = ((step + 1) / STEPS.length) * 100;
 
   return (
-    <div className="rounded-3xl bg-white p-6 shadow-card-lg ring-1 ring-slate-900/5 sm:p-8">
+    <form
+      noValidate
+      onSubmit={(event) => {
+        event.preventDefault();
+        if (status === "submitting") return;
+        if (step < 2) next();
+        else void submit();
+      }}
+      className="rounded-3xl bg-white p-6 shadow-card-lg ring-1 ring-slate-900/5 sm:p-8"
+    >
       <div className="flex items-baseline justify-between gap-3">
         <h2 className="font-display text-xl font-bold tracking-tight text-slate-900">
           {heading}
@@ -318,6 +337,7 @@ export function QuoteForm({ heading = "Get your free quote" }: { heading?: strin
           {STEPS.map((label, i) => (
             <div key={label} className="flex flex-1 items-center gap-2">
               <span
+                aria-current={i === step ? "step" : undefined}
                 className={`flex size-6 shrink-0 items-center justify-center rounded-full text-[11px] font-bold transition-all duration-300 ${
                   i < step
                     ? "bg-brand-600 text-white"
@@ -338,7 +358,14 @@ export function QuoteForm({ heading = "Get your free quote" }: { heading?: strin
             </div>
           ))}
         </div>
-        <div className="mt-3 h-1 overflow-hidden rounded-full bg-slate-100">
+        <div
+          className="mt-3 h-1 overflow-hidden rounded-full bg-slate-100"
+          role="progressbar"
+          aria-label="Quote form progress"
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-valuenow={Math.round(progress)}
+        >
           <div
             className="h-full rounded-full bg-linear-to-r from-brand-600 to-accent-400 transition-all duration-500 ease-out"
             style={{ width: `${progress}%` }}
@@ -364,6 +391,9 @@ export function QuoteForm({ heading = "Get your free quote" }: { heading?: strin
               </span>
               <input
                 type="text"
+                name="make"
+                required
+                autoComplete="off"
                 list="carbase-makes"
                 value={values.make}
                 onChange={set("make")}
@@ -382,6 +412,9 @@ export function QuoteForm({ heading = "Get your free quote" }: { heading?: strin
               </span>
               <input
                 type="text"
+                name="model"
+                required
+                autoComplete="off"
                 value={values.model}
                 onChange={set("model")}
                 placeholder="e.g. Hilux"
@@ -504,6 +537,8 @@ export function QuoteForm({ heading = "Get your free quote" }: { heading?: strin
               </span>
               <input
                 type="text"
+                name="name"
+                required
                 autoComplete="name"
                 value={values.name}
                 onChange={set("name")}
@@ -517,6 +552,8 @@ export function QuoteForm({ heading = "Get your free quote" }: { heading?: strin
               </span>
               <input
                 type="tel"
+                name="phone"
+                required
                 autoComplete="tel"
                 value={values.phone}
                 onChange={set("phone")}
@@ -528,6 +565,7 @@ export function QuoteForm({ heading = "Get your free quote" }: { heading?: strin
               <span className="label-base">Email</span>
               <input
                 type="email"
+                name="email"
                 autoComplete="email"
                 value={values.email}
                 onChange={set("email")}
@@ -541,11 +579,20 @@ export function QuoteForm({ heading = "Get your free quote" }: { heading?: strin
               </span>
               <input
                 type="text"
+                name="suburb"
+                required
+                autoComplete="address-level2"
+                list="carbase-suburbs"
                 value={values.suburb}
                 onChange={set("suburb")}
                 placeholder="e.g. Rangeville"
                 className="input-base"
               />
+              <datalist id="carbase-suburbs">
+                {SUBURB_SUGGESTIONS.map((suburb) => (
+                  <option key={suburb} value={suburb} />
+                ))}
+              </datalist>
             </label>
           </div>
         )}
@@ -583,14 +630,13 @@ export function QuoteForm({ heading = "Get your free quote" }: { heading?: strin
           </button>
         )}
         {step < 2 ? (
-          <button type="button" onClick={next} className="btn-primary flex-1">
+          <button type="submit" className="btn-primary flex-1">
             {step === 1 && photos.length === 0 ? "Skip for now" : "Continue"}
             <ArrowRightIcon className="size-4" />
           </button>
         ) : (
           <button
-            type="button"
-            onClick={submit}
+            type="submit"
             disabled={status === "submitting"}
             className="btn-primary flex-1 disabled:cursor-not-allowed disabled:opacity-60"
           >
@@ -608,7 +654,7 @@ export function QuoteForm({ heading = "Get your free quote" }: { heading?: strin
         </a>
         .
       </p>
-    </div>
+    </form>
   );
 }
 
@@ -626,7 +672,7 @@ function YearSelect({
   const current = new Date().getFullYear();
   const years = Array.from({ length: current - 1989 }, (_, i) => current - i);
   return (
-    <select value={value} onChange={onChange} className="input-base">
+    <select name="year" required value={value} onChange={onChange} className="input-base">
       <option value="" disabled>
         Select year…
       </option>

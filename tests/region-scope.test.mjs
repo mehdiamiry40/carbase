@@ -39,6 +39,10 @@ const headerSource = readFileSync(
   "utf8",
 );
 
+test("does not claim a motor dealer licence that has not been verified", () => {
+  assert.doesNotMatch(publicSource, /licensed motor dealer/i);
+});
+
 test("limits every public service-area signal to the Toowoomba Region", () => {
   assert.doesNotMatch(
     publicSource,

@@ -27,7 +27,7 @@ export const faqs: Faq[] = [
   {
     question: "Does the car need a roadworthy certificate (RWC)?",
     answer:
-      "It depends on the registration status and how the sale is processed. Queensland says an unregistered vehicle can be sold without a safety certificate, and an exemption applies when a registered vehicle is traded to a licensed motor dealer. Tell us whether the car is registered and we will confirm the paperwork before pickup.",
+      "It depends on the registration status and how the sale is processed. Queensland says an unregistered vehicle can be sold without a safety certificate. For a registered vehicle, the paperwork depends on how the sale is completed. Tell us whether the car is registered and we will confirm what needs to be ready before pickup.",
   },
   {
     question: "What paperwork do I need?",

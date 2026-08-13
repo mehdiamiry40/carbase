@@ -81,6 +81,10 @@
     @apply mx-auto w-full max-w-[1380px] px-5 sm:px-8 lg:px-10;
   }
 
+  .text-gradient {
+    color: #ff9db2;
+  }
+
   .photo-scrim-home {
     position: absolute;
     inset: 0;
@@ -243,6 +247,13 @@
 @media (max-width: 639px) {
   .hero-panel {
     background: rgb(6 26 57 / 0.78);
+  }
+}
+
+@media (scripting: none) {
+  .reveal {
+    opacity: 1;
+    transform: none;
   }
 }
 

@@ -53,6 +53,15 @@ export function SiteHeader() {
     return () => document.removeEventListener("keydown", onKeyDown);
   }, [open]);
 
+  useEffect(() => {
+    if (!open) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [open]);
+
   return (
     <header
       className={`sticky top-0 z-50 bg-white text-ink-900 transition-shadow ${scrolled || open ? "shadow-md shadow-ink-950/10" : ""}`}
