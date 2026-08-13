@@ -6,6 +6,7 @@
 // with each other for the same result instead of ranking separately.
 
 import type { Faq } from "@/data/faqs";
+import type { PhotoKey } from "@/data/photos";
 
 export type LocalPage = {
   /** Root-level URL slug — this is the keyword, hyphenated */
@@ -14,6 +15,9 @@ export type LocalPage = {
   areaSlug: string;
   /** The single search term this page is built to rank for */
   primaryKeyword: string;
+  /** Real content dates used for WebPage schema and accurate sitemap hints */
+  datePublished: string;
+  dateModified: string;
   /** Anchor text for sitewide nav links — keep it exact-match on the keyword */
   navLabel: string;
   eyebrow: string;
@@ -23,7 +27,11 @@ export type LocalPage = {
   seoTitle: string;
   seoDescription: string;
   keywords: string[];
+  heroPhoto: PhotoKey;
+  heroPhotoAlt: string;
   lede: string;
+  /** Scannable, claim-safe details shown immediately after the hero */
+  highlights: { label: string; value: string }[];
   /** Name used in the Service schema block */
   serviceName: string;
   serviceType: string[];
@@ -40,13 +48,15 @@ export const localPages: LocalPage[] = [
     slug: "cash-for-cars-toowoomba",
     areaSlug: "toowoomba",
     primaryKeyword: "cash for cars Toowoomba",
+    datePublished: "2026-08-06",
+    dateModified: "2026-08-13",
     navLabel: "Cash for cars Toowoomba",
     eyebrow: "Cash for cars · Toowoomba",
-    h1Lead: "Cash for cars in",
+    h1Lead: "Cash for cars",
     h1Highlight: "Toowoomba",
-    seoTitle: "Cash for Cars Toowoomba | Sell Your Car",
+    seoTitle: "Cash for Cars Toowoomba | Free Quote & Pickup",
     seoDescription:
-      "Sell your old, damaged or non-running car in the Toowoomba Region. Get a free quote, a firm offer and payment before collection.",
+      "Cash for cars in Toowoomba for old, damaged and non-running vehicles. Get a free quote, firm offer, payment before collection and free pickup.",
     keywords: [
       "cash for cars Toowoomba",
       "cash for cars toowoomba",
@@ -57,8 +67,16 @@ export const localPages: LocalPage[] = [
       "instant cash for cars Toowoomba",
       "sell damaged car Toowoomba",
     ],
+    heroPhoto: "damaged",
+    heroPhotoAlt: "Old damaged car ready to be valued and sold",
     lede:
       "Carbase buys cars throughout the Toowoomba Region. Send through the make, model, year and condition, and you get a firm offer — usually the same day — with payment before the car goes anywhere.",
+    highlights: [
+      { label: "Quote", value: "Free and no obligation" },
+      { label: "Payment", value: "Bank transfer before pickup" },
+      { label: "Collection", value: "Included in the offer" },
+      { label: "Coverage", value: "Toowoomba Region only" },
+    ],
     serviceName: "Cash for cars in Toowoomba",
     serviceType: ["Cash for cars", "Car buying", "Vehicle valuation"],
     sections: [
@@ -139,13 +157,15 @@ export const localPages: LocalPage[] = [
     slug: "car-removal-toowoomba",
     areaSlug: "toowoomba",
     primaryKeyword: "car removal Toowoomba",
+    datePublished: "2026-08-06",
+    dateModified: "2026-08-13",
     navLabel: "Car removal Toowoomba",
     eyebrow: "Car removal · Toowoomba",
-    h1Lead: "Free car removal in",
+    h1Lead: "Car removal",
     h1Highlight: "Toowoomba",
-    seoTitle: "Car Removal Toowoomba | Free Vehicle Pickup",
+    seoTitle: "Car Removal Toowoomba | Free Pickup & Quote",
     seoDescription:
-      "Free car removal in Toowoomba for scrap, unwanted and non-running cars. Get a free quote, payment before pickup and no towing fee deducted from your offer.",
+      "Book free car removal in Toowoomba for scrap, unwanted and non-running vehicles. Get a quote, payment before pickup and no towing fee.",
     keywords: [
       "car removal Toowoomba",
       "car removal toowoomba",
@@ -156,8 +176,16 @@ export const localPages: LocalPage[] = [
       "unwanted car removal Toowoomba",
       "car disposal Toowoomba",
     ],
+    heroPhoto: "pickup",
+    heroPhotoAlt: "Broken-down car ready to be loaded for vehicle removal",
     lede:
       "Carbase removes old, scrap and unwanted cars from anywhere within the Toowoomba Region at no charge. There is no towing fee to pay and nothing deducted from your offer — you are paid first, then we load the car and take it away.",
+    highlights: [
+      { label: "Pickup fee", value: "$0 across our service area" },
+      { label: "Condition", value: "Running or non-running" },
+      { label: "Payment", value: "Before the vehicle is loaded" },
+      { label: "Coverage", value: "Toowoomba Region only" },
+    ],
     serviceName: "Free car removal in Toowoomba",
     serviceType: ["Car removal", "Scrap car removal", "Vehicle towing"],
     sections: [
