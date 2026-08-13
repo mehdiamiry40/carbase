@@ -65,11 +65,11 @@ test("uses one canonical coverage hub and retires former area routes", () => {
 test("keeps distinct search intent for the two Toowoomba service pages", () => {
   assert.match(
     publicSource,
-    /seoTitle: "Cash for Cars Toowoomba \| Sell Your Car"/,
+    /seoTitle: "Cash for Cars Toowoomba \| Free Quote & Pickup"/,
   );
   assert.match(
     publicSource,
-    /seoTitle: "Car Removal Toowoomba \| Free Vehicle Pickup"/,
+    /seoTitle: "Car Removal Toowoomba \| Free Pickup & Quote"/,
   );
 });
 
@@ -78,6 +78,11 @@ test("promotes both commercial pages in the primary navigation", () => {
   assert.match(headerSource, /href: "\/car-removal-toowoomba"/);
 });
 
-test("does not claim every sitemap URL changed on every deployment", () => {
-  assert.doesNotMatch(sitemapSource, /new Date\(\)|lastModified|changeFrequency|priority/);
+test("uses accurate content dates for commercial pages without deploy-time churn", () => {
+  assert.doesNotMatch(sitemapSource, /new Date\(\)|changeFrequency|priority/);
+  assert.match(sitemapSource, /lastModified: page\.dateModified/);
+  assert.equal(
+    [...publicSource.matchAll(/dateModified: "(\d{4}-\d{2}-\d{2})"/g)].length,
+    2,
+  );
 });

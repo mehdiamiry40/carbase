@@ -87,6 +87,9 @@ export function LocalLandingPage({ page }: { page: LocalPage }) {
         name: page.seoTitle,
         description: page.seoDescription,
         inLanguage: "en-AU",
+        datePublished: page.datePublished,
+        dateModified: page.dateModified,
+        headline: page.primaryKeyword,
         isPartOf: { "@id": `${site.url}/#website` },
         about: { "@id": serviceId },
         mainEntity: { "@id": serviceId },
@@ -112,6 +115,12 @@ export function LocalLandingPage({ page }: { page: LocalPage }) {
 
       <PageHero
         eyebrow={page.eyebrow}
+        breadcrumbs={[
+          { href: "/", label: "Home" },
+          { href: `/${page.slug}`, label: page.navLabel },
+        ]}
+        photoName={page.heroPhoto}
+        photoAlt={page.heroPhotoAlt}
         title={
           <>
             {page.h1Lead}{" "}
@@ -131,6 +140,29 @@ export function LocalLandingPage({ page }: { page: LocalPage }) {
           </a>
         </div>
       </PageHero>
+
+      <section
+        aria-labelledby={`${page.slug}-highlights`}
+        className="border-b border-brand-300 bg-brand-700 text-white"
+      >
+        <div className="shell py-8 lg:py-10">
+          <h2 id={`${page.slug}-highlights`} className="sr-only">
+            {page.navLabel} service details
+          </h2>
+          <dl className="grid gap-x-8 gap-y-6 sm:grid-cols-2 lg:grid-cols-4">
+            {page.highlights.map((item) => (
+              <div key={item.label} className="border-l border-brand-300 pl-4">
+                <dt className="text-xs font-bold tracking-[0.16em] text-brand-100 uppercase">
+                  {item.label}
+                </dt>
+                <dd className="mt-2 font-display text-lg font-semibold text-white">
+                  {item.value}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </section>
 
       <section id="local-quote" className="scroll-mt-28 bg-white py-16 lg:py-24">
         <div className="shell grid gap-12 lg:grid-cols-[0.82fr_1.18fr] lg:items-start lg:gap-20">
@@ -184,6 +216,59 @@ export function LocalLandingPage({ page }: { page: LocalPage }) {
               </Reveal>
             ))}
           </div>
+        </div>
+      </section>
+
+      <section className="bg-white py-16 lg:py-20">
+        <div className="shell grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-start lg:gap-20">
+          <Reveal>
+            <div>
+              <p className="t-index text-brand-700">Local and accountable</p>
+              <h2 className="mt-5 font-display text-3xl font-semibold tracking-tight text-ink-900 sm:text-4xl">
+                Know who you are selling your car to.
+              </h2>
+            </div>
+          </Reveal>
+          <Reveal delay={100}>
+            <div>
+              <p className="text-lg leading-relaxed text-slate-600">
+                Carbase is based in Toowoomba and serves the Toowoomba Region
+                only. It is operated by {site.operatorName} (ABN {site.abn}), so
+                the business name, service boundary and contact details are
+                clear before you share your vehicle information.
+              </p>
+              <dl className="mt-8 grid gap-5 border-y border-slate-200 py-6 sm:grid-cols-2">
+                <div>
+                  <dt className="text-xs font-bold tracking-[0.14em] text-brand-700 uppercase">
+                    Phone
+                  </dt>
+                  <dd className="mt-2">
+                    <a
+                      href={telHref}
+                      className="font-display text-xl font-semibold text-ink-900 underline decoration-brand-300 underline-offset-4"
+                    >
+                      {site.phone}
+                    </a>
+                  </dd>
+                </div>
+                <div>
+                  <dt className="text-xs font-bold tracking-[0.14em] text-brand-700 uppercase">
+                    Hours
+                  </dt>
+                  <dd className="mt-2 font-display text-xl font-semibold text-ink-900">
+                    {site.hours}
+                  </dd>
+                </div>
+              </dl>
+              <Link
+                href="/about"
+                className="mt-7 inline-flex items-center gap-2 font-semibold text-brand-700 underline underline-offset-4"
+              >
+                About Carbase and our process
+                <ArrowRightIcon className="size-4" />
+              </Link>
+            </div>
+          </Reveal>
         </div>
       </section>
 

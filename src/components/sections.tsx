@@ -6,6 +6,7 @@ import { testimonials } from "@/data/testimonials";
 import { Accordion } from "@/components/Accordion";
 import { Reveal } from "@/components/Reveal";
 import { Photo } from "@/components/Photo";
+import type { PhotoKey } from "@/data/photos";
 import {
   ArrowRightIcon,
   BanknoteIcon,
@@ -69,21 +70,56 @@ export function PageHero({
   lede,
   children,
   compact = false,
+  breadcrumbs,
+  photoName = "abandoned",
+  photoAlt = "Old abandoned cars ready to be sold for removal",
 }: {
   eyebrow: string;
   title: React.ReactNode;
   lede?: string;
   children?: React.ReactNode;
   compact?: boolean;
+  breadcrumbs?: { href: string; label: string }[];
+  photoName?: PhotoKey;
+  photoAlt?: string;
 }) {
   return (
     <section className="relative overflow-hidden bg-ink-900 text-white">
-      <Photo name="abandoned" alt="Old abandoned cars ready to be sold for removal" className="object-[55%_center]" preload />
+      <Photo
+        name={photoName}
+        alt={photoAlt}
+        className="object-[55%_center]"
+        preload
+      />
       <span className="photo-scrim-page" aria-hidden />
       <div
         className={`shell relative ${compact ? "py-16 lg:py-20" : "py-20 lg:py-28"}`}
       >
         <div className="max-w-3xl">
+          {breadcrumbs && breadcrumbs.length > 0 && (
+            <nav aria-label="Breadcrumb" className="mb-6 text-sm text-white/85">
+              <ol className="flex flex-wrap items-center gap-2">
+                {breadcrumbs.map((item, index) => {
+                  const current = index === breadcrumbs.length - 1;
+                  return (
+                    <li key={item.href} className="flex items-center gap-2">
+                      {index > 0 && <span aria-hidden>/</span>}
+                      {current ? (
+                        <span aria-current="page">{item.label}</span>
+                      ) : (
+                        <Link
+                          href={item.href}
+                          className="underline decoration-white/50 underline-offset-4 transition hover:decoration-white"
+                        >
+                          {item.label}
+                        </Link>
+                      )}
+                    </li>
+                  );
+                })}
+              </ol>
+            </nav>
+          )}
           <p className="t-index w-fit border-b border-white/70 pb-3">
             {eyebrow}
           </p>
