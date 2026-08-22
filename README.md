@@ -4,19 +4,21 @@ Marketing + lead-generation website for Carbase, built with [Next.js](https://ne
 
 ## What's inside
 
-| Route | Purpose |
-| --- | --- |
-| `/` | Home — hero with the quote form, benefits, how-it-works, areas and FAQ teaser |
-| `/quote` | Full quote page (main call-to-action) |
-| `/how-it-works` | The 4-step selling process + pickup checklist |
-| `/about` | About the business |
-| `/faq` | All FAQs, with `FAQPage` structured data for Google |
-| `/service-areas` | Toowoomba Region suburb and town coverage hub |
-| `/service-areas/toowoomba` | Permanent redirect to the canonical coverage hub |
-| `/cash-for-cars-toowoomba` | Dedicated cash-for-cars Toowoomba landing page |
-| `/car-removal-toowoomba` | Dedicated car-removal Toowoomba landing page |
-| `/privacy` | Starter privacy policy |
-| `/api/quote` | Receives quote form submissions (incl. photos) and emails them to you |
+| Route                      | Purpose                                                                       |
+| -------------------------- | ----------------------------------------------------------------------------- |
+| `/`                        | Home — hero with the quote form, benefits, how-it-works, areas and FAQ teaser |
+| `/quote`                   | Full quote page (main call-to-action)                                         |
+| `/how-it-works`            | The 4-step selling process + pickup checklist                                 |
+| `/about`                   | About the business                                                            |
+| `/faq`                     | All FAQs, with `FAQPage` structured data for Google                           |
+| `/blog`                    | Car selling guides and practical vehicle advice                               |
+| `/blog/[slug]`             | Statically generated guide pages with article structured data                 |
+| `/service-areas`           | Toowoomba Region suburb and town coverage hub                                 |
+| `/service-areas/toowoomba` | Permanent redirect to the canonical coverage hub                              |
+| `/cash-for-cars-toowoomba` | Dedicated cash-for-cars Toowoomba landing page                                |
+| `/car-removal-toowoomba`   | Dedicated car-removal Toowoomba landing page                                  |
+| `/privacy`                 | Starter privacy policy                                                        |
+| `/api/quote`               | Receives quote form submissions (incl. photos) and emails them to you         |
 
 Also included: sitemap (`/sitemap.xml`), robots rules, Organization and service structured data, Open Graph share image, sticky mobile call/quote bar.
 
@@ -30,7 +32,7 @@ Also included: sitemap (`/sitemap.xml`), robots rules, Organization and service 
    - `RESEND_API_KEY` — your API key
    - `QUOTE_TO_EMAIL` — optional; defaults to the verified server-side quote inbox
    - `QUOTE_FROM_EMAIL` — optional; keep the testing sender until you have a verified domain
-   Without an API key the quote endpoint returns `503`, the form shows the customer an error, and no customer details are written to logs.
+     Without an API key the quote endpoint returns `503`, the form shows the customer an error, and no customer details are written to logs.
 6. **`NEXT_PUBLIC_SITE_URL`** — set to your real domain when you connect one (used for SEO tags and the sitemap).
 7. **Analytics** — set `NEXT_PUBLIC_GA_MEASUREMENT_ID` to the GA4 web stream ID. The site records page views, successful quote requests as `generate_lead`, and phone-link clicks as `phone_click`; quote and vehicle details are never included in analytics events.
 8. **`/privacy`** — starter text only, not legal advice; review before launch.
