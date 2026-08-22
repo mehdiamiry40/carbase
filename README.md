@@ -11,6 +11,8 @@ Marketing + lead-generation website for Carbase, built with [Next.js](https://ne
 | `/how-it-works` | The 4-step selling process + pickup checklist |
 | `/about` | About the business |
 | `/faq` | All FAQs, with `FAQPage` structured data for Google |
+| `/blog` | Car selling guides and practical vehicle advice |
+| `/blog/[slug]` | Statically generated guide pages with article structured data |
 | `/service-areas` | Toowoomba Region suburb and town coverage hub |
 | `/service-areas/toowoomba` | Permanent redirect to the canonical coverage hub |
 | `/cash-for-cars-toowoomba` | Dedicated cash-for-cars Toowoomba landing page |

@@ -24,6 +24,7 @@ const columns = [
     links: [
       { href: "/about", label: "About us" },
       { href: "/service-areas", label: "Service areas" },
+      { href: "/blog", label: "Car selling guides" },
       { href: "/privacy", label: "Privacy" },
     ],
   },

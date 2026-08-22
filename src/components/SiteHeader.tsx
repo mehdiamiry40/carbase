@@ -27,6 +27,7 @@ const mobileNavLinks = [
   ...desktopNavLinks,
   { href: "/about", label: "About" },
   { href: "/faq", label: "FAQs" },
+  { href: "/blog", label: "Guides" },
 ];
 
 export function SiteHeader() {
@@ -75,6 +76,9 @@ export function SiteHeader() {
           </Link>
           <Link href="/faq" className="transition hover:text-brand-200">
             Seller FAQs
+          </Link>
+          <Link href="/blog" className="transition hover:text-brand-200">
+            Guides
           </Link>
           <a
             href={telHref}
