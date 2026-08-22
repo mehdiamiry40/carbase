@@ -6,6 +6,7 @@ import { localPages } from "@/data/localPages";
 import { QuoteForm } from "@/components/QuoteForm";
 import { Photo } from "@/components/Photo";
 import { Reveal } from "@/components/Reveal";
+import { GuideLinks } from "@/components/GuideLinks";
 import {
   AreaCards,
   CtaBanner,
@@ -354,6 +355,11 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      <GuideLinks
+        title="Useful reading before you decide"
+        lede="Understand what can shape an offer, whether a repair is worthwhile and how to prepare a non-running car for collection."
+      />
 
       <section className="bg-brand-50 py-16 lg:py-24">
         <div className="shell grid gap-12 lg:grid-cols-[0.7fr_1.3fr] lg:gap-20">

@@ -26,6 +26,18 @@ const footerSource = readFileSync(
   new URL("../src/components/SiteFooter.tsx", import.meta.url),
   "utf8",
 );
+const guideLinksSource = readFileSync(
+  new URL("../src/components/GuideLinks.tsx", import.meta.url),
+  "utf8",
+);
+const homeSource = readFileSync(
+  new URL("../src/app/page.tsx", import.meta.url),
+  "utf8",
+);
+const localLandingSource = readFileSync(
+  new URL("../src/components/LocalLandingPage.tsx", import.meta.url),
+  "utf8",
+);
 
 test("publishes a populated blog hub with unique starter guides", () => {
   const slugs = [...postsSource.matchAll(/^\s{4}slug: "([^"]+)",$/gm)].map(
@@ -52,4 +64,13 @@ test("makes the blog discoverable in navigation and the sitemap", () => {
   assert.match(sitemapSource, /"\/blog"/);
   assert.match(sitemapSource, /blogPosts\.map/);
   assert.match(sitemapSource, /lastModified: post\.updatedOn/);
+});
+
+test("links guides contextually from commercial pages", () => {
+  assert.match(homeSource, /<GuideLinks/);
+  assert.match(localLandingSource, /<GuideLinks/);
+  assert.match(guideLinksSource, /href=\{"\/blog\/" \+ post\.slug\}/);
+  assert.match(guideLinksSource, /href="\/blog"/);
+  assert.match(localLandingSource, /prepare-non-running-car-for-collection/);
+  assert.match(localLandingSource, /repair-damaged-car-before-selling/);
 });
