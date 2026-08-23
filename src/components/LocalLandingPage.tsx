@@ -4,6 +4,7 @@ import { getArea } from "@/data/areas";
 import type { LocalPage } from "@/data/localPages";
 import { serializeJsonLd } from "@/lib/jsonLd";
 import { Accordion } from "@/components/Accordion";
+import { GuideLinks } from "@/components/GuideLinks";
 import { QuoteForm } from "@/components/QuoteForm";
 import { Reveal } from "@/components/Reveal";
 import {
@@ -18,6 +19,17 @@ import {
   MapPinIcon,
   PhoneIcon,
 } from "@/components/icons";
+
+const localGuideSlugs: Record<string, readonly string[]> = {
+  "cash-for-cars-toowoomba": [
+    "what-affects-unwanted-car-value",
+    "repair-damaged-car-before-selling",
+  ],
+  "car-removal-toowoomba": [
+    "prepare-non-running-car-for-collection",
+    "what-affects-unwanted-car-value",
+  ],
+};
 
 /**
  * Renders a keyword-targeted local landing page (see `data/localPages.ts`).
@@ -367,6 +379,13 @@ export function LocalLandingPage({ page }: { page: LocalPage }) {
           </div>
         </div>
       </section>
+
+      <GuideLinks
+        eyebrow="Before the next step"
+        title="Practical guides for selling and collection"
+        lede="Use these guides to understand the vehicle details that matter and prepare for a straightforward handover in the Toowoomba Region."
+        postSlugs={localGuideSlugs[page.slug]}
+      />
 
       <section id="questions" className="scroll-mt-28 bg-white py-16 lg:py-24">
         <div className="shell grid gap-12 lg:grid-cols-[0.7fr_1.3fr] lg:gap-20">
