@@ -1,14 +1,28 @@
+import { randomUUID } from "node:crypto";
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import { site } from "@/config/site";
 import {
+  logQuoteBackupCleanupFailure,
+  logQuoteBackupFailure,
+  logQuoteBackupStored,
+  logQuoteBackupUnavailable,
+  persistQuoteBackup,
+  quoteBackupReceived,
+  removeQuoteBackup,
+  resolveQuoteBackup,
+  runWithTimeout,
+} from "@/lib/quoteBackup.mjs";
+import {
   logQuoteDeliveryFailure,
   logQuoteDeliveryUnavailable,
+  quoteDeliveryFailed,
   quoteDeliveryUnavailable,
   resolveQuoteDelivery,
 } from "@/lib/quoteDelivery.mjs";
 
 export const runtime = "nodejs";
+export const maxDuration = 30;
 
 // Verified private destination for quote leads. Keep this server-side: it is
 // not a public NAP/contact email and must not be emitted into page metadata.
@@ -17,6 +31,9 @@ const DEFAULT_QUOTE_TO_EMAIL = "mehdiamiry40@gmail.com";
 const MAX_PHOTOS = 5;
 const MAX_PHOTO_BYTES = 3_000_000;
 const MAX_TOTAL_BYTES = 4_200_000;
+const BACKUP_TIMEOUT_MS = 8_000;
+const RESEND_TIMEOUT_MS = 8_000;
+const CLEANUP_TIMEOUT_MS = 3_000;
 
 const REQUIRED_FIELDS = ["make", "model", "year", "name", "phone", "suburb"] as const;
 const OPTIONAL_FIELDS = [
@@ -104,16 +121,54 @@ export async function POST(request: Request) {
   }
 
   const summary = `${lead.year} ${lead.make} ${lead.model}`;
-
   const delivery = resolveQuoteDelivery(process.env, DEFAULT_QUOTE_TO_EMAIL);
+  const backup = resolveQuoteBackup(process.env);
+  const submissionId = randomUUID();
+  const receivedAt = new Date();
+
+  async function storeBackup(
+    reason: "resend_pending" | "resend_unavailable" | "resend_failed",
+    phase: "pre_delivery" | "post_failure",
+  ) {
+    if (!backup) return null;
+    try {
+      return await runWithTimeout(
+        (abortSignal) =>
+          persistQuoteBackup({
+            lead,
+            photos,
+            reason,
+            submissionId,
+            token: backup.token,
+            receivedAt,
+            abortSignal,
+          }),
+        BACKUP_TIMEOUT_MS,
+      );
+    } catch {
+      logQuoteBackupFailure(phase);
+      return null;
+    }
+  }
+
+  if (!backup) logQuoteBackupUnavailable();
+
+  let storedBackup = await storeBackup(
+    delivery ? "resend_pending" : "resend_unavailable",
+    "pre_delivery",
+  );
+
   if (!delivery) {
-    // Fail closed: do not claim receipt when there is no delivery path, and do
-    // not put a customer's contact or vehicle details into server logs.
     logQuoteDeliveryUnavailable();
-    return NextResponse.json(
-      quoteDeliveryUnavailable.body,
-      { status: quoteDeliveryUnavailable.status },
-    );
+    if (storedBackup) {
+      logQuoteBackupStored("resend_unavailable", submissionId);
+      return NextResponse.json(quoteBackupReceived.body, {
+        status: quoteBackupReceived.status,
+      });
+    }
+    return NextResponse.json(quoteDeliveryUnavailable.body, {
+      status: quoteDeliveryUnavailable.status,
+    });
   }
 
   const { apiKey, destination, sender } = delivery;
@@ -146,6 +201,7 @@ export async function POST(request: Request) {
     <p style="font-family:sans-serif;color:#64748b">${photos.length} photo(s) attached. Sent from the ${escapeHtml(site.name)} website quote form.</p>
   `;
 
+  let delivered = false;
   try {
     const resend = new Resend(apiKey);
     const attachments = await Promise.all(
@@ -155,28 +211,62 @@ export async function POST(request: Request) {
       })),
     );
 
-    const { error } = await resend.emails.send({
-      from: sender,
-      to: destination,
-      replyTo: lead.email || undefined,
-      subject: `New quote request: ${summary} — ${lead.name} (${lead.phone})`,
-      html,
-      attachments,
-    });
-
-    if (error) {
-      logQuoteDeliveryFailure();
-      return NextResponse.json(
-        { ok: false, error: "We couldn't send your request just now — please call us instead." },
-        { status: 502 },
-      );
-    }
-  } catch {
-    logQuoteDeliveryFailure();
-    return NextResponse.json(
-      { ok: false, error: "We couldn't send your request just now — please call us instead." },
-      { status: 502 },
+    const { error } = await runWithTimeout(
+      (signal) => {
+        // Resend forwards request options to fetch at runtime. Keep the race in
+        // runWithTimeout as the hard bound if a future SDK stops forwarding it.
+        const requestOptions = {
+          idempotencyKey: `carbase-quote-${submissionId}`,
+          signal,
+        };
+        return resend.emails.send(
+          {
+            from: sender,
+            to: destination,
+            replyTo: lead.email || undefined,
+            subject: `New quote request: ${summary} — ${lead.name} (${lead.phone})`,
+            html,
+            attachments,
+          },
+          requestOptions,
+        );
+      },
+      RESEND_TIMEOUT_MS,
     );
+    delivered = !error;
+  } catch {
+    // The lead is already staged before this bounded provider request starts.
+  }
+
+  if (!delivered) {
+    logQuoteDeliveryFailure();
+    storedBackup ||= await storeBackup("resend_failed", "post_failure");
+    if (storedBackup) {
+      logQuoteBackupStored("resend_failed", submissionId);
+      return NextResponse.json(quoteBackupReceived.body, {
+        status: quoteBackupReceived.status,
+      });
+    }
+    return NextResponse.json(quoteDeliveryFailed.body, {
+      status: quoteDeliveryFailed.status,
+    });
+  }
+
+  if (storedBackup && backup) {
+    try {
+      await runWithTimeout(
+        (abortSignal) =>
+          removeQuoteBackup({
+            pathname: storedBackup.pathname,
+            token: backup.token,
+            abortSignal,
+          }),
+        CLEANUP_TIMEOUT_MS,
+      );
+    } catch {
+      // Email is confirmed; retain the private copy and alert for cleanup.
+      logQuoteBackupCleanupFailure(submissionId);
+    }
   }
 
   return NextResponse.json({ ok: true, delivered: true });

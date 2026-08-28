@@ -6,6 +6,14 @@ export const quoteDeliveryUnavailable = Object.freeze({
   }),
 });
 
+export const quoteDeliveryFailed = Object.freeze({
+  status: 502,
+  body: Object.freeze({
+    ok: false,
+    error: "We couldn't send your request just now — please call us instead.",
+  }),
+});
+
 /**
  * Resolve the delivery settings without ever accepting customer data.
  *
@@ -27,10 +35,22 @@ export function resolveQuoteDelivery(env, defaultDestination) {
 
 /** @param {Pick<Console, "warn">} logger */
 export function logQuoteDeliveryUnavailable(logger = console) {
-  logger.warn("[quote] Email delivery is not configured. Set RESEND_API_KEY.");
+  logger.warn(
+    JSON.stringify({
+      component: "quote-api",
+      event: "quote.delivery.unavailable",
+      provider: "resend",
+    }),
+  );
 }
 
 /** @param {Pick<Console, "error">} logger */
 export function logQuoteDeliveryFailure(logger = console) {
-  logger.error("[quote] Delivery failed.");
+  logger.error(
+    JSON.stringify({
+      component: "quote-api",
+      event: "quote.delivery.failed",
+      provider: "resend",
+    }),
+  );
 }

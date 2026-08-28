@@ -23,11 +23,11 @@ const sections = [
   },
   {
     title: "Service providers",
-    body: "Quote requests are sent using Resend, an email delivery service, so we can receive your enquiry. If website analytics are enabled, Google Analytics processes device, browser, approximate location and usage information as described below. These providers only receive what they need to perform that service.",
+    body: "Quote requests are briefly staged in a private Vercel Blob store while Resend, our email delivery service, sends the enquiry to us. The staged copy is removed after confirmed email delivery and retained for our team to recover only if delivery fails. If website analytics are enabled, Google Analytics processes device, browser, approximate location and usage information as described below. These providers only receive what they need to perform that service.",
   },
   {
     title: "Storage and security",
-    body: "Quote requests are delivered to us by email and handled only by our team. We take reasonable steps to protect your information from misuse, loss and unauthorised access.",
+    body: "Quote requests are delivered to us by email and handled only by our team. A request is held briefly in access-controlled private storage during delivery; successful deliveries are removed, while a request that cannot be emailed may be retained temporarily until we recover and action it. We take reasonable steps to protect your information from misuse, loss and unauthorised access.",
   },
   {
     title: "Website analytics",

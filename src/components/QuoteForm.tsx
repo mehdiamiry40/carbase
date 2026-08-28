@@ -239,12 +239,13 @@ export function QuoteForm({ heading = "Get your free quote" }: { heading?: strin
       const res = await fetch("/api/quote", { method: "POST", body: data });
       const body = (await res.json().catch(() => null)) as {
         delivered?: boolean;
+        safelyStored?: boolean;
         error?: string;
       } | null;
       if (!res.ok) {
         throw new Error(body?.error ?? "Something went wrong sending your details.");
       }
-      if (body?.delivered) trackQuoteSubmission();
+      if (body?.delivered || body?.safelyStored) trackQuoteSubmission();
       setStatus("success");
       photos.forEach((p) => URL.revokeObjectURL(p.previewUrl));
     } catch (e) {

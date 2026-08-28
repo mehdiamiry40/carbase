@@ -17,13 +17,15 @@ test("analytics stays disabled without a configured measurement ID", () => {
 
 test("only successful quote requests emit a lead event", () => {
   const responseCheck = quoteFormSource.indexOf("if (!res.ok)");
-  const deliveredCheck = quoteFormSource.indexOf("if (body?.delivered)");
+  const acceptedCheck = quoteFormSource.indexOf(
+    "if (body?.delivered || body?.safelyStored)",
+  );
   const leadEvent = quoteFormSource.indexOf("trackQuoteSubmission();");
   const successState = quoteFormSource.indexOf('setStatus("success")');
 
   assert.ok(responseCheck >= 0);
-  assert.ok(deliveredCheck > responseCheck);
-  assert.ok(leadEvent > deliveredCheck);
+  assert.ok(acceptedCheck > responseCheck);
+  assert.ok(leadEvent > acceptedCheck);
   assert.ok(successState > leadEvent);
 });
 

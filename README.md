@@ -18,7 +18,7 @@ Marketing + lead-generation website for Carbase, built with [Next.js](https://ne
 | `/cash-for-cars-toowoomba` | Dedicated cash-for-cars Toowoomba landing page |
 | `/car-removal-toowoomba` | Dedicated car-removal Toowoomba landing page |
 | `/privacy` | Starter privacy policy |
-| `/api/quote` | Receives quote form submissions (incl. photos) and emails them to you |
+| `/api/quote` | Receives quote form submissions (incl. photos) through a private outbox, then emails them |
 
 Also included: sitemap (`/sitemap.xml`), robots rules, Organization and service structured data, Open Graph share image, sticky mobile call/quote bar.
 
@@ -32,7 +32,11 @@ Also included: sitemap (`/sitemap.xml`), robots rules, Organization and service 
    - `RESEND_API_KEY` — your API key
    - `QUOTE_TO_EMAIL` — optional; defaults to the verified server-side quote inbox
    - `QUOTE_FROM_EMAIL` — optional; keep the testing sender until you have a verified domain
-   Without an API key the quote endpoint returns `503`, the form shows the customer an error, and no customer details are written to logs.
+   - `BLOB_READ_WRITE_TOKEN` — connect a **private** Vercel Blob store for the delivery outbox
+
+   Every validated request is first staged as one access-controlled JSON envelope containing the complete lead and its validated photos under `quote-lead-backups/`. Resend is then called with a bounded timeout and an idempotency key. Confirmed email delivery removes the staged object; a delivery failure retains it and returns `202` with `delivered: false` and `safelyStored: true`. If neither email nor private storage succeeds, the endpoint preserves its `502`/`503` response and does not claim receipt. Customer, vehicle, photo, provider-error and secret values are never written to application logs.
+
+   Treat retained objects as an operational queue: alert on `quote.backup.stored`, use its non-personal `submissionId` to locate the private object, action the lead, then delete the object under your data-retention policy. Also alert on `quote.backup.failed`, `quote.backup.cleanup_failed`, and `quote.backup.unavailable`; cleanup alerts include the same `submissionId` so a delivered orphan can be removed without contacting the customer twice. The related `quote.delivery.failed` and `quote.delivery.unavailable` events identify the primary failure. All events are structured JSON and contain only fixed operational fields.
 6. **`NEXT_PUBLIC_SITE_URL`** — set to your real domain when you connect one (used for SEO tags and the sitemap).
 7. **Analytics** — set `NEXT_PUBLIC_GA_MEASUREMENT_ID` to the GA4 web stream ID. The site records page views, successful quote requests as `generate_lead`, and phone-link clicks as `phone_click`; quote and vehicle details are never included in analytics events.
 8. **`/privacy`** — starter text only, not legal advice; review before launch.
@@ -49,4 +53,4 @@ npm run build   # production build
 
 ## Deploy
 
-The site deploys cleanly to [Vercel](https://vercel.com) — import the repo, add the environment variables from `.env.example`, and deploy. Remember to add `RESEND_API_KEY`, `QUOTE_TO_EMAIL`, `NEXT_PUBLIC_SITE_URL` and `NEXT_PUBLIC_GA_MEASUREMENT_ID` in the Vercel project settings.
+The site deploys cleanly to [Vercel](https://vercel.com) — import the repo, connect a private Blob store, add the environment variables from `.env.example`, and deploy. Remember to add `RESEND_API_KEY`, `BLOB_READ_WRITE_TOKEN`, `QUOTE_TO_EMAIL`, `NEXT_PUBLIC_SITE_URL` and `NEXT_PUBLIC_GA_MEASUREMENT_ID` in the Vercel project settings.
