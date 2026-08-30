@@ -93,28 +93,34 @@ export const metadata: Metadata = {
 export default function HomePage() {
   return (
     <>
-      <section className="relative min-h-[650px] overflow-hidden bg-ink-900 text-white lg:min-h-[760px]">
-        <Photo
-          name="hero"
-          preload
-          alt="A Carbase representative handing payment to a car owner beside their vehicle"
-          className="object-center"
-        />
-        <span className="photo-scrim-home" aria-hidden />
-        <div className="shell relative z-10 flex min-h-[650px] items-end py-8 sm:py-12 lg:min-h-[760px] lg:py-16">
-          <div className="hero-panel max-w-[680px] border-2 border-white bg-ink-900/62 p-7 backdrop-blur-[2px] sm:p-10 lg:p-12">
+      <section className="relative overflow-hidden bg-ink-900 text-white lg:min-h-[760px]">
+        <div className="relative h-[300px] sm:h-[420px] lg:absolute lg:inset-0 lg:h-auto">
+          <Photo
+            name="hero"
+            preload
+            alt="A Carbase representative handing payment to a car owner beside their vehicle"
+            className="object-[72%_center] sm:object-[66%_center] lg:object-center"
+          />
+          <span
+            className="absolute inset-0 bg-gradient-to-t from-ink-900/35 via-transparent to-transparent lg:hidden"
+            aria-hidden
+          />
+        </div>
+        <span className="photo-scrim-home hidden lg:block" aria-hidden />
+        <div className="shell relative z-10 lg:flex lg:min-h-[760px] lg:items-end lg:py-16">
+          <div className="hero-panel w-full py-10 sm:py-12 lg:max-w-[680px] lg:border-2 lg:border-white lg:bg-ink-900/62 lg:p-12 lg:backdrop-blur-[2px]">
             <p className="t-index text-brand-200">
               Toowoomba car buyers · Local pickup
             </p>
-            <h1 className="mt-5 max-w-[12ch] font-display text-5xl font-medium leading-[1.02] tracking-tight text-balance sm:text-6xl lg:text-[4.6rem]">
+            <h1 className="mt-4 max-w-[14ch] font-display text-4xl font-medium leading-[1.04] tracking-tight text-balance sm:text-5xl lg:mt-5 lg:max-w-[12ch] lg:text-[4.6rem] lg:leading-[1.02]">
               A simpler way to sell your car in Toowoomba.
             </h1>
-            <p className="mt-6 max-w-[54ch] text-lg leading-relaxed text-white/90">
+            <p className="mt-5 max-w-[54ch] text-base leading-relaxed text-white/85 sm:text-lg lg:mt-6 lg:text-white/90">
               Carbase buys old, damaged, non-running and unwanted cars
               throughout the Toowoomba Region, with a free quote, free car
               removal and payment before collection.
             </p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            <div className="mt-7 flex flex-col gap-3 sm:flex-row lg:mt-8">
               <a href="#quote" className="btn-primary">
                 Get a free quote <ArrowRightIcon className="size-4" />
               </a>
