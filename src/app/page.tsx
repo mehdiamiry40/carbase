@@ -94,12 +94,12 @@ export default function HomePage() {
   return (
     <>
       <section className="relative overflow-hidden bg-ink-900 text-white lg:min-h-[760px]">
-        <div className="relative h-[300px] sm:h-[420px] lg:absolute lg:inset-0 lg:h-auto">
+        <div className="relative h-[270px] sm:h-[420px] lg:absolute lg:inset-0 lg:h-auto">
           <Photo
             name="hero"
             preload
             alt="A Carbase representative handing payment to a car owner beside their vehicle"
-            className="object-[72%_center] sm:object-[66%_center] lg:object-center"
+            className="object-right lg:object-center"
           />
           <span
             className="absolute inset-0 bg-gradient-to-t from-ink-900/35 via-transparent to-transparent lg:hidden"
