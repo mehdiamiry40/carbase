@@ -244,12 +244,6 @@
   animation: draw-check 0.5s 0.15s ease-out both;
 }
 
-@media (max-width: 639px) {
-  .hero-panel {
-    background: rgb(6 26 57 / 0.78);
-  }
-}
-
 @media (scripting: none) {
   .reveal {
     opacity: 1;

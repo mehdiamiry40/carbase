@@ -102,7 +102,7 @@ export default function HomePage() {
             className="object-right lg:object-center"
           />
           <span
-            className="absolute inset-0 bg-gradient-to-t from-ink-900/35 via-transparent to-transparent lg:hidden"
+            className="absolute inset-0 bg-gradient-to-t from-ink-900 via-ink-900/35 to-transparent lg:hidden"
             aria-hidden
           />
         </div>
