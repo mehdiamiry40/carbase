@@ -97,7 +97,7 @@ export default function HomePage() {
         <Photo
           name="hero"
           preload
-          alt="Old and damaged cars ready to be sold and collected by Carbase"
+          alt="A Carbase representative handing payment to a car owner beside their vehicle"
           className="object-center"
         />
         <span className="photo-scrim-home" aria-hidden />

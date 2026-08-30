@@ -1,7 +1,7 @@
 export const photos = {
   hero: {
-    uid: "1770068512276-cf8c2275f766",
-    alt: "Old and wrecked cars in an automotive recycling yard",
+    src: "/images/carbase-cash-handover-hero.webp",
+    alt: "A Carbase representative handing payment to a car owner beside their vehicle",
   },
   damaged: {
     uid: "1764241650507-85ebbf3f539d",
@@ -24,5 +24,9 @@ export const photos = {
 export type PhotoKey = keyof typeof photos;
 
 export function photoSrc(key: PhotoKey, width = 2600) {
-  return `https://images.unsplash.com/photo-${photos[key].uid}?fm=jpg&q=78&w=${width}&auto=format&fit=crop`;
+  const photo = photos[key];
+
+  if ("src" in photo) return photo.src;
+
+  return `https://images.unsplash.com/photo-${photo.uid}?fm=jpg&q=78&w=${width}&auto=format&fit=crop`;
 }
