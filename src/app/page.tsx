@@ -1,10 +1,8 @@
 import type { Metadata } from "next";
-import { getImageProps } from "next/image";
 import Link from "next/link";
 import { site, telHref } from "@/config/site";
 import { faqs } from "@/data/faqs";
 import { localPages } from "@/data/localPages";
-import { photoSrc } from "@/data/photos";
 import { QuoteForm } from "@/components/QuoteForm";
 import { Photo } from "@/components/Photo";
 import { Reveal } from "@/components/Reveal";
@@ -79,44 +77,6 @@ const reasons = [
   },
 ];
 
-const heroAlt =
-  "A Carbase representative handing payment to a car owner beside their vehicle";
-
-function HeroPhoto() {
-  const common = {
-    alt: heroAlt,
-    sizes: "100vw",
-    fetchPriority: "high" as const,
-  };
-  const {
-    props: { srcSet: desktopSrcSet },
-  } = getImageProps({
-    ...common,
-    src: photoSrc("hero"),
-    width: 1808,
-    height: 870,
-  });
-  const {
-    props: { srcSet: mobileSrcSet, ...mobileProps },
-  } = getImageProps({
-    ...common,
-    src: "/images/carbase-cash-handover-mobile.webp",
-    width: 1448,
-    height: 1086,
-  });
-
-  return (
-    <picture>
-      <source media="(min-width: 1024px)" srcSet={desktopSrcSet} />
-      <source media="(max-width: 1023px)" srcSet={mobileSrcSet} />
-      <img
-        {...mobileProps}
-        className="absolute inset-0 size-full object-cover lg:object-center"
-      />
-    </picture>
-  );
-}
-
 export const metadata: Metadata = {
   keywords: [
     "cash for cars Toowoomba",
@@ -134,8 +94,13 @@ export default function HomePage() {
   return (
     <>
       <section className="relative overflow-hidden bg-ink-900 text-white lg:min-h-[760px]">
-        <div className="relative aspect-[4/3] w-full lg:absolute lg:inset-0 lg:h-auto lg:aspect-auto">
-          <HeroPhoto />
+        <div className="relative h-[270px] sm:h-[420px] lg:absolute lg:inset-0 lg:h-auto">
+          <Photo
+            name="hero"
+            preload
+            alt="A Carbase representative handing payment to a car owner beside their vehicle"
+            className="object-right lg:object-center"
+          />
           <span
             className="absolute inset-0 bg-gradient-to-t from-ink-900/35 via-transparent to-transparent lg:hidden"
             aria-hidden
