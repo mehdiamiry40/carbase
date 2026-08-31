@@ -13,6 +13,14 @@ const routeSource = readFileSync(
   new URL("../src/app/api/quote/route.ts", import.meta.url),
   "utf8",
 );
+const handlerSource = readFileSync(
+  new URL("../src/lib/quoteHandler.mjs", import.meta.url),
+  "utf8",
+);
+const mailerSource = readFileSync(
+  new URL("../src/lib/quoteMailer.mjs", import.meta.url),
+  "utf8",
+);
 
 test("missing Resend and backup configuration fails closed with a 503 contract", () => {
   assert.equal(resolveQuoteDelivery({}, "mehdiamiry40@gmail.com"), null);
@@ -22,17 +30,14 @@ test("missing Resend and backup configuration fails closed with a 503 contract",
     ok: false,
     error: "Online quote requests are temporarily unavailable. Please call us instead.",
   });
+  assert.match(handlerSource, /if \(!store\)/);
   assert.match(
-    routeSource,
-    /if \(!backup\) logQuoteBackupUnavailable\(\)/,
-  );
-  assert.match(
-    routeSource,
-    /if \(!delivery\)[\s\S]*quoteDeliveryUnavailable\.body[\s\S]*quoteDeliveryUnavailable\.status/,
+    handlerSource,
+    /quoteDeliveryUnavailable\.body[\s\S]*quoteDeliveryUnavailable\.status/,
   );
 });
 
-test("both email failure paths retain their existing failure contracts when backup fails", () => {
+test("legacy delivery failure response remains available for compatibility", () => {
   assert.deepEqual(quoteDeliveryFailed, {
     status: 502,
     body: {
@@ -40,25 +45,18 @@ test("both email failure paths retain their existing failure contracts when back
       error: "We couldn't send your request just now — please call us instead.",
     },
   });
-  assert.match(
-    routeSource,
-    /if \(storedBackup\)[\s\S]*quoteBackupReceived\.body/,
-  );
-  assert.match(
-    routeSource,
-    /if \(!delivered\)[\s\S]*quoteDeliveryFailed\.body[\s\S]*quoteDeliveryFailed\.status/,
-  );
 });
 
 test("a private outbox is staged before bounded, idempotent email delivery", () => {
-  const stageIndex = routeSource.indexOf("let storedBackup = await storeBackup(");
-  const resendIndex = routeSource.indexOf("const resend = new Resend(apiKey)");
-  assert.ok(stageIndex > 0);
-  assert.ok(resendIndex > stageIndex);
+  assert.match(handlerSource, /store\.create\(record/);
+  assert.match(handlerSource, /if \(!staged\.created\)/);
   assert.match(routeSource, /export const maxDuration = 30/);
-  assert.match(routeSource, /idempotencyKey: `carbase-quote-\$\{submissionId\}`/);
-  assert.match(routeSource, /RESEND_TIMEOUT_MS/);
-  assert.match(routeSource, /removeQuoteBackup\(/);
+  assert.match(
+    mailerSource,
+    /idempotencyKey: `carbase-quote-\$\{record\.submissionId\}`/,
+  );
+  assert.match(handlerSource, /store\.writeReceipt\(receipt/);
+  assert.match(handlerSource, /store\.remove\(stored/);
 });
 
 test("configured delivery defaults to the verified quote inbox", () => {

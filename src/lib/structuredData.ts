@@ -26,10 +26,8 @@ export type BusinessSchemaDetails = {
  */
 export function buildBusinessJsonLd(details: BusinessSchemaDetails = site) {
   const operatorName = details.operatorName?.trim();
-  const {
-    openingHoursSpecification: _openingHoursSpecification,
-    ...organizationFields
-  } = buildBusinessSchemaFields(details);
+  const organizationFields = buildBusinessSchemaFields(details);
+  delete organizationFields.openingHoursSpecification;
 
   return {
     "@context": "https://schema.org",

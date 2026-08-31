@@ -18,8 +18,8 @@ const quoteFormSource = readFileSync(
   new URL("../src/components/QuoteForm.tsx", import.meta.url),
   "utf8",
 );
-const quoteRouteSource = readFileSync(
-  new URL("../src/app/api/quote/route.ts", import.meta.url),
+const quoteHandlerSource = readFileSync(
+  new URL("../src/lib/quoteHandler.mjs", import.meta.url),
   "utf8",
 );
 const cssSource = readFileSync(
@@ -68,8 +68,11 @@ test("quote form is a real form with required contact fields", () => {
 });
 
 test("quote endpoint rejects malformed optional emails without logging them", () => {
-  assert.match(quoteRouteSource, /Please provide a valid email address/);
-  assert.doesNotMatch(quoteRouteSource, /console\.(log|info|debug|warn|error)\([^)]*email/);
+  assert.match(quoteHandlerSource, /Please provide a valid email address/);
+  assert.doesNotMatch(
+    quoteHandlerSource,
+    /console\.(log|info|debug|warn|error)\([^)]*email/,
+  );
 });
 
 test("hero highlight class and no-JS reveal fallbacks are defined", () => {

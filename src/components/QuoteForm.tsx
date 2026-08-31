@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { site, telHref } from "@/config/site";
 import { areas } from "@/data/areas";
 import { trackQuoteSubmission } from "@/components/SiteAnalytics";
+import { isConfirmedQuoteReceipt } from "@/lib/quoteReceipt.mjs";
 import {
   ArrowLeftIcon,
   ArrowRightIcon,
@@ -16,7 +17,7 @@ import {
 const MAX_PHOTOS = 5;
 /** Keep the whole request comfortably under Vercel's 4.5 MB body limit. */
 const MAX_TOTAL_BYTES = 3_800_000;
-const MAX_ORIGINAL_FALLBACK_BYTES = 1_500_000;
+const CLIENT_REQUEST_TIMEOUT_MS = 32_000;
 
 const COMMON_MAKES = [
   "Toyota", "Mazda", "Hyundai", "Ford", "Mitsubishi", "Nissan", "Kia",
@@ -69,27 +70,68 @@ const SUBURB_SUGGESTIONS = [
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+async function loadBrowserImage(file: File): Promise<{
+  source: CanvasImageSource;
+  width: number;
+  height: number;
+  cleanup: () => void;
+}> {
+  if (typeof createImageBitmap === "function") {
+    try {
+      const bitmap = await createImageBitmap(file);
+      return {
+        source: bitmap,
+        width: bitmap.width,
+        height: bitmap.height,
+        cleanup: () => bitmap.close(),
+      };
+    } catch {
+      // Safari can render some phone formats through an image element even
+      // when createImageBitmap cannot decode them.
+    }
+  }
+
+  const previewUrl = URL.createObjectURL(file);
+  const image = new Image();
+  try {
+    await new Promise<void>((resolve, reject) => {
+      image.onload = () => resolve();
+      image.onerror = () => reject(new Error("Unsupported image"));
+      image.src = previewUrl;
+    });
+    return {
+      source: image,
+      width: image.naturalWidth,
+      height: image.naturalHeight,
+      cleanup: () => URL.revokeObjectURL(previewUrl),
+    };
+  } catch (error) {
+    URL.revokeObjectURL(previewUrl);
+    throw error;
+  }
+}
+
 /** Downscale + re-encode a photo so five of them fit in one request. */
 async function compressImage(file: File): Promise<Blob> {
   const MAX_DIM = 1600;
-  const bitmap = await createImageBitmap(file);
+  const image = await loadBrowserImage(file);
   try {
-    const scale = Math.min(1, MAX_DIM / Math.max(bitmap.width, bitmap.height));
-    const width = Math.max(1, Math.round(bitmap.width * scale));
-    const height = Math.max(1, Math.round(bitmap.height * scale));
+    const scale = Math.min(1, MAX_DIM / Math.max(image.width, image.height));
+    const width = Math.max(1, Math.round(image.width * scale));
+    const height = Math.max(1, Math.round(image.height * scale));
     const canvas = document.createElement("canvas");
     canvas.width = width;
     canvas.height = height;
     const ctx = canvas.getContext("2d");
     if (!ctx) throw new Error("Canvas unavailable");
-    ctx.drawImage(bitmap, 0, 0, width, height);
+    ctx.drawImage(image.source, 0, 0, width, height);
     const blob = await new Promise<Blob | null>((resolve) =>
       canvas.toBlob(resolve, "image/jpeg", 0.8),
     );
     if (!blob) throw new Error("Could not encode image");
     return blob;
   } finally {
-    bitmap.close();
+    image.cleanup();
   }
 }
 
@@ -101,18 +143,30 @@ export function QuoteForm({ heading = "Get your free quote" }: { heading?: strin
   const [stepError, setStepError] = useState<string | null>(null);
   const [status, setStatus] = useState<Status>("idle");
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [submissionId, setSubmissionId] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const honeypotRef = useRef<HTMLInputElement>(null);
+  const photosRef = useRef<Photo[]>([]);
 
   useEffect(() => {
-    return () => photos.forEach((p) => URL.revokeObjectURL(p.previewUrl));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    photosRef.current = photos;
+  }, [photos]);
+
+  useEffect(() => {
+    return () => photosRef.current.forEach((p) => URL.revokeObjectURL(p.previewUrl));
   }, []);
+
+  function markPayloadChanged() {
+    setSubmissionId(null);
+  }
 
   function set<K extends keyof Values>(key: K) {
     return (
       e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
-    ) => setValues((v) => ({ ...v, [key]: e.target.value }));
+    ) => {
+      markPayloadChanged();
+      setValues((v) => ({ ...v, [key]: e.target.value }));
+    };
   }
 
   function validateStep(s: number): string | null {
@@ -172,30 +226,25 @@ export function QuoteForm({ heading = "Get your free quote" }: { heading?: strin
           previewUrl: URL.createObjectURL(blob),
         });
       } catch {
-        // Browser couldn't decode it (e.g. some HEIC files) — fall back to
-        // the original when it's small enough, otherwise skip it.
-        if (file.size <= MAX_ORIGINAL_FALLBACK_BYTES) {
-          added.push({
-            id: crypto.randomUUID(),
-            name: file.name,
-            blob: file,
-            previewUrl: URL.createObjectURL(file),
-          });
-        } else {
-          skipped.push(file.name);
-        }
+        skipped.push(file.name);
       }
     }
 
     const notes: string[] = [];
     if (list.length > room) notes.push(`Only ${MAX_PHOTOS} photos can be attached.`);
-    if (skipped.length) notes.push(`Couldn't attach: ${skipped.join(", ")}.`);
+    if (skipped.length) {
+      notes.push(
+        `Couldn't attach: ${skipped.join(", ")}. Try JPEG, PNG or WebP if your browser cannot read that photo format.`,
+      );
+    }
     setPhotoNote(notes.length ? notes.join(" ") : null);
+    if (added.length) markPayloadChanged();
     setPhotos((prev) => [...prev, ...added]);
     if (fileInputRef.current) fileInputRef.current.value = "";
   }
 
   function removePhoto(id: string) {
+    markPayloadChanged();
     setPhotos((prev) => {
       const target = prev.find((p) => p.id === id);
       if (target) URL.revokeObjectURL(target.previewUrl);
@@ -224,6 +273,9 @@ export function QuoteForm({ heading = "Get your free quote" }: { heading?: strin
     (Object.keys(values) as (keyof Values)[]).forEach((key) =>
       data.append(key, values[key]),
     );
+    const currentSubmissionId = submissionId ?? crypto.randomUUID();
+    if (!submissionId) setSubmissionId(currentSubmissionId);
+    data.append("submissionId", currentSubmissionId);
     data.append("website", honeypotRef.current?.value ?? "");
     photos.forEach((p, i) => {
       data.append(
@@ -235,9 +287,19 @@ export function QuoteForm({ heading = "Get your free quote" }: { heading?: strin
     });
 
     setStatus("submitting");
+    const controller = new AbortController();
+    const timeout = window.setTimeout(
+      () => controller.abort(),
+      CLIENT_REQUEST_TIMEOUT_MS,
+    );
     try {
-      const res = await fetch("/api/quote", { method: "POST", body: data });
+      const res = await fetch("/api/quote", {
+        method: "POST",
+        body: data,
+        signal: controller.signal,
+      });
       const body = (await res.json().catch(() => null)) as {
+        ok?: boolean;
         delivered?: boolean;
         safelyStored?: boolean;
         error?: string;
@@ -245,20 +307,31 @@ export function QuoteForm({ heading = "Get your free quote" }: { heading?: strin
       if (!res.ok) {
         throw new Error(body?.error ?? "Something went wrong sending your details.");
       }
-      if (body?.delivered || body?.safelyStored) trackQuoteSubmission();
+      if (!isConfirmedQuoteReceipt(res.status, body)) {
+        throw new Error(
+          "We could not confirm that your request was received. Please retry or call us.",
+        );
+      }
+      trackQuoteSubmission();
       setStatus("success");
       photos.forEach((p) => URL.revokeObjectURL(p.previewUrl));
     } catch (e) {
       setStatus("error");
       setSubmitError(
-        e instanceof Error && e.message
+        e instanceof DOMException && e.name === "AbortError"
+          ? "The request took too long. It is safe to retry with the same details."
+          : e instanceof Error && e.message
           ? e.message
           : "Something went wrong sending your details.",
       );
+    } finally {
+      window.clearTimeout(timeout);
     }
   }
 
   function reset() {
+    photos.forEach((p) => URL.revokeObjectURL(p.previewUrl));
+    setSubmissionId(null);
     setValues(emptyValues);
     setPhotos([]);
     setStep(0);
