@@ -142,6 +142,51 @@ test("ambiguous delivery is never automatically resent", async () => {
   assert.equal(store.outbox.has(SUBMISSION_ID), true);
 });
 
+test("dead letters remain actionable retained work on transition and every later scan", async () => {
+  const logs = [];
+  const store = createMemoryQuoteStore();
+  await stage(store, record({ state: "delivery_rejected", attemptCount: 5 }));
+  let sent = 0;
+  const run = processor({
+    store, mode: "live", maxAttempts: 5,
+    mailer: { async send() { sent += 1; } },
+    logger: {
+      error(value) { logs.push(JSON.parse(value)); },
+      warn(value) { logs.push(JSON.parse(value)); },
+    },
+  });
+  for (let scan = 0; scan < 2; scan += 1) {
+    logs.length = 0;
+    const result = await run();
+    assert.equal(result.retained, 1);
+    assert.equal(result.invalid, 0);
+    assert.equal(store.outbox.get(SUBMISSION_ID).record.state, "dead_letter");
+    const reviews = logs.filter((entry) => entry.event === "quote.outbox.manual_review");
+    assert.deepEqual(reviews, [{
+      component: "quote-api", event: "quote.outbox.manual_review",
+      reason: "max_attempts", state: "dead_letter", submissionId: SUBMISSION_ID,
+    }]);
+  }
+  assert.equal(sent, 0);
+});
+
+test("unknown states are distinct from dead letters and never log arbitrary state values", async () => {
+  const logs = [];
+  const store = createMemoryQuoteStore();
+  await stage(store, record({ state: "SECRET_STATE_SENTINEL" }));
+  const result = await processor({
+    store,
+    logger: {
+      error(value) { logs.push(JSON.parse(value)); },
+      warn(value) { logs.push(JSON.parse(value)); },
+    },
+  })();
+  assert.equal(result.invalid, 1);
+  assert.equal(result.retained, 0);
+  assert.ok(logs.some((entry) => entry.event === "quote.outbox.invalid" && entry.reason === "unknown_state" && entry.submissionId === SUBMISSION_ID));
+  assert.equal(JSON.stringify(logs).includes("SECRET_STATE_SENTINEL"), false);
+});
+
 test("expired private payload is conditionally deleted", async () => {
   const calls = [];
   const store = createMemoryQuoteStore(calls);
@@ -281,13 +326,47 @@ test("provider list failures are contained without exposing provider errors", as
   assert.equal(logs.join("\n").includes(sentinel), false);
 });
 
+test("attempted rejected and ambiguous delivery fail worker health with safe operational events", async () => {
+  for (const outcome of [
+    { status: "rejected", reason: "SECRET_PROVIDER_SENTINEL" },
+    { status: "unknown", reason: "SECRET_PROVIDER_SENTINEL" },
+    new Error("SECRET_PROVIDER_SENTINEL"),
+  ]) {
+    const logs = [];
+    const store = createMemoryQuoteStore();
+    await stage(store, record({ state: "delivery_rejected", attemptCount: 1 }));
+    const result = await processor({
+      store, mode: "live",
+      mailer: { async send() {
+        if (outcome instanceof Error) throw outcome;
+        return outcome;
+      } },
+      logger: {
+        error(value) { logs.push(JSON.parse(value)); },
+        warn(value) { logs.push(JSON.parse(value)); },
+      },
+    })();
+    assert.equal(result.failed, 1);
+    assert.equal(result.retained, 1);
+    assert.equal(store.outbox.has(SUBMISSION_ID), true);
+    const state = outcome.status === "rejected" ? "delivery_rejected" : "delivery_unknown";
+    assert.equal(store.outbox.get(SUBMISSION_ID).record.state, state);
+    assert.deepEqual(logs.find((entry) => entry.event === "quote.outbox.delivery_failed"), {
+      component: "quote-api", event: "quote.outbox.delivery_failed",
+      state, attemptCount: 2, submissionId: SUBMISSION_ID,
+      reason: outcome.status === "rejected" ? "provider_rejected" : "delivery_unknown",
+    });
+    assert.equal(JSON.stringify(logs).includes("SECRET_PROVIDER_SENTINEL"), false);
+  }
+});
+
 test("the worker caps each operation to its remaining soft-run budget", async () => {
   let elapsed = 0;
   const requestedTimeouts = [];
   const store = createMemoryQuoteStore([]);
   await createQuoteOutboxProcessor({
     store,
-    maxRunMs: 1_000,
+    maxRunMs: 2_000,
     clockMs: () => elapsed,
     now: () => new Date(NOW),
     providerTimeout: async (operation, timeoutMs) => {

@@ -89,7 +89,8 @@ export function createResendQuoteMailer({
   if (!apiKey || !destination || !sender) return null;
 
   return {
-    async send(record) {
+    async send(record, { signal: parentSignal } = {}) {
+      parentSignal?.throwIfAborted();
       const resend = new ResendClient(apiKey);
       const message = createQuoteEmail(record, siteName);
       const result = await timeout(
@@ -105,7 +106,7 @@ export function createResendQuoteMailer({
             },
             {
               idempotencyKey: `carbase-quote-${record.submissionId}`,
-              signal,
+              signal: parentSignal ? AbortSignal.any([signal, parentSignal]) : signal,
             },
           ),
         timeoutMs,

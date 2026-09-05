@@ -80,3 +80,27 @@ test("the Resend adapter retains application errors as ambiguous with a stable k
     `carbase-quote-${record.submissionId}`,
   );
 });
+
+test("the request deadline abort signal reaches the provider and prevents already-aborted sends", async () => {
+  let requestSignal;
+  let calls = 0;
+  class FakeResend {
+    emails = { send: async (_message, options) => {
+      calls += 1;
+      requestSignal = options.signal;
+      return { data: { id: "synthetic-id" } };
+    } };
+  }
+  const controller = new AbortController();
+  const mailer = createResendQuoteMailer({
+    apiKey: "synthetic", destination: "fixture@example.invalid", sender: "fixture@example.invalid",
+    ResendClient: FakeResend,
+    timeout: (operation) => operation(new AbortController().signal),
+  });
+  await mailer.send(record, { signal: controller.signal });
+  assert.equal(requestSignal.aborted, false);
+  controller.abort();
+  assert.equal(requestSignal.aborted, true);
+  await assert.rejects(mailer.send(record, { signal: controller.signal }));
+  assert.equal(calls, 1);
+});
