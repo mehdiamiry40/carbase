@@ -66,7 +66,7 @@ export default function QuotePage() {
                   <PhoneIcon className="size-5 text-accent-400" />
                   {site.phone}
                 </a>
-                <p className="mt-1 text-sm text-slate-400">{site.hours}</p>
+                <p className="mt-1 text-sm text-slate-300">{site.hours}</p>
               </div>
             </div>
             <Reveal delay={100}>

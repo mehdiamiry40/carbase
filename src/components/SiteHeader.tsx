@@ -34,6 +34,8 @@ export function SiteHeader() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const headerRef = useRef<HTMLElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
@@ -44,8 +46,9 @@ export function SiteHeader() {
   }, []);
 
   useEffect(() => {
+    if (!open) return;
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape" && open) {
+      if (event.key === "Escape") {
         setOpen(false);
         toggleRef.current?.focus();
       }
@@ -56,15 +59,41 @@ export function SiteHeader() {
 
   useEffect(() => {
     if (!open) return;
+    const desktop = window.matchMedia("(min-width: 64rem)");
+    const closeOnDesktop = () => {
+      if (!desktop.matches) return;
+      const activeElement = document.activeElement;
+      if (
+        activeElement === toggleRef.current ||
+        panelRef.current?.contains(activeElement)
+      ) {
+        const href = activeElement?.getAttribute("href");
+        const links = Array.from(headerRef.current?.querySelectorAll("a") ?? []);
+        const destination = links.find(
+          (link) => link.getAttribute("href") === href && link.getClientRects().length,
+        );
+        (destination ?? links[0])?.focus();
+      }
+      setOpen(false);
+    };
+    closeOnDesktop();
+    desktop.addEventListener("change", closeOnDesktop);
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     return () => {
+      desktop.removeEventListener("change", closeOnDesktop);
       document.body.style.overflow = previousOverflow;
     };
   }, [open]);
 
   return (
     <header
+      ref={headerRef}
+      onBlur={(event) => {
+        if (open && !event.currentTarget.contains(event.relatedTarget)) {
+          setOpen(false);
+        }
+      }}
       className={`sticky top-0 z-50 bg-white text-ink-900 transition-shadow ${scrolled || open ? "shadow-md shadow-ink-950/10" : ""}`}
     >
       <div className="hidden bg-ink-900 text-white lg:block">
@@ -146,9 +175,10 @@ export function SiteHeader() {
       </div>
 
       <div
+        ref={panelRef}
         id="mobile-navigation"
         hidden={!open}
-        className="border-b border-slate-200 bg-white lg:hidden"
+        className="absolute inset-x-0 top-full max-h-[calc(100dvh-77px)] scroll-py-3 overflow-y-auto overscroll-contain border-b border-slate-200 bg-white lg:hidden"
       >
         <nav aria-label="Mobile navigation" className="shell py-2">
           {mobileNavLinks.map((link) => (
@@ -162,13 +192,17 @@ export function SiteHeader() {
               <ArrowRightIcon className="size-5 text-brand-600" />
             </Link>
           ))}
-          <a href={telHref} className="btn-ghost-light mt-5 w-full">
+          <a
+            href={telHref}
+            onClick={() => setOpen(false)}
+            className="btn-ghost-light mt-5 w-full"
+          >
             <PhoneIcon className="size-4" /> Call {site.phone}
           </a>
           <Link
             href="/quote"
             onClick={() => setOpen(false)}
-            className="btn-primary my-3 w-full"
+            className="btn-primary my-3 w-full focus-visible:outline-ink-900"
           >
             Get a free quote
           </Link>

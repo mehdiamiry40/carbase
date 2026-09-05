@@ -64,7 +64,7 @@ test("receipt contains no lead or photo payload", () => {
   assert.equal(serialized.includes("AQID"), false);
 });
 
-test("retention configuration can never exceed the published 30-day maximum", () => {
+test("retention configuration cannot exceed the 30-day expiry target", () => {
   const record = createQuoteOutboxRecord({
     lead,
     photos: [],

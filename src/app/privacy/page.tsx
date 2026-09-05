@@ -27,7 +27,7 @@ const sections = [
   },
   {
     title: "Storage and security",
-    body: "Quote requests are delivered to our access-controlled business mailbox and handled by our team. The private delivery outbox is removed after confirmed email acceptance. Failed or unresolved outbox records are recovered or deleted automatically and have a maximum retention period of 30 days. Non-personal delivery receipts are retained for up to 7 days to prevent duplicate submissions. Email copies may be retained for the period reasonably required to prepare the quote, complete an accepted sale, meet legal obligations and resolve disputes. We take reasonable steps to protect information from misuse, loss and unauthorised access.",
+    body: "Quote requests are sent to our access-controlled business mailbox and handled by our team. After our email provider accepts a request, we remove its private outbox copy; unsuccessful cleanup is retried. Eligible failed deliveries are retried automatically when recovery is enabled. Where the delivery outcome is uncertain, we retain the request for review instead of automatically sending it again. Unresolved outbox copies are scheduled for deletion 30 days after receipt, or sooner if a shorter period is configured. Non-personal delivery receipts are scheduled for deletion after 7 days. Cleanup normally runs every ten minutes and deletes expired records on a subsequent successful run. An outage, processing backlog or failed storage operation can delay deletion; the records remain private while cleanup is retried. Email copies may be retained for the period reasonably required to prepare the quote, complete an accepted sale, meet legal obligations and resolve disputes. We take reasonable steps to protect information from misuse, loss and unauthorised access.",
   },
   {
     title: "Overseas processing",
@@ -49,7 +49,7 @@ export default function PrivacyPage() {
             {site.name} is operated by {site.operatorName}, ABN {site.abn}. In
             this policy, “we”, “us” and “our” refer to {site.operatorName}.
           </p>
-          <p className="text-sm text-slate-500">Effective 31 August 2026.</p>
+          <p className="text-sm text-slate-500">Effective 5 September 2026.</p>
           {sections.map((s) => (
             <div key={s.title}>
               <h2 className="font-display text-xl font-bold text-slate-900">

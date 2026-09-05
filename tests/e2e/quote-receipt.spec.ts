@@ -1,5 +1,16 @@
 import { expect, test, type Page } from "@playwright/test";
 
+test.beforeEach(async ({ page }) => {
+  // A production build may include the real analytics ID. Keep test visits and
+  // synthetic receipt events inside the local verification environment.
+  await page.route("**/*", (route) => {
+    const hostname = new URL(route.request().url()).hostname;
+    return hostname === "127.0.0.1" || hostname === "localhost"
+      ? route.continue()
+      : route.abort();
+  });
+});
+
 async function completeQuote(page: Page) {
   const form = page.locator("form");
   await form.getByLabel(/Make/).fill("Toyota");

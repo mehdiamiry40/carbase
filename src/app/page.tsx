@@ -255,7 +255,7 @@ export default function HomePage() {
                   <span className="flex size-16 items-center justify-center bg-brand-600 text-white transition group-hover:bg-ink-900">
                     <Icon className="h-8 w-14" />
                   </span>
-                  <span className="font-mono text-xs text-slate-400">
+                  <span className="font-mono text-xs text-slate-600">
                     0{index + 1}
                   </span>
                 </div>

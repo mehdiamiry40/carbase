@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { site, telHref } from "@/config/site";
 import { areas } from "@/data/areas";
 import { trackQuoteSubmission } from "@/components/SiteAnalytics";
@@ -33,6 +33,8 @@ type Photo = {
 };
 
 type Status = "idle" | "submitting" | "success" | "error";
+
+type ValidationError = { message: string; fields: (keyof Values)[] };
 
 type Values = {
   make: string;
@@ -70,7 +72,7 @@ const SUBURB_SUGGESTIONS = [
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-async function loadBrowserImage(file: File): Promise<{
+async function loadBrowserImage(file: File, signal: AbortSignal): Promise<{
   source: CanvasImageSource;
   width: number;
   height: number;
@@ -79,6 +81,10 @@ async function loadBrowserImage(file: File): Promise<{
   if (typeof createImageBitmap === "function") {
     try {
       const bitmap = await createImageBitmap(file);
+      if (signal.aborted) {
+        bitmap.close();
+        signal.throwIfAborted();
+      }
       return {
         source: bitmap,
         width: bitmap.width,
@@ -86,6 +92,7 @@ async function loadBrowserImage(file: File): Promise<{
         cleanup: () => bitmap.close(),
       };
     } catch {
+      signal.throwIfAborted();
       // Safari can render some phone formats through an image element even
       // when createImageBitmap cannot decode them.
     }
@@ -95,8 +102,20 @@ async function loadBrowserImage(file: File): Promise<{
   const image = new Image();
   try {
     await new Promise<void>((resolve, reject) => {
-      image.onload = () => resolve();
-      image.onerror = () => reject(new Error("Unsupported image"));
+      const cleanup = () => {
+        image.onload = null;
+        image.onerror = null;
+        signal.removeEventListener("abort", abort);
+      };
+      const abort = () => {
+        cleanup();
+        image.src = "";
+        reject(signal.reason);
+      };
+      image.onload = () => { cleanup(); resolve(); };
+      image.onerror = () => { cleanup(); reject(new Error("Unsupported image")); };
+      signal.addEventListener("abort", abort, { once: true });
+      if (signal.aborted) { abort(); return; }
       image.src = previewUrl;
     });
     return {
@@ -112,10 +131,12 @@ async function loadBrowserImage(file: File): Promise<{
 }
 
 /** Downscale + re-encode a photo so five of them fit in one request. */
-async function compressImage(file: File): Promise<Blob> {
+async function compressImage(file: File, signal: AbortSignal): Promise<Blob> {
   const MAX_DIM = 1600;
-  const image = await loadBrowserImage(file);
+  signal.throwIfAborted();
+  const image = await loadBrowserImage(file, signal);
   try {
+    signal.throwIfAborted();
     const scale = Math.min(1, MAX_DIM / Math.max(image.width, image.height));
     const width = Math.max(1, Math.round(image.width * scale));
     const height = Math.max(1, Math.round(image.height * scale));
@@ -128,6 +149,7 @@ async function compressImage(file: File): Promise<Blob> {
     const blob = await new Promise<Blob | null>((resolve) =>
       canvas.toBlob(resolve, "image/jpeg", 0.8),
     );
+    signal.throwIfAborted();
     if (!blob) throw new Error("Could not encode image");
     return blob;
   } finally {
@@ -139,120 +161,176 @@ export function QuoteForm({ heading = "Get your free quote" }: { heading?: strin
   const [step, setStep] = useState(0);
   const [values, setValues] = useState<Values>(emptyValues);
   const [photos, setPhotos] = useState<Photo[]>([]);
+  const [pendingPhotos, setPendingPhotos] = useState(0);
   const [photoNote, setPhotoNote] = useState<string | null>(null);
-  const [stepError, setStepError] = useState<string | null>(null);
+  const [stepError, setStepError] = useState<ValidationError | null>(null);
   const [status, setStatus] = useState<Status>("idle");
   const [submitError, setSubmitError] = useState<string | null>(null);
-  const [submissionId, setSubmissionId] = useState<string | null>(null);
+  const [submittedValues, setSubmittedValues] = useState<Values | null>(null);
+  const submissionIdRef = useRef<string | null>(null);
+  const formRef = useRef<HTMLFormElement>(null);
+  const panelHeadingRef = useRef<HTMLHeadingElement>(null);
+  const receiptHeadingRef = useRef<HTMLHeadingElement>(null);
+  const focusStepRef = useRef(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const honeypotRef = useRef<HTMLInputElement>(null);
   const photosRef = useRef<Photo[]>([]);
+  const pendingPhotosRef = useRef(new Map<string, AbortController>());
+  const requestRef = useRef<AbortController | null>(null);
+  const generationRef = useRef(0);
+  const errorId = useId();
+  const photoInputId = useId();
+  const photoNoteId = useId();
+  const receiptHeadingId = useId();
 
   useEffect(() => {
-    photosRef.current = photos;
-  }, [photos]);
+    if (status === "success") {
+      receiptHeadingRef.current?.focus();
+    } else if (stepError) {
+      formRef.current?.querySelector<HTMLElement>(`[name="${stepError.fields[0]}"]`)?.focus();
+    } else if (focusStepRef.current) {
+      focusStepRef.current = false;
+      const firstField = step === 0 ? "make" : step === 2 ? "name" : null;
+      if (firstField) formRef.current?.querySelector<HTMLElement>(`[name="${firstField}"]`)?.focus();
+      else panelHeadingRef.current?.focus();
+    }
+  }, [step, status, stepError]);
 
   useEffect(() => {
-    return () => photosRef.current.forEach((p) => URL.revokeObjectURL(p.previewUrl));
+    const pending = pendingPhotosRef.current;
+    return () => {
+      generationRef.current += 1;
+      pending.forEach((controller) => controller.abort());
+      pending.clear();
+      requestRef.current?.abort();
+      photosRef.current.forEach((p) => URL.revokeObjectURL(p.previewUrl));
+    };
   }, []);
 
   function markPayloadChanged() {
-    setSubmissionId(null);
+    submissionIdRef.current = null;
   }
 
-  function set<K extends keyof Values>(key: K) {
-    return (
-      e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
-    ) => {
-      markPayloadChanged();
-      setValues((v) => ({ ...v, [key]: e.target.value }));
-    };
+  function updateValue(
+    key: keyof Values,
+    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
+  ) {
+    if (requestRef.current) return;
+    markPayloadChanged();
+    setStepError(null);
+    setValues((v) => ({ ...v, [key]: event.target.value }));
   }
 
-  function validateStep(s: number): string | null {
+  function validateStep(s: number): ValidationError | null {
     if (s === 0) {
-      if (!values.make.trim() || !values.model.trim() || !values.year) {
-        return "Please fill in the make, model and year.";
+      const fields = (["make", "model", "year"] as const).filter((field) => !values[field].trim());
+      if (fields.length) {
+        return { message: "Please fill in the make, model and year.", fields };
       }
     }
     if (s === 2) {
-      if (!values.name.trim() || !values.phone.trim() || !values.suburb.trim()) {
-        return "Please fill in your name, phone and suburb.";
+      const fields = (["name", "phone", "suburb"] as const).filter((field) => !values[field].trim());
+      if (fields.length) {
+        return { message: "Please fill in your name, phone and suburb.", fields };
       }
       if (values.phone.replace(/\D/g, "").length < 8) {
-        return "That phone number looks too short.";
+        return { message: "That phone number looks too short.", fields: ["phone"] };
       }
       if (values.email.trim() && !EMAIL_PATTERN.test(values.email.trim())) {
-        return "Please enter a valid email address, or leave it blank.";
+        return { message: "Please enter a valid email address, or leave it blank.", fields: ["email"] };
       }
     }
     return null;
   }
 
+  function errorAttributes(field: keyof Values) {
+    return {
+      "aria-invalid": stepError?.fields.includes(field) || undefined,
+      "aria-describedby": stepError?.fields.includes(field) ? errorId : undefined,
+    };
+  }
+
   function next() {
+    if (requestRef.current || pendingPhotosRef.current.size) return;
     const err = validateStep(step);
     if (err) {
       setStepError(err);
       return;
     }
     setStepError(null);
+    focusStepRef.current = true;
     setStep((s) => Math.min(s + 1, 2));
   }
 
   function back() {
+    if (requestRef.current || pendingPhotosRef.current.size) return;
     setStepError(null);
+    focusStepRef.current = true;
     setStep((s) => Math.max(s - 1, 0));
   }
 
   async function addFiles(list: FileList | null) {
-    if (!list?.length) return;
+    if (!list?.length || requestRef.current) return;
+    const selected = Array.from(list);
+    if (fileInputRef.current) fileInputRef.current.value = "";
     setPhotoNote(null);
-    const room = MAX_PHOTOS - photos.length;
-    const files = Array.from(list).slice(0, room);
-    const skipped: string[] = [];
-    const added: Photo[] = [];
+    const room = MAX_PHOTOS - photosRef.current.length - pendingPhotosRef.current.size;
+    const generation = generationRef.current;
+    // Reserve every selected slot before decoding so overlapping selections
+    // cannot overbook capacity or let navigation omit unfinished photos.
+    const jobs = selected.slice(0, room).map((file) => {
+      const id = crypto.randomUUID();
+      const controller = new AbortController();
+      pendingPhotosRef.current.set(id, controller);
+      return { file, id, controller };
+    });
+    setPendingPhotos(pendingPhotosRef.current.size);
+    if (selected.length > room) setPhotoNote(`Only ${MAX_PHOTOS} photos can be attached.`);
 
-    for (const file of files) {
-      if (!file.type.startsWith("image/")) {
-        skipped.push(file.name);
-        continue;
-      }
+    await Promise.all(jobs.map(async ({ file, id, controller }) => {
       try {
-        const blob = await compressImage(file);
-        added.push({
-          id: crypto.randomUUID(),
+        if (!file.type.startsWith("image/")) throw new Error("Unsupported image");
+        const blob = await compressImage(file, controller.signal);
+        if (controller.signal.aborted || generation !== generationRef.current) return;
+        const photo: Photo = {
+          id,
           name: file.name.replace(/\.[^.]+$/, "") + ".jpg",
           blob,
           previewUrl: URL.createObjectURL(blob),
-        });
+        };
+        photosRef.current = [...photosRef.current, photo];
+        markPayloadChanged();
+        setPhotos(photosRef.current);
       } catch {
-        skipped.push(file.name);
+        if (controller.signal.aborted || generation !== generationRef.current) return;
+        const note = `Couldn't attach: ${file.name}. Try JPEG, PNG or WebP if your browser cannot read that photo format.`;
+        setPhotoNote((previous) => previous ? `${previous} ${note}` : note);
+      } finally {
+        if (generation === generationRef.current && pendingPhotosRef.current.delete(id)) {
+          setPendingPhotos(pendingPhotosRef.current.size);
+        }
       }
-    }
+    }));
+  }
 
-    const notes: string[] = [];
-    if (list.length > room) notes.push(`Only ${MAX_PHOTOS} photos can be attached.`);
-    if (skipped.length) {
-      notes.push(
-        `Couldn't attach: ${skipped.join(", ")}. Try JPEG, PNG or WebP if your browser cannot read that photo format.`,
-      );
-    }
-    setPhotoNote(notes.length ? notes.join(" ") : null);
-    if (added.length) markPayloadChanged();
-    setPhotos((prev) => [...prev, ...added]);
-    if (fileInputRef.current) fileInputRef.current.value = "";
+  function cancelPendingPhotos() {
+    pendingPhotosRef.current.forEach((controller) => controller.abort());
+    pendingPhotosRef.current.clear();
+    setPendingPhotos(0);
+    panelHeadingRef.current?.focus();
   }
 
   function removePhoto(id: string) {
+    if (requestRef.current) return;
     markPayloadChanged();
-    setPhotos((prev) => {
-      const target = prev.find((p) => p.id === id);
-      if (target) URL.revokeObjectURL(target.previewUrl);
-      return prev.filter((p) => p.id !== id);
-    });
+    const target = photosRef.current.find((p) => p.id === id);
+    if (target) URL.revokeObjectURL(target.previewUrl);
+    photosRef.current = photosRef.current.filter((p) => p.id !== id);
+    setPhotos(photosRef.current);
   }
 
   async function submit() {
+    if (requestRef.current || pendingPhotosRef.current.size) return;
     const err = validateStep(2);
     if (err) {
       setStepError(err);
@@ -261,7 +339,9 @@ export function QuoteForm({ heading = "Get your free quote" }: { heading?: strin
     setStepError(null);
     setSubmitError(null);
 
-    const totalBytes = photos.reduce((sum, p) => sum + p.blob.size, 0);
+    const submittedPhotos = [...photosRef.current];
+    const snapshot = { ...values };
+    const totalBytes = submittedPhotos.reduce((sum, p) => sum + p.blob.size, 0);
     if (totalBytes > MAX_TOTAL_BYTES) {
       setSubmitError(
         "Your photos are too large to send together — please go back and remove one or two.",
@@ -270,14 +350,14 @@ export function QuoteForm({ heading = "Get your free quote" }: { heading?: strin
     }
 
     const data = new FormData();
-    (Object.keys(values) as (keyof Values)[]).forEach((key) =>
-      data.append(key, values[key]),
+    (Object.keys(snapshot) as (keyof Values)[]).forEach((key) =>
+      data.append(key, snapshot[key]),
     );
-    const currentSubmissionId = submissionId ?? crypto.randomUUID();
-    if (!submissionId) setSubmissionId(currentSubmissionId);
+    const currentSubmissionId = submissionIdRef.current ?? crypto.randomUUID();
+    submissionIdRef.current = currentSubmissionId;
     data.append("submissionId", currentSubmissionId);
     data.append("website", honeypotRef.current?.value ?? "");
-    photos.forEach((p, i) => {
+    submittedPhotos.forEach((p, i) => {
       data.append(
         "photos",
         new File([p.blob], p.name || `photo-${i + 1}.jpg`, {
@@ -288,6 +368,8 @@ export function QuoteForm({ heading = "Get your free quote" }: { heading?: strin
 
     setStatus("submitting");
     const controller = new AbortController();
+    requestRef.current = controller;
+    const generation = generationRef.current;
     const timeout = window.setTimeout(
       () => controller.abort(),
       CLIENT_REQUEST_TIMEOUT_MS,
@@ -312,10 +394,14 @@ export function QuoteForm({ heading = "Get your free quote" }: { heading?: strin
           "We could not confirm that your request was received. Please retry or call us.",
         );
       }
+      if (generation !== generationRef.current) return;
       trackQuoteSubmission();
+      setSubmittedValues(snapshot);
       setStatus("success");
-      photos.forEach((p) => URL.revokeObjectURL(p.previewUrl));
+      submittedPhotos.forEach((p) => URL.revokeObjectURL(p.previewUrl));
+      photosRef.current = [];
     } catch (e) {
+      if (generation !== generationRef.current) return;
       setStatus("error");
       setSubmitError(
         e instanceof DOMException && e.name === "AbortError"
@@ -326,26 +412,33 @@ export function QuoteForm({ heading = "Get your free quote" }: { heading?: strin
       );
     } finally {
       window.clearTimeout(timeout);
+      if (requestRef.current === controller) requestRef.current = null;
     }
   }
 
   function reset() {
-    photos.forEach((p) => URL.revokeObjectURL(p.previewUrl));
-    setSubmissionId(null);
+    generationRef.current += 1;
+    cancelPendingPhotos();
+    photosRef.current.forEach((p) => URL.revokeObjectURL(p.previewUrl));
+    photosRef.current = [];
+    submissionIdRef.current = null;
+    setSubmittedValues(null);
     setValues(emptyValues);
     setPhotos([]);
     setStep(0);
+    focusStepRef.current = true;
     setStatus("idle");
     setStepError(null);
     setSubmitError(null);
+    setPhotoNote(null);
   }
 
   /* ── Success state ─────────────────────────────────────────────── */
-  if (status === "success") {
-    const firstName = values.name.trim().split(" ")[0];
-    const car = `${values.year} ${values.make} ${values.model}`.trim();
+  if (status === "success" && submittedValues) {
+    const firstName = submittedValues.name.trim().split(" ")[0];
+    const car = `${submittedValues.year} ${submittedValues.make} ${submittedValues.model}`.trim();
     return (
-      <div className="rounded-3xl bg-white p-8 text-center shadow-card-lg ring-1 ring-slate-900/5 sm:p-10">
+      <section aria-labelledby={receiptHeadingId} className="rounded-3xl bg-white p-8 text-center shadow-card-lg ring-1 ring-slate-900/5 sm:p-10">
         <span className="pop-in mx-auto flex size-16 items-center justify-center rounded-full bg-linear-to-br from-emerald-400 to-emerald-600 text-white shadow-lg shadow-emerald-500/30">
           <svg
             viewBox="0 0 24 24"
@@ -360,7 +453,7 @@ export function QuoteForm({ heading = "Get your free quote" }: { heading?: strin
             <path d="M20 6 9 17l-5-5" className="draw-check" />
           </svg>
         </span>
-        <h3 className="font-display mt-6 text-2xl font-bold text-slate-900">
+        <h3 ref={receiptHeadingRef} id={receiptHeadingId} tabIndex={-1} className="font-display mt-6 text-2xl font-bold text-slate-900">
           {firstName ? `Thanks, ${firstName}!` : "Thanks!"} Request received.
         </h3>
         <p className="mt-3 text-[15px] leading-relaxed text-slate-600">
@@ -379,7 +472,7 @@ export function QuoteForm({ heading = "Get your free quote" }: { heading?: strin
         >
           Submit another car
         </button>
-      </div>
+      </section>
     );
   }
 
@@ -387,10 +480,11 @@ export function QuoteForm({ heading = "Get your free quote" }: { heading?: strin
 
   return (
     <form
+      ref={formRef}
       noValidate
       onSubmit={(event) => {
         event.preventDefault();
-        if (status === "submitting") return;
+        if (status === "submitting" || requestRef.current || pendingPhotosRef.current.size) return;
         if (step < 2) next();
         else void submit();
       }}
@@ -456,7 +550,16 @@ export function QuoteForm({ heading = "Get your free quote" }: { heading?: strin
       </div>
 
       {/* Step panels */}
-      <div key={step} className="step-in mt-6">
+      <fieldset
+        key={step}
+        disabled={status === "submitting"}
+        aria-label={`Step ${step + 1} of ${STEPS.length}: ${STEPS[step]}`}
+        className="step-in mt-6 min-w-0 border-0 p-0"
+        aria-busy={pendingPhotos > 0 || status === "submitting"}
+      >
+        <h3 ref={panelHeadingRef} tabIndex={-1} className="sr-only">
+          Step {step + 1} of {STEPS.length}: {STEPS[step]}
+        </h3>
         {step === 0 && (
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <label className="block">
@@ -466,11 +569,12 @@ export function QuoteForm({ heading = "Get your free quote" }: { heading?: strin
               <input
                 type="text"
                 name="make"
+                {...errorAttributes("make")}
                 required
                 autoComplete="off"
                 list="carbase-makes"
                 value={values.make}
-                onChange={set("make")}
+                onChange={(event) => updateValue("make", event)}
                 placeholder="e.g. Toyota"
                 className="input-base"
               />
@@ -487,10 +591,11 @@ export function QuoteForm({ heading = "Get your free quote" }: { heading?: strin
               <input
                 type="text"
                 name="model"
+                {...errorAttributes("model")}
                 required
                 autoComplete="off"
                 value={values.model}
-                onChange={set("model")}
+                onChange={(event) => updateValue("model", event)}
                 placeholder="e.g. Hilux"
                 className="input-base"
               />
@@ -499,7 +604,7 @@ export function QuoteForm({ heading = "Get your free quote" }: { heading?: strin
               <span className="label-base">
                 Year <Req />
               </span>
-              <YearSelect value={values.year} onChange={set("year")} />
+              <YearSelect value={values.year} onChange={(event) => updateValue("year", event)} {...errorAttributes("year")} />
             </label>
             <label className="block">
               <span className="label-base">Kilometres</span>
@@ -507,7 +612,7 @@ export function QuoteForm({ heading = "Get your free quote" }: { heading?: strin
                 type="text"
                 inputMode="numeric"
                 value={values.kilometres}
-                onChange={set("kilometres")}
+                onChange={(event) => updateValue("kilometres", event)}
                 placeholder="e.g. 120,000"
                 className="input-base"
               />
@@ -516,7 +621,7 @@ export function QuoteForm({ heading = "Get your free quote" }: { heading?: strin
               <span className="label-base">Transmission</span>
               <select
                 value={values.transmission}
-                onChange={set("transmission")}
+                onChange={(event) => updateValue("transmission", event)}
                 className="input-base"
               >
                 <option value="">Select…</option>
@@ -529,7 +634,7 @@ export function QuoteForm({ heading = "Get your free quote" }: { heading?: strin
               <span className="label-base">Condition</span>
               <select
                 value={values.condition}
-                onChange={set("condition")}
+                onChange={(event) => updateValue("condition", event)}
                 className="input-base"
               >
                 <option value="">Select…</option>
@@ -554,8 +659,12 @@ export function QuoteForm({ heading = "Get your free quote" }: { heading?: strin
               type="file"
               accept="image/*"
               multiple
+              tabIndex={-1}
               className="sr-only"
-              id="quote-photos"
+              id={photoInputId}
+              aria-label="Car photos"
+              aria-describedby={photoNote ? photoNoteId : undefined}
+              disabled={photos.length + pendingPhotos >= MAX_PHOTOS}
               onChange={(e) => addFiles(e.target.files)}
             />
             <div className="mt-4 flex flex-wrap items-center gap-3">
@@ -577,25 +686,28 @@ export function QuoteForm({ heading = "Get your free quote" }: { heading?: strin
                   </button>
                 </span>
               ))}
-              {photos.length < MAX_PHOTOS && (
-                <label
-                  htmlFor="quote-photos"
+              {photos.length + pendingPhotos < MAX_PHOTOS && (
+                <button
+                  type="button"
+                  onClick={() => fileInputRef.current?.click()}
+                  aria-label="Add car photos"
+                  aria-describedby={photoNote ? photoNoteId : undefined}
                   className="flex size-20 cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border-2 border-dashed border-slate-300 text-slate-600 transition hover:border-brand-400 hover:bg-brand-50/50 hover:text-brand-600"
                 >
                   <CameraIcon className="size-6" />
                   <span className="text-[10px] font-bold">Add</span>
-                </label>
+                </button>
               )}
             </div>
             {photoNote && (
-              <p className="mt-2 text-xs font-medium text-amber-600">{photoNote}</p>
+              <p id={photoNoteId} role="alert" className="mt-2 text-xs font-medium text-amber-800">{photoNote}</p>
             )}
             <label className="mt-5 block">
               <span className="label-base">Anything else we should know?</span>
               <textarea
                 rows={3}
                 value={values.message}
-                onChange={set("message")}
+                onChange={(event) => updateValue("message", event)}
                 placeholder="Damage, finance owing, missing keys, when you'd like it gone…"
                 className="input-base"
               />
@@ -612,10 +724,11 @@ export function QuoteForm({ heading = "Get your free quote" }: { heading?: strin
               <input
                 type="text"
                 name="name"
+                {...errorAttributes("name")}
                 required
                 autoComplete="name"
                 value={values.name}
-                onChange={set("name")}
+                onChange={(event) => updateValue("name", event)}
                 placeholder="Your name"
                 className="input-base"
               />
@@ -627,10 +740,11 @@ export function QuoteForm({ heading = "Get your free quote" }: { heading?: strin
               <input
                 type="tel"
                 name="phone"
+                {...errorAttributes("phone")}
                 required
                 autoComplete="tel"
                 value={values.phone}
-                onChange={set("phone")}
+                onChange={(event) => updateValue("phone", event)}
                 placeholder="04xx xxx xxx"
                 className="input-base"
               />
@@ -640,9 +754,10 @@ export function QuoteForm({ heading = "Get your free quote" }: { heading?: strin
               <input
                 type="email"
                 name="email"
+                {...errorAttributes("email")}
                 autoComplete="email"
                 value={values.email}
-                onChange={set("email")}
+                onChange={(event) => updateValue("email", event)}
                 placeholder="you@email.com"
                 className="input-base"
               />
@@ -654,11 +769,12 @@ export function QuoteForm({ heading = "Get your free quote" }: { heading?: strin
               <input
                 type="text"
                 name="suburb"
+                {...errorAttributes("suburb")}
                 required
                 autoComplete="address-level2"
                 list="carbase-suburbs"
                 value={values.suburb}
-                onChange={set("suburb")}
+                onChange={(event) => updateValue("suburb", event)}
                 placeholder="e.g. Rangeville"
                 className="input-base"
               />
@@ -670,14 +786,15 @@ export function QuoteForm({ heading = "Get your free quote" }: { heading?: strin
             </label>
           </div>
         )}
-      </div>
+      </fieldset>
 
       {(stepError || submitError) && (
         <p
+          id={errorId}
           role="alert"
           className="mt-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700"
         >
-          {stepError ?? submitError}
+          {stepError?.message ?? submitError}
           {submitError && (
             <>
               {" "}
@@ -691,27 +808,39 @@ export function QuoteForm({ heading = "Get your free quote" }: { heading?: strin
         </p>
       )}
 
+      <p role="status" aria-live="polite" aria-atomic="true" className={pendingPhotos > 0 || status === "submitting" ? "mt-3 text-sm text-slate-700" : "sr-only"}>
+        {pendingPhotos > 0
+          ? `Preparing ${pendingPhotos} ${pendingPhotos === 1 ? "photo" : "photos"}. Please wait before continuing.`
+          : status === "submitting" ? "Sending your quote request. Please wait." : ""}
+      </p>
+      {pendingPhotos > 0 && (
+        <button type="button" onClick={cancelPendingPhotos} className="mt-2 text-sm font-semibold text-brand-700 underline">
+          Cancel photo processing
+        </button>
+      )}
+
       {/* Navigation */}
       <div className="mt-6 flex items-center gap-3">
         {step > 0 && (
           <button
             type="button"
             onClick={back}
-            className="inline-flex items-center gap-2 rounded-full border border-slate-200 px-5 py-3 text-sm font-semibold text-slate-600 transition hover:border-slate-300 hover:bg-slate-50"
+            disabled={pendingPhotos > 0 || status === "submitting"}
+            className="inline-flex items-center gap-2 rounded-full border border-slate-200 px-5 py-3 text-sm font-semibold text-slate-600 transition hover:border-slate-300 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60"
           >
             <ArrowLeftIcon className="size-4" />
             Back
           </button>
         )}
         {step < 2 ? (
-          <button type="submit" className="btn-primary flex-1">
-            {step === 1 && photos.length === 0 ? "Skip for now" : "Continue"}
+          <button type="submit" disabled={pendingPhotos > 0} className="btn-primary flex-1 disabled:cursor-not-allowed disabled:opacity-60">
+            {pendingPhotos > 0 ? "Preparing photos…" : step === 1 && photos.length === 0 ? "Skip for now" : "Continue"}
             <ArrowRightIcon className="size-4" />
           </button>
         ) : (
           <button
             type="submit"
-            disabled={status === "submitting"}
+            disabled={status === "submitting" || pendingPhotos > 0}
             className="btn-primary flex-1 disabled:cursor-not-allowed disabled:opacity-60"
           >
             {status === "submitting" ? "Sending…" : "Get my free quote"}
@@ -739,14 +868,15 @@ function Req() {
 function YearSelect({
   value,
   onChange,
+  ...attributes
 }: {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-}) {
+} & Pick<React.AriaAttributes, "aria-invalid" | "aria-describedby">) {
   const current = new Date().getFullYear();
   const years = Array.from({ length: current - 1989 }, (_, i) => current - i);
   return (
-    <select name="year" required value={value} onChange={onChange} className="input-base">
+    <select name="year" required value={value} onChange={onChange} {...attributes} className="input-base">
       <option value="" disabled>
         Select year…
       </option>

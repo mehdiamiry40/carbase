@@ -8,11 +8,17 @@ import {
 } from "./quoteImages.mjs";
 import { isQuoteSubmissionId } from "./quoteReceipt.mjs";
 import { quoteDeliveryUnavailable } from "./quoteDelivery.mjs";
+import {
+  QUOTE_POST_MAX_RUN_MS,
+  QuoteBudgetExceededError,
+  createQuoteAttempt,
+  createQuoteDeadline,
+  saveQuoteAttemptOutcome,
+} from "./quoteTiming.mjs";
 
 const MAX_DECLARED_REQUEST_BYTES = 4_400_000;
 const MAX_FORM_ENTRIES = 64;
 const MAX_PARSED_REQUEST_BYTES = 4_200_000;
-const PROVIDER_TIMEOUT_MS = 8_000;
 const REQUIRED_FIELDS = ["make", "model", "year", "name", "phone", "suburb"];
 const OPTIONAL_FIELDS = [
   "kilometres",
@@ -56,7 +62,7 @@ function parsedFormIsTooLarge(form) {
   return false;
 }
 
-async function readBoundedFormData(request) {
+async function readBoundedFormData(request, signal) {
   if (!request.body) return request.formData();
 
   const reader = request.body.getReader();
@@ -64,6 +70,7 @@ async function readBoundedFormData(request) {
   let totalBytes = 0;
   while (true) {
     const { done, value } = await reader.read();
+    signal.throwIfAborted();
     if (done) break;
     totalBytes += value.byteLength;
     if (totalBytes > MAX_DECLARED_REQUEST_BYTES) {
@@ -110,12 +117,20 @@ export function createQuotePostHandler(options = {}) {
     retentionDays = 30,
     providerTimeout = runWithTimeout,
     createSubmissionId = randomUUID,
+    clockMs = () => performance.now(),
   } = options;
   if (!rateLimiter?.consume || typeof normalizePhotos !== "function") {
     throw new TypeError("Quote handler dependencies are incomplete.");
   }
   return async function post(request) {
-    const limit = await rateLimiter.consume(request);
+    const budget = createQuoteDeadline({ clockMs, maxRunMs: QUOTE_POST_MAX_RUN_MS, providerTimeout });
+    const { bounded } = budget;
+    let limit;
+    try {
+      limit = await bounded(() => rateLimiter.consume(request));
+    } catch {
+      return json(quoteDeliveryUnavailable.body, quoteDeliveryUnavailable.status);
+    }
     if (!limit.allowed) {
       if (limit.rateLimited) {
         return json(
@@ -144,8 +159,11 @@ export function createQuotePostHandler(options = {}) {
 
     let form;
     try {
-      form = await readBoundedFormData(request);
+      form = await bounded((signal) => readBoundedFormData(request, signal));
     } catch (error) {
+      if (error instanceof ProviderTimeoutError || error instanceof QuoteBudgetExceededError) {
+        return json(quoteDeliveryUnavailable.body, quoteDeliveryUnavailable.status);
+      }
       if (error instanceof QuoteRequestTooLargeError) {
         return json(quoteTooLarge, 413);
       }
@@ -212,8 +230,11 @@ export function createQuotePostHandler(options = {}) {
 
     let photos;
     try {
-      photos = await normalizePhotos(photoEntries);
+      photos = await bounded(() => normalizePhotos(photoEntries));
     } catch (error) {
+      if (error instanceof ProviderTimeoutError || error instanceof QuoteBudgetExceededError) {
+        return json(quoteDeliveryUnavailable.body, quoteDeliveryUnavailable.status);
+      }
       if (error instanceof QuoteImageValidationError) {
         return json({ ok: false, error: error.message }, 400);
       }
@@ -239,9 +260,8 @@ export function createQuotePostHandler(options = {}) {
     });
 
     try {
-      const receipt = await providerTimeout(
+      const receipt = await bounded(
         (signal) => store.readReceipt(submissionId, signal),
-        PROVIDER_TIMEOUT_MS,
       );
       if (receipt?.receipt) {
         return receipt.receipt.payloadDigest === record.payloadDigest
@@ -259,9 +279,8 @@ export function createQuotePostHandler(options = {}) {
 
     let staged;
     try {
-      staged = await providerTimeout(
+      staged = await bounded(
         (signal) => store.create(record, signal),
-        PROVIDER_TIMEOUT_MS,
       );
     } catch {
       logQuoteOperationalEvent(
@@ -286,7 +305,7 @@ export function createQuotePostHandler(options = {}) {
 
     if (!mailer) {
       try {
-        stored = await providerTimeout(
+        stored = await bounded(
           (signal) =>
             store.update(
               stored,
@@ -298,7 +317,6 @@ export function createQuotePostHandler(options = {}) {
               receivedAt,
               signal,
             ),
-          PROVIDER_TIMEOUT_MS,
         );
       } catch {
         logQuoteOperationalEvent(
@@ -315,23 +333,27 @@ export function createQuotePostHandler(options = {}) {
       return storedResponse();
     }
 
+    // Staging is already durable. Leave it to recovery if all three remaining
+    // operations (claim, send and outcome) cannot finish before this deadline.
+    if (!budget.canStartAttempt()) {
+      logQuoteOperationalEvent(
+        "quote.backup.stored",
+        { state: "staged", reason: "request_budget", submissionId },
+        { logger },
+      );
+      return storedResponse();
+    }
+
+    const attemptedAt = now();
     try {
-      stored = await providerTimeout(
+      stored = await budget.claim(
         (signal) =>
           store.update(
             stored,
-            {
-              state: "sending",
-              attemptCount: stored.record.attemptCount + 1,
-              leaseExpiresAt: new Date(
-                receivedAt.getTime() + PROVIDER_TIMEOUT_MS + 2_000,
-              ).toISOString(),
-              lastOutcome: null,
-            },
-            receivedAt,
+            createQuoteAttempt(stored, attemptedAt),
+            attemptedAt,
             signal,
           ),
-        PROVIDER_TIMEOUT_MS,
       );
     } catch {
       logQuoteOperationalEvent(
@@ -344,33 +366,31 @@ export function createQuotePostHandler(options = {}) {
 
     let outcome;
     try {
-      outcome = await mailer.send(stored.record);
+      outcome = await budget.send((signal) => mailer.send(stored.record, { signal }));
     } catch (error) {
       outcome = {
-        status: "unknown",
+        status: error instanceof QuoteBudgetExceededError ? "not_sent" : "unknown",
         reason:
-          error instanceof ProviderTimeoutError ? "provider_timeout" : "provider_error",
+          error instanceof QuoteBudgetExceededError ? "request_budget" :
+            error instanceof ProviderTimeoutError ? "provider_timeout" : "provider_error",
       };
     }
 
     if (outcome.status !== "accepted") {
-      const state = outcome.status === "rejected" ? "delivery_rejected" : "delivery_unknown";
+      const state = outcome.status === "rejected" ? "delivery_rejected" :
+        outcome.status === "not_sent" ? "delivery_unavailable" : "delivery_unknown";
       try {
-        stored = await providerTimeout(
-          (signal) =>
-            store.update(
-              stored,
-              {
-                state,
-                leaseExpiresAt: null,
-                lastOutcome: outcome.reason ?? outcome.status,
-                nextAttemptAt: nextAttemptAt(receivedAt, stored.record.attemptCount),
-              },
-              now(),
-              signal,
-            ),
-          PROVIDER_TIMEOUT_MS,
-        );
+        stored = await saveQuoteAttemptOutcome({
+          store, stored, now, bounded,
+          patch: {
+            state,
+            leaseExpiresAt: null,
+            lastOutcome: outcome.reason ?? outcome.status,
+            nextAttemptAt: state !== "delivery_unknown"
+              ? nextAttemptAt(now(), stored.record.attemptCount)
+              : null,
+          },
+        });
       } catch {
         logQuoteOperationalEvent(
           "quote.backup.state_update_failed",
@@ -387,34 +407,26 @@ export function createQuotePostHandler(options = {}) {
     }
 
     try {
-      stored = await providerTimeout(
-        (signal) =>
-          store.update(
-            stored,
-            {
-              state: "accepted_cleanup_pending",
-              leaseExpiresAt: null,
-              lastOutcome: "accepted",
-              nextAttemptAt: null,
-              providerMessageId: outcome.providerMessageId,
-            },
-            now(),
-            signal,
-          ),
-        PROVIDER_TIMEOUT_MS,
-      );
+      stored = await saveQuoteAttemptOutcome({
+        store, stored, now, bounded,
+        patch: {
+          state: "accepted_cleanup_pending",
+          leaseExpiresAt: null,
+          lastOutcome: "accepted",
+          nextAttemptAt: null,
+          providerMessageId: outcome.providerMessageId,
+        },
+      });
       const receipt = createQuoteReceipt({
         record: stored.record,
         providerMessageId: outcome.providerMessageId,
         deliveredAt: now(),
       });
-      await providerTimeout(
+      await bounded(
         (signal) => store.writeReceipt(receipt, signal),
-        PROVIDER_TIMEOUT_MS,
       );
-      await providerTimeout(
+      await bounded(
         (signal) => store.remove(stored, signal),
-        PROVIDER_TIMEOUT_MS,
       );
     } catch {
       logQuoteOperationalEvent(

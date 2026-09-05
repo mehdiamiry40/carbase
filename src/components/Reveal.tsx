@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 
-/** Fades + slides children in when they scroll into view. */
+/** Enhances visible-by-default content with a slide when it enters the viewport. */
 export function Reveal({
   children,
   delay = 0,
@@ -16,16 +16,19 @@ export function Reveal({
 
   useEffect(() => {
     const el = ref.current;
-    if (!el) return;
-    if (typeof IntersectionObserver === "undefined") {
-      el.classList.add("is-visible");
+    if (
+      !el ||
+      typeof IntersectionObserver === "undefined" ||
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
+      el.getBoundingClientRect().top < window.innerHeight
+    ) {
       return;
     }
     const io = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            entry.target.classList.add("is-visible");
+            entry.target.classList.remove("is-reveal-ready");
             io.unobserve(entry.target);
           }
         });
@@ -33,7 +36,11 @@ export function Reveal({
       { threshold: 0.12, rootMargin: "0px 0px -40px 0px" },
     );
     io.observe(el);
-    return () => io.disconnect();
+    el.classList.add("is-reveal-ready");
+    return () => {
+      io.disconnect();
+      el.classList.remove("is-reveal-ready");
+    };
   }, []);
 
   return (

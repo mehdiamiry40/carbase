@@ -1,8 +1,67 @@
 import { createQuotePostHandler } from "../../src/lib/quoteHandler.mjs";
+import { ProviderTimeoutError } from "../../src/lib/quoteBackup.mjs";
 
 export const SUBMISSION_ID = "11111111-1111-4111-8111-111111111111";
 export const OTHER_SUBMISSION_ID = "22222222-2222-4222-8222-222222222222";
 export const NOW = new Date("2026-08-31T02:00:00.000Z");
+
+// Unlike the simple route harness, this clock actually expires operations and
+// aborts their signals. Long provider timelines run without wall-clock sleeps.
+export function createVirtualQuoteClock() {
+  let elapsed = 0;
+  const timers = new Set();
+  const schedule = (callback, delay) => {
+    const timer = { at: elapsed + delay, callback };
+    timers.add(timer);
+    return timer;
+  };
+  const advance = (duration) => {
+    const target = elapsed + duration;
+    while (true) {
+      const next = [...timers].sort((left, right) => left.at - right.at)[0];
+      if (!next || next.at > target) break;
+      elapsed = next.at;
+      timers.delete(next);
+      next.callback();
+    }
+    elapsed = target;
+  };
+  const clock = {
+    clockMs: () => elapsed,
+    now: () => new Date(NOW.getTime() + elapsed),
+    advance,
+    delay: (duration) => new Promise((resolve) => schedule(resolve, duration)),
+    async providerTimeout(operation, timeoutMs) {
+      const controller = new AbortController();
+      let timer;
+      const expired = new Promise((_, reject) => {
+        timer = schedule(() => {
+          controller.abort();
+          reject(new ProviderTimeoutError());
+        }, timeoutMs);
+      });
+      try {
+        return await Promise.race([operation(controller.signal), expired]);
+      } finally {
+        timers.delete(timer);
+      }
+    },
+    async run(promise) {
+      let settled = false;
+      promise.finally(() => { settled = true; }).catch(() => {});
+      for (let step = 0; step < 1_000 && !settled; step += 1) {
+        await new Promise((resolve) => setImmediate(resolve));
+        if (settled) break;
+        const next = [...timers].sort((left, right) => left.at - right.at)[0];
+        if (!next) throw new Error("Virtual quote operation is gated without a timer.");
+        advance(next.at - elapsed);
+      }
+      if (!settled) throw new Error("Virtual quote operation did not settle.");
+      return promise;
+    },
+  };
+  return clock;
+}
 
 export function createMemoryQuoteStore(calls = []) {
   const outbox = new Map();

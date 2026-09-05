@@ -70,8 +70,12 @@ export async function GET(request: Request) {
   });
 
   const result = await processor();
+  const healthy = !("unavailable" in result && result.unavailable) && result.failed === 0;
   return Response.json(
-    { ok: true, ...result },
-    { headers: { "Cache-Control": "no-store" } },
+    { ok: healthy, ...result },
+    {
+      status: healthy ? 200 : 503,
+      headers: { "Cache-Control": "no-store" },
+    },
   );
 }

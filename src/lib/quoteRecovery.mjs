@@ -1,7 +1,12 @@
 import { ProviderTimeoutError, logQuoteOperationalEvent, runWithTimeout } from "./quoteBackup.mjs";
 import { createQuoteReceipt, isQuoteOutboxRecord, isQuoteReceipt } from "./quoteOutbox.mjs";
+import {
+  QuoteBudgetExceededError,
+  createQuoteAttempt,
+  createQuoteDeadline,
+  saveQuoteAttemptOutcome,
+} from "./quoteTiming.mjs";
 
-const OPERATION_TIMEOUT_MS = 8_000;
 const STALE_STAGE_MS = 15 * 60 * 1_000;
 
 function isExpired(value, now) {
@@ -29,14 +34,13 @@ export function createQuoteOutboxProcessor(options = {}) {
     now = () => new Date(),
     logger = console,
     providerTimeout = runWithTimeout,
-    clockMs = Date.now,
+    clockMs = () => performance.now(),
     maxRunMs = 40_000,
     maxScanRecords = Math.max(100, batchSize * 10),
     maxReceiptScanRecords = Math.max(100, batchSize * 10),
   } = options;
   return async function processQuoteOutbox() {
-    const startedAt = clockMs();
-    const deadlineAt = startedAt + maxRunMs;
+    const budget = createQuoteDeadline({ clockMs, maxRunMs, providerTimeout });
     const counts = {
       accepted: 0,
       deleted: 0,
@@ -51,14 +55,7 @@ export function createQuoteOutboxProcessor(options = {}) {
 
     if (!store) return { ...counts, unavailable: true };
 
-    class RunBudgetExceededError extends Error {}
-    const remainingMs = () => deadlineAt - clockMs();
-    const hasBudget = () => remainingMs() > 250;
-    const bounded = (operation) => {
-      const timeoutMs = Math.min(OPERATION_TIMEOUT_MS, remainingMs());
-      if (timeoutMs <= 250) throw new RunBudgetExceededError();
-      return providerTimeout(operation, timeoutMs);
-    };
+    const { hasBudget, bounded } = budget;
 
     let checkpoint = { outboxCursor: null, receiptCursor: null };
     if (typeof store.readRecoveryCheckpoint === "function" && hasBudget()) {
@@ -123,7 +120,7 @@ export function createQuoteOutboxProcessor(options = {}) {
           );
         } catch (error) {
           counts.failed += 1;
-          if (error instanceof RunBudgetExceededError) {
+          if (error instanceof QuoteBudgetExceededError) {
             completedPage = false;
             break;
           }
@@ -155,7 +152,7 @@ export function createQuoteOutboxProcessor(options = {}) {
             );
           } catch (error) {
             counts.failed += 1;
-            if (error instanceof RunBudgetExceededError) {
+            if (error instanceof QuoteBudgetExceededError) {
               completedPage = false;
               break;
             }
@@ -181,7 +178,7 @@ export function createQuoteOutboxProcessor(options = {}) {
             counts.deleted += 1;
           } catch (error) {
             counts.failed += 1;
-            if (error instanceof RunBudgetExceededError) {
+            if (error instanceof QuoteBudgetExceededError) {
               completedPage = false;
               break;
             }
@@ -209,22 +206,31 @@ export function createQuoteOutboxProcessor(options = {}) {
               );
             } catch (error) {
               counts.failed += 1;
-              if (error instanceof RunBudgetExceededError) {
+              if (error instanceof QuoteBudgetExceededError) {
                 completedPage = false;
                 break;
               }
               continue;
             }
+            logQuoteOperationalEvent(
+              "quote.outbox.manual_review",
+              { state: stored.record.state, reason: "lease_expired", submissionId: stored.record.submissionId },
+              { level: "error", logger },
+            );
           }
           counts.retained += 1;
           continue;
         }
 
-        if (stored.record.state === "delivery_unknown") {
+        if (stored.record.state === "delivery_unknown" || stored.record.state === "dead_letter") {
           counts.retained += 1;
           logQuoteOperationalEvent(
             "quote.outbox.manual_review",
-            { state: stored.record.state, submissionId: stored.record.submissionId },
+            {
+              state: stored.record.state,
+              reason: stored.record.state === "dead_letter" ? "max_attempts" : "delivery_unknown",
+              submissionId: stored.record.submissionId,
+            },
             { level: "error", logger },
           );
           continue;
@@ -237,6 +243,11 @@ export function createQuoteOutboxProcessor(options = {}) {
         ]);
         if (!retryable.has(stored.record.state)) {
           counts.invalid += 1;
+          logQuoteOperationalEvent(
+            "quote.outbox.invalid",
+            { reason: "unknown_state", submissionId: stored.record.submissionId },
+            { level: "error", logger },
+          );
           continue;
         }
 
@@ -269,9 +280,14 @@ export function createQuoteOutboxProcessor(options = {}) {
                   signal,
                 ),
             );
+            logQuoteOperationalEvent(
+              "quote.outbox.manual_review",
+              { state: "dead_letter", reason: "max_attempts", submissionId: stored.record.submissionId },
+              { level: "error", logger },
+            );
           } catch (error) {
             counts.failed += 1;
-            if (error instanceof RunBudgetExceededError) {
+            if (error instanceof QuoteBudgetExceededError) {
               completedPage = false;
               break;
             }
@@ -280,27 +296,27 @@ export function createQuoteOutboxProcessor(options = {}) {
           continue;
         }
 
+        if (!budget.canStartAttempt()) {
+          counts.retained += 1;
+          completedPage = false;
+          break;
+        }
+
         counts.processed += 1;
+        const attemptedAt = now();
         try {
-          stored = await bounded(
+          stored = await budget.claim(
             (signal) =>
               store.update(
                 stored,
-                {
-                  state: "sending",
-                  attemptCount: stored.record.attemptCount + 1,
-                  leaseExpiresAt: new Date(
-                    currentTime.getTime() + OPERATION_TIMEOUT_MS + 2_000,
-                  ).toISOString(),
-                  lastOutcome: null,
-                },
-                currentTime,
+                createQuoteAttempt(stored, attemptedAt),
+                attemptedAt,
                 signal,
               ),
           );
         } catch (error) {
           counts.failed += 1;
-          if (error instanceof RunBudgetExceededError) {
+          if (error instanceof QuoteBudgetExceededError) {
             completedPage = false;
             break;
           }
@@ -309,12 +325,14 @@ export function createQuoteOutboxProcessor(options = {}) {
 
         let outcome;
         try {
-          outcome = await bounded(() => mailer.send(stored.record));
+          outcome = await budget.send((signal) => mailer.send(stored.record, { signal }));
         } catch (error) {
           outcome = {
-            status: "unknown",
+            status: error instanceof QuoteBudgetExceededError ? "not_sent" : "unknown",
             reason:
-              error instanceof ProviderTimeoutError
+              error instanceof QuoteBudgetExceededError
+                ? "request_budget"
+                : error instanceof ProviderTimeoutError
                 ? "provider_timeout"
                 : "provider_error",
           };
@@ -322,21 +340,16 @@ export function createQuoteOutboxProcessor(options = {}) {
 
         if (outcome.status === "accepted") {
           try {
-            stored = await bounded(
-              (signal) =>
-                store.update(
-                  stored,
-                  {
-                    state: "accepted_cleanup_pending",
-                    leaseExpiresAt: null,
-                    lastOutcome: "accepted",
-                    nextAttemptAt: null,
-                    providerMessageId: outcome.providerMessageId,
-                  },
-                  now(),
-                  signal,
-                ),
-            );
+            stored = await saveQuoteAttemptOutcome({
+              store, stored, now, bounded,
+              patch: {
+                state: "accepted_cleanup_pending",
+                leaseExpiresAt: null,
+                lastOutcome: "accepted",
+                nextAttemptAt: null,
+                providerMessageId: outcome.providerMessageId,
+              },
+            });
             const receipt = createQuoteReceipt({
               record: stored.record,
               providerMessageId: outcome.providerMessageId,
@@ -349,7 +362,7 @@ export function createQuoteOutboxProcessor(options = {}) {
             counts.accepted += 1;
           } catch (error) {
             counts.failed += 1;
-            if (error instanceof RunBudgetExceededError) {
+            if (error instanceof QuoteBudgetExceededError) {
               completedPage = false;
               break;
             }
@@ -357,28 +370,36 @@ export function createQuoteOutboxProcessor(options = {}) {
           continue;
         }
 
-        const state = outcome.status === "rejected" ? "delivery_rejected" : "delivery_unknown";
-        try {
-          await bounded(
-            (signal) =>
-              store.update(
-                stored,
-                {
-                  state,
-                  leaseExpiresAt: null,
-                  lastOutcome: outcome.reason ?? outcome.status,
-                  nextAttemptAt:
-                    state === "delivery_rejected"
-                      ? nextAttemptAt(currentTime, stored.record.attemptCount)
-                      : null,
-                },
-                now(),
-                signal,
-              ),
+        const state = outcome.status === "rejected" ? "delivery_rejected" :
+          outcome.status === "not_sent" ? "delivery_unavailable" : "delivery_unknown";
+        if (outcome.status !== "not_sent") {
+          counts.failed += 1;
+          logQuoteOperationalEvent(
+            "quote.outbox.delivery_failed",
+            {
+              state,
+              reason: outcome.status === "rejected" ? "provider_rejected" : "delivery_unknown",
+              attemptCount: stored.record.attemptCount,
+              submissionId: stored.record.submissionId,
+            },
+            { level: "error", logger },
           );
+        }
+        try {
+          await saveQuoteAttemptOutcome({
+            store, stored, now, bounded,
+            patch: {
+              state,
+              leaseExpiresAt: null,
+              lastOutcome: outcome.reason ?? outcome.status,
+              nextAttemptAt: state !== "delivery_unknown"
+                ? nextAttemptAt(now(), stored.record.attemptCount)
+                : null,
+            },
+          });
         } catch (error) {
           counts.failed += 1;
-          if (error instanceof RunBudgetExceededError) {
+          if (error instanceof QuoteBudgetExceededError) {
             completedPage = false;
             break;
           }
@@ -435,7 +456,7 @@ export function createQuoteOutboxProcessor(options = {}) {
           raw = await bounded((signal) => store.readPath(blob.pathname, signal));
         } catch (error) {
           counts.failed += 1;
-          if (error instanceof RunBudgetExceededError) {
+          if (error instanceof QuoteBudgetExceededError) {
             completedPage = false;
             break;
           }
@@ -454,7 +475,7 @@ export function createQuoteOutboxProcessor(options = {}) {
             counts.deleted += 1;
           } catch (error) {
             counts.failed += 1;
-            if (error instanceof RunBudgetExceededError) {
+            if (error instanceof QuoteBudgetExceededError) {
               completedPage = false;
               break;
             }
