@@ -14,8 +14,8 @@ export const site = {
     "Carbase buys old, damaged, non-running and unwanted cars throughout the Toowoomba Region. Get a free quote, free car removal and payment before collection.",
   url: siteUrl,
 
-  phone: "0410 233 335",
-  phoneInternational: "+61 410 233 335",
+  phone: "0494 434 509",
+  phoneInternational: "+61 494 434 509",
   hours: "8am–5pm, 7 days a week",
   abn: "62 351 619 456",
 
