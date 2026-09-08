@@ -33,8 +33,8 @@ test("uses the owner-verified operator details and timing boundaries", () => {
   for (const expected of [
     'operatorName: "Emir Group"',
     'operatingBase: "Toowoomba, Queensland"',
-    'phone: "0410 233 335"',
-    'phoneInternational: "+61 410 233 335"',
+    'phone: "0494 434 509"',
+    'phoneInternational: "+61 494 434 509"',
     'hours: "8am–5pm, 7 days a week"',
     'abn: "62 351 619 456"',
     'opens: "08:00"',
@@ -58,8 +58,8 @@ test("ships no sample or invented customer reviews", () => {
 
 test("business schema uses verified optional fields and omits invented ones", () => {
   const details = {
-    phone: "0410 233 335",
-    phoneInternational: "+61 410 233 335",
+    phone: "0494 434 509",
+    phoneInternational: "+61 494 434 509",
     abn: "62 351 619 456",
     opens: "08:00",
     closes: "17:00",
