@@ -10,9 +10,9 @@ import { pageMetadata } from "@/lib/metadata";
 
 export const metadata = pageMetadata({
   path: "/blog",
-  title: "Car Selling Guides & Tips | Toowoomba",
+  title: "Car Selling Guides & Tips | Brisbane",
   description:
-    "Practical Carbase guides for selling old, damaged, non-running and unwanted cars in the Toowoomba Region.",
+    "Practical Carbase guides for selling old, damaged, non-running and unwanted cars in Brisbane.",
 });
 
 const [featuredPost, ...morePosts] = blogPosts;
@@ -23,7 +23,7 @@ const blogJsonLd = {
   "@id": site.url + "/blog#blog",
   name: "Carbase car selling guides",
   description:
-    "Practical guides for selling old, damaged, non-running and unwanted cars in the Toowoomba Region.",
+    "Practical guides for selling old, damaged, non-running and unwanted cars in Brisbane.",
   url: site.url + "/blog",
   inLanguage: "en-AU",
   publisher: { "@id": site.url + "/#business" },
@@ -52,7 +52,7 @@ export default function BlogPage() {
             <span className="text-gradient">unwanted car</span>
           </>
         }
-        lede="Practical, plain-English guides to help Toowoomba Region owners understand their options, prepare a vehicle and avoid preventable surprises."
+        lede="Practical, plain-English guides to help Brisbane owners understand their options, prepare a vehicle and avoid preventable surprises."
         photoName="junkyard"
         photoAlt="Damaged and unwanted cars in an automotive yard"
       />

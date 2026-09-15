@@ -52,8 +52,8 @@ export function SiteFooter() {
           <div className="max-w-sm">
             <Logo />
             <p className="mt-7 text-sm leading-relaxed text-white/70">
-              A direct, local way to sell old, damaged, non-running and unwanted
-              cars throughout the Toowoomba Region.
+              A direct, local way to sell old, damaged, non-running and
+              unwanted cars throughout Brisbane.
             </p>
             <a
               href={telHref}
@@ -108,8 +108,8 @@ export function SiteFooter() {
             {site.operatorName}. ABN {site.abn}. All rights reserved.
           </p>
           <p className="max-w-xl sm:text-right">
-            Based in Toowoomba. Mobile collection across the city, suburbs and
-            regional communities within the Toowoomba Regional Council area.
+            Based in Brisbane. Mobile collection across the CBD, inner suburbs and
+            outer suburbs within the Brisbane City Council area.
           </p>
         </div>
       </div>

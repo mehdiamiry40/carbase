@@ -25,7 +25,7 @@ const barlow = Barlow({
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: `Sell Your Car Toowoomba | Local Car Buyers | ${site.name}`,
+    default: `Sell Your Car Brisbane | Local Car Buyers | ${site.name}`,
     template: `%s | ${site.name}`,
   },
   description: site.description,
@@ -49,14 +49,14 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     siteName: site.name,
-    title: `Sell Your Car Toowoomba | Local Car Buyers | ${site.name}`,
+    title: `Sell Your Car Brisbane | Local Car Buyers | ${site.name}`,
     description: site.description,
     url: "/",
     locale: "en_AU",
   },
   twitter: {
     card: "summary_large_image",
-    title: `Sell Your Car Toowoomba | Local Car Buyers | ${site.name}`,
+    title: `Sell Your Car Brisbane | Local Car Buyers | ${site.name}`,
     description: site.description,
   },
 };

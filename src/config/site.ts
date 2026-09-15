@@ -8,10 +8,10 @@ const siteUrl = (
 export const site = {
   name: "Carbase",
   operatorName: "Emir Group",
-  operatingBase: "Toowoomba, Queensland",
-  tagline: "Cash for old, damaged and unwanted cars across the Toowoomba Region",
+  operatingBase: "Brisbane, Queensland",
+  tagline: "Cash for old, damaged and unwanted cars across Brisbane",
   description:
-    "Carbase buys old, damaged, non-running and unwanted cars throughout the Toowoomba Region. Get a free quote, free car removal and payment before collection.",
+    "Carbase buys old, damaged, non-running and unwanted cars throughout Brisbane. Get a free quote, free car removal and payment before collection.",
   url: siteUrl,
 
   phone: "0494 434 509",
@@ -20,13 +20,13 @@ export const site = {
   abn: "62 351 619 456",
 
   // Machine-readable version of `hours`, used for opening-hours structured
-  // data. Emir Group operates from Toowoomba as a service-area business, but
+  // data. Emir Group operates from Brisbane as a service-area business, but
   // has no customer-facing public street address, so none is configured or
   // emitted in structured data.
   opens: "08:00",
   closes: "17:00",
 
-  serviceRegion: "Toowoomba Region",
+  serviceRegion: "Brisbane",
 } as const;
 
 /** tel: link built from the display phone number */

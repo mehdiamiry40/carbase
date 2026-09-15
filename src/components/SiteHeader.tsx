@@ -13,8 +13,8 @@ import {
 } from "@/components/icons";
 
 const serviceLinks = [
-  { href: "/cash-for-cars-toowoomba", label: "Cash for cars" },
-  { href: "/car-removal-toowoomba", label: "Car removal" },
+  { href: "/cash-for-cars-brisbane", label: "Cash for cars" },
+  { href: "/car-removal-brisbane", label: "Car removal" },
 ];
 
 const desktopNavLinks = [

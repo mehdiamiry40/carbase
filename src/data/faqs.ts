@@ -22,7 +22,7 @@ export const faqs: Faq[] = [
   {
     question: "Do you really pick the car up for free?",
     answer:
-      "Yes. Pickup and car removal are free throughout our Toowoomba Region service area, whether the car drives or not. There are no towing fees, admin fees or hidden charges taken out of your offer.",
+      "Yes. Pickup and car removal are free throughout our Brisbane service area, whether the car drives or not. There are no towing fees, admin fees or hidden charges taken out of your offer.",
   },
   {
     question: "Does the car need a roadworthy certificate (RWC)?",
@@ -47,11 +47,11 @@ export const faqs: Faq[] = [
   {
     question: "Which areas do you cover?",
     answer:
-      "Carbase serves the Toowoomba Region only. We collect throughout Toowoomba city and its suburbs, plus communities within the Toowoomba Regional Council boundary such as Highfields, Oakey, Pittsworth, Crows Nest, Clifton and Millmerran.",
+      "Carbase serves Brisbane only. We collect throughout the Brisbane CBD and its suburbs, plus outer suburbs within the Brisbane City Council boundary such as Bracken Ridge, The Gap, Moggill, Forest Lake, Calamvale and Wynnum.",
   },
   {
-    question: "Do you offer cash for cars and car removal in Toowoomba?",
+    question: "Do you offer cash for cars and car removal in Brisbane?",
     answer:
-      "Yes. Carbase provides cash for cars and free car removal throughout the Toowoomba Region, including Glenvale, Rangeville, Drayton, Highfields and other locations within the Regional Council boundary. Request a free quote and we will arrange payment before collection.",
+      "Yes. Carbase provides cash for cars and free car removal throughout Brisbane, including Toowong, Chermside, Coorparoo, Sunnybank and other locations within the Brisbane City Council boundary. Request a free quote and we will arrange payment before collection.",
   },
 ];

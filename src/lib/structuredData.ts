@@ -58,8 +58,8 @@ export function buildBusinessJsonLd(details: BusinessSchemaDetails = site) {
         }
       : {}),
     areaServed: [
-      { "@type": "City", name: "Toowoomba" },
-      { "@type": "AdministrativeArea", name: "Toowoomba Region" },
+      { "@type": "City", name: "Brisbane" },
+      { "@type": "AdministrativeArea", name: "City of Brisbane, Queensland" },
     ],
     makesOffer: localPages.map((page) => ({
       "@type": "Offer",

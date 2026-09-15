@@ -49,12 +49,12 @@ const errorSource = readFileSync(
 
 test("keeps commercial keyword metadata on the homepage only", () => {
   assert.doesNotMatch(layoutSource, /keywords:\s*\[/);
-  assert.match(homeSource, /"cash for cars Toowoomba"/);
-  assert.match(homeSource, /"car removal Toowoomba"/);
+  assert.match(homeSource, /"cash for cars Brisbane"/);
+  assert.match(homeSource, /"car removal Brisbane"/);
 });
 
 test("avoids repeating the brand name in the About document title", () => {
-  assert.match(aboutSource, /title: "About Us \| Toowoomba Car Buyers"/);
+  assert.match(aboutSource, /title: "About Us \| Brisbane Car Buyers"/);
   assert.doesNotMatch(aboutSource, /title: "About Carbase/);
 });
 

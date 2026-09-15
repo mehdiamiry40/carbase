@@ -72,7 +72,7 @@ export const blogPosts: readonly BlogPost[] = [
         title: "Location and access affect collection planning",
         paragraphs: [
           "A vehicle parked on a clear driveway is different from one in a low car park, behind a locked car, on soft ground or without wheels. Collection access may determine what equipment is needed and whether the vehicle can be moved safely.",
-          "Share access details before agreeing on a collection time. For Carbase, the vehicle must be within the Toowoomba Region service area.",
+          "Share access details before agreeing on a collection time. For Carbase, the vehicle must be within our Brisbane service area.",
         ],
         note: "The clearest quote requests include accurate vehicle details, honest condition notes, useful photos and a short description of where the car is parked.",
       },

@@ -13,7 +13,7 @@ const record = {
     year: "2015",
     name: "Test User",
     phone: "0400000000",
-    suburb: "Toowoomba",
+    suburb: "Brisbane",
   },
   photos: [],
 };

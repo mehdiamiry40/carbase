@@ -2,7 +2,7 @@ import { pageMetadata } from "@/lib/metadata";
 import { requireLocalPage } from "@/data/localPages";
 import { LocalLandingPage } from "@/components/LocalLandingPage";
 
-const page = requireLocalPage("car-removal-toowoomba");
+const page = requireLocalPage("cash-for-cars-brisbane");
 
 export const metadata = pageMetadata({
   path: `/${page.slug}`,
@@ -11,6 +11,6 @@ export const metadata = pageMetadata({
   keywords: page.keywords,
 });
 
-export default function CarRemovalToowoombaPage() {
+export default function CashForCarsBrisbanePage() {
   return <LocalLandingPage page={page} />;
 }

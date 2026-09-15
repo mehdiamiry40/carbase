@@ -186,7 +186,7 @@ export function quoteFormData({
     year: "2015",
     name: "Test User",
     phone: "0400000000",
-    suburb: "Toowoomba",
+    suburb: "Brisbane",
     ...overrides,
   };
   for (const [key, value] of Object.entries(values)) form.append(key, value);

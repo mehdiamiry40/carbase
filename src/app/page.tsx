@@ -73,20 +73,20 @@ const reasons = [
   {
     Icon: MapPinIcon,
     title: "Local service",
-    copy: "A Toowoomba-based team serving the city, its suburbs and towns across the Toowoomba Region.",
+    copy: "A Brisbane-based team serving the CBD, the inner suburbs and the outer suburbs.",
   },
 ];
 
 export const metadata: Metadata = {
   keywords: [
-    "cash for cars Toowoomba",
-    "car removal Toowoomba",
-    "free car removal Toowoomba",
-    "sell my car Toowoomba",
-    "car buyers Toowoomba",
-    "cash for unwanted cars Toowoomba",
-    "scrap car removal Toowoomba",
-    "sell damaged car Toowoomba",
+    "cash for cars Brisbane",
+    "car removal Brisbane",
+    "free car removal Brisbane",
+    "sell my car Brisbane",
+    "car buyers Brisbane",
+    "cash for unwanted cars Brisbane",
+    "scrap car removal Brisbane",
+    "sell damaged car Brisbane",
   ],
 };
 
@@ -110,15 +110,15 @@ export default function HomePage() {
         <div className="shell relative z-10 lg:flex lg:min-h-[760px] lg:items-end lg:py-16">
           <div className="hero-panel w-full py-10 sm:py-12 lg:max-w-[680px] lg:border-2 lg:border-white lg:bg-ink-900/62 lg:p-12 lg:backdrop-blur-[2px]">
             <p className="t-index text-brand-200">
-              Toowoomba car buyers · Local pickup
+              Brisbane car buyers · Local pickup
             </p>
             <h1 className="mt-4 max-w-[14ch] font-display text-4xl font-medium leading-[1.04] tracking-tight text-balance sm:text-5xl lg:mt-5 lg:max-w-[12ch] lg:text-[4.6rem] lg:leading-[1.02]">
-              A simpler way to sell your car in Toowoomba.
+              A simpler way to sell your car in Brisbane.
             </h1>
             <p className="mt-5 max-w-[54ch] text-base leading-relaxed text-white/85 sm:text-lg lg:mt-6 lg:text-white/90">
               Carbase buys old, damaged, non-running and unwanted cars
-              throughout the Toowoomba Region, with a free quote, free car
-              removal and payment before collection.
+              throughout Brisbane, with a free quote, free car removal and
+              payment before collection.
             </p>
             <div className="mt-7 flex flex-col gap-3 sm:flex-row lg:mt-8">
               <a href="#quote" className="btn-primary">
@@ -180,15 +180,15 @@ export default function HomePage() {
 
       <section
         className="border-y border-slate-200 bg-white py-16 lg:py-20"
-        aria-labelledby="toowoomba-services"
+        aria-labelledby="brisbane-services"
       >
         <div className="shell">
           <Reveal>
             <div className="grid gap-8 lg:grid-cols-[0.72fr_1.28fr] lg:items-end lg:gap-16">
               <div>
-                <p className="t-index text-brand-700">Toowoomba services</p>
+                <p className="t-index text-brand-700">Brisbane services</p>
                 <h2
-                  id="toowoomba-services"
+                  id="brisbane-services"
                   className="mt-5 font-display text-4xl font-medium leading-[1.08] tracking-tight text-ink-900 sm:text-5xl"
                 >
                   Choose the help you need with your car.
@@ -346,13 +346,13 @@ export default function HomePage() {
               <div>
                 <p className="t-index text-brand-700">Our service area</p>
                 <h2 className="mt-5 font-display text-4xl font-medium leading-[1.08] tracking-tight text-ink-900 sm:text-5xl">
-                  Focused entirely on the Toowoomba Region.
+                  Focused entirely on Brisbane.
                 </h2>
               </div>
               <p className="max-w-2xl text-lg leading-relaxed text-slate-600 lg:justify-self-end">
-                We serve Toowoomba city and suburbs plus towns within the
-                Toowoomba Regional Council area. Check the coverage page for
-                the full suburb and regional-town list.
+                We serve the Brisbane CBD and inner suburbs plus outer suburbs
+                within the Brisbane City Council area. Check the coverage page
+                for the full suburb list.
               </p>
             </div>
           </Reveal>
