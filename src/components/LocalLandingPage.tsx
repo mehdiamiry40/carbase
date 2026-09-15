@@ -21,11 +21,11 @@ import {
 } from "@/components/icons";
 
 const localGuideSlugs: Record<string, readonly string[]> = {
-  "cash-for-cars-toowoomba": [
+  "cash-for-cars-brisbane": [
     "what-affects-unwanted-car-value",
     "repair-damaged-car-before-selling",
   ],
-  "car-removal-toowoomba": [
+  "car-removal-brisbane": [
     "prepare-non-running-car-for-collection",
     "what-affects-unwanted-car-value",
   ],
@@ -35,7 +35,7 @@ const localGuideSlugs: Record<string, readonly string[]> = {
  * Renders a keyword-targeted local landing page (see `data/localPages.ts`).
  *
  * The connected JSON-LD graph describes the page, service, questions and
- * breadcrumb trail without pretending the business has a Toowoomba shopfront.
+ * breadcrumb trail without pretending the business has a Brisbane shopfront.
  */
 export function LocalLandingPage({ page }: { page: LocalPage }) {
   const area = getArea(page.areaSlug);
@@ -59,7 +59,7 @@ export function LocalLandingPage({ page }: { page: LocalPage }) {
     provider: { "@id": `${site.url}/#business` },
     areaServed: {
       "@type": "AdministrativeArea",
-      name: "Toowoomba Region, Queensland",
+      name: "Brisbane, Queensland",
     },
   };
 
@@ -109,7 +109,7 @@ export function LocalLandingPage({ page }: { page: LocalPage }) {
         citation: page.officialLinks.map((link) => link.href),
         spatialCoverage: {
           "@type": "AdministrativeArea",
-          name: "Toowoomba Region, Queensland",
+          name: "Brisbane, Queensland",
         },
       },
       serviceJsonLd,
@@ -244,10 +244,10 @@ export function LocalLandingPage({ page }: { page: LocalPage }) {
           <Reveal delay={100}>
             <div>
               <p className="text-lg leading-relaxed text-slate-600">
-                Carbase is based in Toowoomba and serves the Toowoomba Region
-                only. It is operated by {site.operatorName} (ABN {site.abn}), so
-                the business name, service boundary and contact details are
-                clear before you share your vehicle information.
+                Carbase is based in Brisbane and serves the Brisbane City
+                Council area only. It is operated by {site.operatorName} (ABN{" "}
+                {site.abn}), so the business name, service boundary and contact
+                details are clear before you share your vehicle information.
               </p>
               <dl className="mt-8 grid gap-5 border-y border-slate-200 py-6 sm:grid-cols-2">
                 <div>
@@ -339,8 +339,8 @@ export function LocalLandingPage({ page }: { page: LocalPage }) {
             <Reveal>
               <SectionHeading
                 eyebrow="Where we come to you"
-                title="Serving the Toowoomba Region"
-                lede="A few of our regular collection locations are shown below. Our coverage is limited to addresses within the Toowoomba Region."
+                title="Serving Brisbane"
+                lede="A few of our regular collection locations are shown below. Our coverage is limited to addresses within Brisbane."
               />
             </Reveal>
             <Reveal delay={120}>
@@ -360,7 +360,7 @@ export function LocalLandingPage({ page }: { page: LocalPage }) {
                   href="/service-areas"
                   className="inline-flex items-center gap-2 font-semibold text-brand-700 underline underline-offset-4"
                 >
-                  See every Toowoomba Region location we cover
+                  See every Brisbane location we cover
                   <ArrowRightIcon className="size-4" />
                 </Link>
               </div>
@@ -383,7 +383,7 @@ export function LocalLandingPage({ page }: { page: LocalPage }) {
       <GuideLinks
         eyebrow="Before the next step"
         title="Practical guides for selling and collection"
-        lede="Use these guides to understand the vehicle details that matter and prepare for a straightforward handover in the Toowoomba Region."
+        lede="Use these guides to understand the vehicle details that matter and prepare for a straightforward handover in Brisbane."
         postSlugs={localGuideSlugs[page.slug]}
       />
 
@@ -414,7 +414,7 @@ export function LocalLandingPage({ page }: { page: LocalPage }) {
 
       <CtaBanner
         title={`Ready to sort out the car?`}
-        subtitle="Free quote, free pickup and payment before collection throughout the Toowoomba Region."
+        subtitle="Free quote, free pickup and payment before collection throughout Brisbane."
       />
     </>
   );

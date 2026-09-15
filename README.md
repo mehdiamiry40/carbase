@@ -1,4 +1,4 @@
-# Carbase — Toowoomba Region Car Buyers
+# Carbase — Brisbane Car Buyers
 
 Marketing + lead-generation website for Carbase, built with [Next.js](https://nextjs.org) (App Router), TypeScript and Tailwind CSS v4.
 
@@ -13,10 +13,11 @@ Marketing + lead-generation website for Carbase, built with [Next.js](https://ne
 | `/faq` | All FAQs, with `FAQPage` structured data for Google |
 | `/blog` | Car selling guides and practical vehicle advice |
 | `/blog/[slug]` | Statically generated guide pages with article structured data |
-| `/service-areas` | Toowoomba Region suburb and town coverage hub |
-| `/service-areas/toowoomba` | Permanent redirect to the canonical coverage hub |
-| `/cash-for-cars-toowoomba` | Dedicated cash-for-cars Toowoomba landing page |
-| `/car-removal-toowoomba` | Dedicated car-removal Toowoomba landing page |
+| `/service-areas` | Brisbane suburb coverage hub |
+| `/service-areas/brisbane` | Permanent redirect to the canonical coverage hub |
+| `/cash-for-cars-brisbane` | Dedicated cash-for-cars Brisbane landing page |
+| `/car-removal-brisbane` | Dedicated car-removal Brisbane landing page |
+| `/cash-for-cars-toowoomba`, `/car-removal-toowoomba`, `/service-areas/toowoomba` | Permanent redirects from the retired Toowoomba Region URLs (`next.config.ts`) |
 | `/privacy` | Privacy and retention policy |
 | `/api/quote` | Receives quote form submissions (incl. photos) through a private outbox, then emails them |
 | `/api/cron/quote-outbox` | Authenticated recovery, cleanup and retention worker invoked by Vercel Cron |
@@ -25,10 +26,10 @@ Also included: sitemap (`/sitemap.xml`), robots rules, Organization and service 
 
 ## Configuration checklist
 
-1. **`src/config/site.ts`** — verified operator name, Toowoomba operating base, ABN, public phone and hours live here. No street address is configured for the service-area business. Update this single source if the business changes them.
+1. **`src/config/site.ts`** — verified operator name, Brisbane operating base, ABN, public phone and hours live here. No street address is configured for the service-area business. Update this single source if the business changes them.
 2. **`src/data/testimonials.ts`** — intentionally empty. Add only reviews supplied by real customers with permission.
 3. **`src/data/faqs.ts`** — read through the answers and make sure they match how you actually operate (payment method, finance payouts, areas, etc.).
-4. **`src/data/areas.ts`** — keep the Toowoomba Region suburb and town list aligned with the locations you genuinely collect from.
+4. **`src/data/areas.ts`** — keep the Brisbane suburb list aligned with the locations you genuinely collect from.
 5. **Email delivery** — copy `.env.example` to `.env`, sign up at [resend.com](https://resend.com), and set:
    - `RESEND_API_KEY` — your API key
    - `QUOTE_TO_EMAIL` — optional; defaults to the verified server-side quote inbox

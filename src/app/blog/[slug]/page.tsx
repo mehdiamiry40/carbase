@@ -202,8 +202,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 Want a quote instead?
               </p>
               <p className="mt-2 text-sm leading-relaxed text-white/75">
-                Tell us about an old, damaged or unwanted car in the Toowoomba
-                Region.
+                Tell us about an old, damaged or unwanted car in Brisbane.
               </p>
               <Link href="/quote" className="btn-primary mt-5 w-full px-4">
                 Start my quote <ArrowRightIcon className="size-4" />

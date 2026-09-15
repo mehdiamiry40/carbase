@@ -224,7 +224,7 @@ export const steps = [
   {
     title: "We come to you",
     description:
-      "Happy with the offer? We arrange a time that suits and come to your home, workplace or property within the Toowoomba Region.",
+      "Happy with the offer? We arrange a time that suits and come to your home, workplace or property within Brisbane.",
     Icon: TruckIcon,
   },
   {
@@ -376,7 +376,7 @@ export function AreaCards({ dark = false }: { dark?: boolean }) {
 
 export function CtaBanner({
   title = "Ready to clear out that old car?",
-  subtitle = "Get a free, no-obligation quote for an old, damaged or unwanted car — with free car removal across the Toowoomba Region.",
+  subtitle = "Get a free, no-obligation quote for an old, damaged or unwanted car — with free car removal across Brisbane.",
 }: {
   title?: string;
   subtitle?: string;

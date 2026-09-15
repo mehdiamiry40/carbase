@@ -29,7 +29,7 @@ async function contactDetails(page: Page, name = "Original User") {
   const form = page.locator("form");
   await form.getByLabel(/^Name/).fill(name);
   await form.getByLabel(/^Phone/).fill("0400000000");
-  await form.getByLabel(/^Suburb/).fill("Toowoomba");
+  await form.getByLabel(/^Suburb/).fill("Brisbane");
 }
 
 async function delayPhotoDecodes(page: Page) {

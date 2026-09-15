@@ -19,11 +19,27 @@ const securityHeaders = [
   },
 ];
 
+// URLs from the period when Carbase served the Toowoomba Region. Kept only so
+// indexed links and inbound traffic land on the Brisbane equivalent instead of
+// a 404 — the site itself no longer links to or advertises these paths.
+const legacyRegionRedirects = [
+  { from: "/cash-for-cars-toowoomba", to: "/cash-for-cars-brisbane" },
+  { from: "/car-removal-toowoomba", to: "/car-removal-brisbane" },
+  { from: "/service-areas/toowoomba", to: "/service-areas" },
+];
+
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   turbopack: { root: projectRoot },
   async headers() {
     return [{ source: "/(.*)", headers: securityHeaders }];
+  },
+  async redirects() {
+    return legacyRegionRedirects.map(({ from, to }) => ({
+      source: from,
+      destination: to,
+      permanent: true,
+    }));
   },
   images: {
     qualities: [75],

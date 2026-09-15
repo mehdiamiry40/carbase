@@ -6,12 +6,12 @@ import { CtaBanner, FaqList, PageHero } from "@/components/sections";
 
 export const metadata = pageMetadata({
   path: "/faq",
-  title: "Selling Your Car FAQs | Toowoomba Region",
+  title: "Selling Your Car FAQs | Brisbane",
   description:
-    "Answers for Toowoomba Region car sellers about eligible vehicles, quote timing, free pickup, payment and Queensland paperwork.",
+    "Answers for Brisbane car sellers about eligible vehicles, quote timing, free pickup, payment and Queensland paperwork.",
   keywords: [
-    "selling a car Toowoomba FAQ",
-    "Toowoomba car quote questions",
+    "selling a car Brisbane FAQ",
+    "Brisbane car quote questions",
     "vehicle sale paperwork Queensland",
   ],
 });

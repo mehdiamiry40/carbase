@@ -6,16 +6,16 @@ import { CheckIcon, PhoneIcon } from "@/components/icons";
 
 export const metadata = pageMetadata({
   path: "/quote",
-  title: "Free Car Quote Toowoomba",
-  description: `Request a free quote for an old, damaged or unwanted car in the Toowoomba Region. ${site.name} includes local pickup and pays before collection.`,
-  keywords: ["free car quote Toowoomba", "sell unwanted car Toowoomba"],
+  title: "Free Car Quote Brisbane",
+  description: `Request a free quote for an old, damaged or unwanted car in Brisbane. ${site.name} includes local pickup and pays before collection.`,
+  keywords: ["free car quote Brisbane", "sell unwanted car Brisbane"],
   index: false,
 });
 
 const reassurance = [
   "Free quote with no obligation to sell",
   "Old, damaged, unregistered or not running — no problem",
-  "Free pickup throughout the Toowoomba Region",
+  "Free pickup throughout Brisbane",
   "Bank transfer before we take the car",
 ];
 

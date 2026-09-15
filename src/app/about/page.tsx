@@ -6,8 +6,8 @@ import { BanknoteIcon, MapPinIcon, ShieldIcon } from "@/components/icons";
 
 export const metadata = pageMetadata({
   path: "/about",
-  title: "About Us | Toowoomba Car Buyers",
-  description: `${site.name} is a Toowoomba Region car buying and removal service. Learn how our quotes, free pickup, paperwork and payment process work.`,
+  title: "About Us | Brisbane Car Buyers",
+  description: `${site.name} is a Brisbane car buying and removal service. Learn how our quotes, free pickup, paperwork and payment process work.`,
 });
 
 const values = [
@@ -19,7 +19,7 @@ const values = [
   {
     Icon: MapPinIcon,
     title: "Genuinely local",
-    text: "We only operate in the Toowoomba Region. That means a focused service area and a team that knows the city, suburbs and regional towns.",
+    text: "We only operate in Brisbane. That means a focused service area and a team that knows the CBD, the inner suburbs and the outer suburbs.",
   },
   {
     Icon: ShieldIcon,
@@ -58,14 +58,13 @@ export default function AboutPage() {
                 So we built the alternative. Tell us about your car once, get a
                 fair cash offer fast, then arrange the inspection, paperwork,
                 payment and pickup around a suitable collection time. That&apos;s
-                the entire business: buying cars across the Toowoomba Region
-                and making the process feel easy.
+                the entire business: buying cars across Brisbane and making the
+                process feel easy.
               </p>
               <p>
                 {site.name} is operated by {site.operatorName}, a service-area
                 business based in {site.operatingBase}. We come to the vehicle
-                for collection and serve customers throughout the Toowoomba
-                Region.
+                for collection and serve customers throughout Brisbane.
               </p>
               <p>
                 We specialise in ageing cars, accident-damaged vehicles, utes

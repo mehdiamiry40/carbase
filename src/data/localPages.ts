@@ -1,6 +1,6 @@
 // Keyword-targeted local landing pages.
 //
-// These sit at the root of the site (e.g. /cash-for-cars-toowoomba) so the
+// These sit at the root of the site (e.g. /cash-for-cars-brisbane) so the
 // search term appears in the URL itself. Each page owns ONE primary keyword —
 // keep the copy genuinely different between them, otherwise the pages compete
 // with each other for the same result instead of ranking separately.
@@ -45,43 +45,43 @@ export type LocalPage = {
 
 export const localPages: LocalPage[] = [
   {
-    slug: "cash-for-cars-toowoomba",
-    areaSlug: "toowoomba",
-    primaryKeyword: "cash for cars Toowoomba",
+    slug: "cash-for-cars-brisbane",
+    areaSlug: "brisbane",
+    primaryKeyword: "cash for cars Brisbane",
     datePublished: "2026-08-06",
     dateModified: "2026-08-22",
-    navLabel: "Cash for cars Toowoomba",
-    eyebrow: "Cash for cars · Toowoomba",
+    navLabel: "Cash for cars Brisbane",
+    eyebrow: "Cash for cars · Brisbane",
     h1Lead: "Cash for cars",
-    h1Highlight: "Toowoomba",
-    seoTitle: "Cash for Cars Toowoomba | Free Quote & Pickup",
+    h1Highlight: "Brisbane",
+    seoTitle: "Cash for Cars Brisbane | Free Quote & Pickup",
     seoDescription:
-      "Cash for cars in Toowoomba for old, damaged and non-running vehicles. Get a free quote, firm offer, payment before collection and free pickup.",
+      "Cash for cars in Brisbane for old, damaged and non-running vehicles. Get a free quote, firm offer, payment before collection and free pickup.",
     keywords: [
-      "cash for cars Toowoomba",
-      "cash for cars toowoomba",
-      "sell my car Toowoomba",
-      "car buyers Toowoomba",
-      "cash for junk cars Toowoomba",
-      "cash for unwanted cars Toowoomba",
-      "instant cash for cars Toowoomba",
-      "sell damaged car Toowoomba",
+      "cash for cars Brisbane",
+      "cash for cars brisbane",
+      "sell my car Brisbane",
+      "car buyers Brisbane",
+      "cash for junk cars Brisbane",
+      "cash for unwanted cars Brisbane",
+      "instant cash for cars Brisbane",
+      "sell damaged car Brisbane",
     ],
     heroPhoto: "damaged",
     heroPhotoAlt: "Old damaged car ready to be valued and sold",
     lede:
-      "Carbase buys cars throughout the Toowoomba Region. Send through the make, model, year and condition, and you get a firm offer — usually the same day — with payment before the car goes anywhere.",
+      "Carbase buys cars throughout Brisbane. Send through the make, model, year and condition, and you get a firm offer — usually the same day — with payment before the car goes anywhere.",
     highlights: [
       { label: "Quote", value: "Free and no obligation" },
       { label: "Payment", value: "Bank transfer before pickup" },
       { label: "Collection", value: "Included in the offer" },
-      { label: "Coverage", value: "Toowoomba Region only" },
+      { label: "Coverage", value: "Brisbane only" },
     ],
-    serviceName: "Cash for cars in Toowoomba",
+    serviceName: "Cash for cars in Brisbane",
     serviceType: ["Cash for cars", "Car buying", "Vehicle valuation"],
     sections: [
       {
-        heading: "What a car is actually worth in Toowoomba",
+        heading: "What a car is actually worth in Brisbane",
         body: "Four things move the number: the make and model, the year and kilometres, the condition, and what the parts and metal are currently worth. A tidy runner with rego is valued on what it will resell for. A write-off or non-runner is valued on its salvageable parts and weight. Either way you get one figure that already includes pickup, so nothing is deducted later. If you would rather sanity-check the offer against the market first, do — there is no obligation attached to it.",
       },
       {
@@ -99,7 +99,7 @@ export const localPages: LocalPage[] = [
     ],
     faqs: [
       {
-        question: "How much cash can I get for my car in Toowoomba?",
+        question: "How much cash can I get for my car in Brisbane?",
         answer:
           "It depends on the make, model, year, kilometres and condition, plus what the parts and metal are currently worth. Rather than guess, send the details through the quote form — the offer is free, usually comes back the same day during business hours, and there is no obligation to accept it.",
       },
@@ -114,12 +114,12 @@ export const localPages: LocalPage[] = [
           "It is firm. The only time an offer changes is if the car turns out to be materially different from what was described — a missing engine that was not mentioned, for example. Describe it accurately and the figure you accepted is the figure you are paid.",
       },
       {
-        question: "Can I sell a car in Toowoomba that is still under finance?",
+        question: "Can I sell a car in Brisbane that is still under finance?",
         answer:
           "Often, yes. Get a payout figure from your lender and mention it in the quote form. If our offer covers the payout we can pay the lender directly and transfer the balance to you.",
       },
       {
-        question: "Do you buy utes, 4WDs and light trucks in Toowoomba?",
+        question: "Do you buy utes, 4WDs and light trucks in Brisbane?",
         answer:
           "Yes. We quote work utes, dual-cabs, 4WDs, vans and light commercial vehicles as well as passenger cars. Include the vehicle's size, condition and exact pickup location so we can value it and plan the right collection equipment.",
       },
@@ -145,53 +145,53 @@ export const localPages: LocalPage[] = [
       },
     ],
     related: [
-      { href: "/car-removal-toowoomba", label: "Free car removal in Toowoomba" },
+      { href: "/car-removal-brisbane", label: "Free car removal in Brisbane" },
       {
         href: "/service-areas",
-        label: "Toowoomba suburbs we collect from",
+        label: "Brisbane suburbs we collect from",
       },
       { href: "/how-it-works", label: "How selling to Carbase works" },
     ],
   },
   {
-    slug: "car-removal-toowoomba",
-    areaSlug: "toowoomba",
-    primaryKeyword: "car removal Toowoomba",
+    slug: "car-removal-brisbane",
+    areaSlug: "brisbane",
+    primaryKeyword: "car removal Brisbane",
     datePublished: "2026-08-06",
     dateModified: "2026-08-22",
-    navLabel: "Car removal Toowoomba",
-    eyebrow: "Car removal · Toowoomba",
+    navLabel: "Car removal Brisbane",
+    eyebrow: "Car removal · Brisbane",
     h1Lead: "Car removal",
-    h1Highlight: "Toowoomba",
-    seoTitle: "Car Removal Toowoomba | Free Pickup & Quote",
+    h1Highlight: "Brisbane",
+    seoTitle: "Car Removal Brisbane | Free Pickup & Quote",
     seoDescription:
-      "Book free car removal in Toowoomba for scrap, unwanted and non-running vehicles. Get a quote, payment before pickup and no towing fee.",
+      "Book free car removal in Brisbane for scrap, unwanted and non-running vehicles. Get a quote, payment before pickup and no towing fee.",
     keywords: [
-      "car removal Toowoomba",
-      "car removal toowoomba",
-      "free car removal Toowoomba",
-      "junk car removal Toowoomba",
-      "scrap car removal Toowoomba",
-      "old car removal Toowoomba",
-      "unwanted car removal Toowoomba",
-      "car disposal Toowoomba",
+      "car removal Brisbane",
+      "car removal brisbane",
+      "free car removal Brisbane",
+      "junk car removal Brisbane",
+      "scrap car removal Brisbane",
+      "old car removal Brisbane",
+      "unwanted car removal Brisbane",
+      "car disposal Brisbane",
     ],
     heroPhoto: "pickup",
     heroPhotoAlt: "Broken-down car ready to be loaded for vehicle removal",
     lede:
-      "Carbase removes old, scrap and unwanted cars from anywhere within the Toowoomba Region at no charge. There is no towing fee to pay and nothing deducted from your offer — you are paid first, then we load the car and take it away.",
+      "Carbase removes old, scrap and unwanted cars from anywhere within Brisbane at no charge. There is no towing fee to pay and nothing deducted from your offer — you are paid first, then we load the car and take it away.",
     highlights: [
       { label: "Pickup fee", value: "$0 across our service area" },
       { label: "Condition", value: "Running or non-running" },
       { label: "Payment", value: "Before the vehicle is loaded" },
-      { label: "Coverage", value: "Toowoomba Region only" },
+      { label: "Coverage", value: "Brisbane only" },
     ],
-    serviceName: "Free car removal in Toowoomba",
+    serviceName: "Free car removal in Brisbane",
     serviceType: ["Car removal", "Scrap car removal", "Vehicle towing"],
     sections: [
       {
-        heading: "Car removal in Toowoomba with no towing fee",
-        body: "Most people searching for car removal in Toowoomba are expecting to pay someone to take the car away. You do not. Removal is included, the truck and driver are our cost, and the amount we agreed is transferred to you before the car moves. There is no call-out charge for a vehicle elsewhere within the Toowoomba Region, and no extra added for a car that has to be winched rather than driven on.",
+        heading: "Car removal in Brisbane with no towing fee",
+        body: "Most people searching for car removal in Brisbane are expecting to pay someone to take the car away. You do not. Removal is included, the truck and driver are our cost, and the amount we agreed is transferred to you before the car moves. There is no call-out charge for a vehicle elsewhere within Brisbane, and no extra added for a car that has to be winched rather than driven on.",
       },
       {
         heading: "What we will remove",
@@ -207,12 +207,12 @@ export const localPages: LocalPage[] = [
       },
       {
         heading: "Where the car ends up",
-        body: "Nothing is dumped. Usable panels, engines, gearboxes and electronics are pulled for reuse, fluids and batteries are drained and handled separately, and the remaining shell is processed for scrap steel. It is a much cleaner outcome than leaving a vehicle to rust in a shed or back paddock on a Toowoomba Region property.",
+        body: "Nothing is dumped. Usable panels, engines, gearboxes and electronics are pulled for reuse, fluids and batteries are drained and handled separately, and the remaining shell is processed for scrap steel. It is a much cleaner outcome than leaving a vehicle to rust in a Brisbane carport, driveway or back yard.",
       },
     ],
     faqs: [
       {
-        question: "Is car removal in Toowoomba really free?",
+        question: "Is car removal in Brisbane really free?",
         answer:
           "Yes. There is no towing fee, no call-out fee and no admin fee, and nothing is taken out of your offer to cover the truck. You are paid the agreed amount by bank transfer before the vehicle is loaded.",
       },
@@ -227,7 +227,7 @@ export const localPages: LocalPage[] = [
           "Yes. Our trucks are set up to winch and load vehicles that cannot be driven. Just tell us in the quote form what condition the car is in and where it is sitting so the right truck is sent out.",
       },
       {
-        question: "How quickly can you remove a car in Toowoomba?",
+        question: "How quickly can you remove a car in Brisbane?",
         answer:
           "Quotes usually go out the same day during business hours. Once you accept, we arrange removal around your location and the available collection schedule.",
       },
@@ -263,10 +263,10 @@ export const localPages: LocalPage[] = [
       },
     ],
     related: [
-      { href: "/cash-for-cars-toowoomba", label: "Cash for cars in Toowoomba" },
+      { href: "/cash-for-cars-brisbane", label: "Cash for cars in Brisbane" },
       {
         href: "/service-areas",
-        label: "Toowoomba suburbs we collect from",
+        label: "Brisbane suburbs we collect from",
       },
       { href: "/faq", label: "Common questions about selling" },
     ],

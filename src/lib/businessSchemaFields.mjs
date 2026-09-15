@@ -53,7 +53,7 @@ export function buildBusinessSchemaFields(details) {
             "@type": "ContactPoint",
             telephone: phone,
             contactType: "sales",
-            areaServed: "Toowoomba Region",
+            areaServed: "Brisbane",
           },
         }
       : {}),

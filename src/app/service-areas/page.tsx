@@ -17,7 +17,7 @@ import { ArrowRightIcon, MapPinIcon } from "@/components/icons";
 const area = areas[0];
 
 if (!area) {
-  throw new Error("The Toowoomba Region service area is not configured.");
+  throw new Error("The Brisbane service area is not configured.");
 }
 
 const locations = [...area.suburbs, ...(area.nearby ?? [])];
@@ -26,14 +26,14 @@ const pageUrl = `${site.url}/service-areas`;
 
 export const metadata = pageMetadata({
   path: "/service-areas",
-  title: "Toowoomba Region Service Area",
+  title: "Brisbane Service Area",
   description:
-    "Carbase serves the Toowoomba Region only. Check the Toowoomba suburbs, towns and regional communities included in our vehicle collection area.",
+    "Carbase serves Brisbane only. Check the Brisbane suburbs and outer-suburb communities included in our vehicle collection area.",
   keywords: [
-    "Toowoomba Region service area",
-    "vehicle collection Toowoomba Region",
-    "Toowoomba suburbs",
-    "Toowoomba regional towns",
+    "Brisbane service area",
+    "vehicle collection Brisbane",
+    "Brisbane suburbs",
+    "Brisbane northside and southside",
   ],
 });
 
@@ -50,14 +50,14 @@ export default function ServiceAreasPage() {
         "@type": "CollectionPage",
         "@id": webPageId,
         url: pageUrl,
-        name: "Toowoomba Region Service Area",
+        name: "Brisbane Service Area",
         description:
-          "The Toowoomba Region suburbs, towns and communities served by Carbase.",
+          "The Brisbane suburbs and communities served by Carbase.",
         inLanguage: "en-AU",
         isPartOf: { "@id": `${site.url}/#website` },
         about: {
           "@type": "AdministrativeArea",
-          name: "Toowoomba Region, Queensland",
+          name: "Brisbane, Queensland",
         },
         mainEntity: { "@id": placeListId },
         breadcrumb: { "@id": breadcrumbId },
@@ -65,7 +65,7 @@ export default function ServiceAreasPage() {
       {
         "@type": "ItemList",
         "@id": placeListId,
-        name: "Carbase Toowoomba Region collection locations",
+        name: "Carbase Brisbane collection locations",
         numberOfItems: locations.length,
         itemListElement: locations.map((location, index) => ({
           "@type": "ListItem",
@@ -75,7 +75,7 @@ export default function ServiceAreasPage() {
             name: location,
             containedInPlace: {
               "@type": "AdministrativeArea",
-              name: "Toowoomba Region, Queensland",
+              name: "Brisbane, Queensland",
             },
           },
         })),
@@ -103,7 +103,7 @@ export default function ServiceAreasPage() {
           {
             "@type": "ListItem",
             position: 2,
-            name: "Toowoomba Region service area",
+            name: "Brisbane service area",
             item: pageUrl,
           },
         ],
@@ -122,8 +122,8 @@ export default function ServiceAreasPage() {
         eyebrow="Our only service region"
         title={
           <>
-            Vehicle collection across the{" "}
-            <span className="text-gradient">Toowoomba Region</span>
+            Vehicle collection across{" "}
+            <span className="text-gradient">Brisbane</span>
           </>
         }
         lede={area.intro}
@@ -178,9 +178,9 @@ export default function ServiceAreasPage() {
         <div className="shell">
           <Reveal>
             <SectionHeading
-              eyebrow="Suburbs and regional towns"
-              title="Check your Toowoomba Region location"
-              lede="The locations below are all within our sole collection area. If your Toowoomba Region address is not listed, call us to confirm the pickup details."
+              eyebrow="Suburbs across the city"
+              title="Check your Brisbane location"
+              lede="The locations below are all within our sole collection area. If your Brisbane address is not listed, call us to confirm the pickup details."
             />
           </Reveal>
           <Reveal delay={120}>
@@ -216,7 +216,7 @@ export default function ServiceAreasPage() {
             <div>
               <p className="t-index text-brand-700">Coverage questions</p>
               <h2 className="mt-5 font-display text-4xl font-medium leading-[1.08] tracking-tight text-ink-900 sm:text-5xl">
-                Collecting within the Toowoomba Region.
+                Collecting within Brisbane.
               </h2>
               <Link
                 href="/faq"
@@ -231,7 +231,7 @@ export default function ServiceAreasPage() {
       )}
 
       <CtaBanner
-        title="Ready to sell your car in the Toowoomba Region?"
+        title="Ready to sell your car in Brisbane?"
         subtitle="Get a free, no-obligation quote with free pickup anywhere within our listed service area."
       />
     </>

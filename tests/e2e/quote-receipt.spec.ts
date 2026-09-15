@@ -20,7 +20,7 @@ async function completeQuote(page: Page) {
   await form.getByRole("button", { name: "Skip for now" }).click();
   await form.getByLabel(/Name/).fill("Test User");
   await form.getByLabel(/Phone/).fill("0400000000");
-  await form.getByLabel(/Suburb/).fill("Toowoomba");
+  await form.getByLabel(/Suburb/).fill("Brisbane");
   await form.getByRole("button", { name: "Get my free quote" }).click();
 }
 

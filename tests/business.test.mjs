@@ -32,7 +32,7 @@ const timingSource = [
 test("uses the owner-verified operator details and timing boundaries", () => {
   for (const expected of [
     'operatorName: "Emir Group"',
-    'operatingBase: "Toowoomba, Queensland"',
+    'operatingBase: "Brisbane, Queensland"',
     'phone: "0494 434 509"',
     'phoneInternational: "+61 494 434 509"',
     'hours: "8am–5pm, 7 days a week"',
@@ -67,7 +67,7 @@ test("business schema uses verified optional fields and omits invented ones", ()
   const fields = buildBusinessSchemaFields(details);
 
   assert.equal(fields.telephone, details.phoneInternational);
-  assert.equal(fields.contactPoint.areaServed, "Toowoomba Region");
+  assert.equal(fields.contactPoint.areaServed, "Brisbane");
   assert.equal("email" in fields, false);
   assert.equal(fields.taxID, details.abn);
   assert.equal(fields.openingHoursSpecification.opens, details.opens);
@@ -88,7 +88,7 @@ test("business schema uses verified optional fields and omits invented ones", ()
   );
 });
 
-test("identifies the Toowoomba operator without publishing a street address", () => {
+test("identifies the Brisbane operator without publishing a street address", () => {
   assert.match(footerSource, /Operated by/);
   assert.match(footerSource, /site\.operatorName/);
   assert.match(structuredDataSource, /"@type": "Place"/);
