@@ -4,12 +4,9 @@ import { fileURLToPath } from "node:url";
 
 const projectRoot = path.dirname(fileURLToPath(import.meta.url));
 
+// CSP is applied per request from src/proxy.ts so each document gets a unique
+// script nonce. Keeping a second policy here would make browsers enforce both.
 const securityHeaders = [
-  {
-    key: "Content-Security-Policy",
-    value:
-      "base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'",
-  },
   { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
   { key: "X-Content-Type-Options", value: "nosniff" },
   { key: "X-Frame-Options", value: "DENY" },
