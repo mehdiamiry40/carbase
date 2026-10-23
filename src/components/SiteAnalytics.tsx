@@ -13,7 +13,7 @@ export function trackQuoteSubmission() {
   });
 }
 
-export function SiteAnalytics() {
+export function SiteAnalytics({ nonce }: { nonce?: string }) {
   useEffect(() => {
     if (!measurementId) return;
 
@@ -33,5 +33,5 @@ export function SiteAnalytics() {
 
   if (!measurementId) return null;
 
-  return <GoogleAnalytics gaId={measurementId} />;
+  return <GoogleAnalytics gaId={measurementId} nonce={nonce} />;
 }

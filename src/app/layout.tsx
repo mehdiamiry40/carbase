@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { headers } from "next/headers";
 import { Barlow, Open_Sans } from "next/font/google";
 import "./globals.css";
 import { site } from "@/config/site";
@@ -76,9 +77,13 @@ const websiteJsonLd = {
   publisher: { "@id": `${site.url}/#business` },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  // Consuming the request nonce also opts every page into dynamic rendering,
+  // which is required for Next.js to stamp that nonce onto its scripts.
+  const nonce = (await headers()).get("x-nonce") ?? undefined;
+
   return (
     <html lang="en-AU" className={`${openSans.variable} ${barlow.variable}`}>
       <body className="bg-white font-sans text-ink-900 antialiased">
@@ -104,7 +109,7 @@ export default function RootLayout({
         {/* spacer so the sticky mobile bar never covers footer content */}
         <div className="h-20 bg-ink-950 md:hidden" aria-hidden />
         <MobileCtaBar />
-        <SiteAnalytics />
+        <SiteAnalytics nonce={nonce} />
       </body>
     </html>
   );
