@@ -157,7 +157,20 @@ async function checkSettledContrast(page: Page, targets: Locator, name: string) 
   await targets.evaluateAll((elements) => {
     elements.forEach((element) => element.setAttribute("data-contrast-check", ""));
   });
-  await page.addScriptTag({ content: axe.source });
+  // The production policy hashes inline scripts, so a test-only script element
+  // is refused. The DevTools protocol evaluates axe outside that policy.
+  const session = await page.context().newCDPSession(page);
+  try {
+    const injected = await session.send("Runtime.evaluate", {
+      expression: axe.source,
+      awaitPromise: true,
+    });
+    if (injected.exceptionDetails) {
+      throw new Error(injected.exceptionDetails.text ?? "Could not evaluate axe");
+    }
+  } finally {
+    await session.detach();
+  }
   const result = await page.evaluate(async () => {
     const { violations, incomplete, passes } = await window.axe.run(
       { include: ["[data-contrast-check]"] },
